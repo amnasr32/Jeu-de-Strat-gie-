@@ -9,7 +9,7 @@ javafx {
 }
 
 application {
-    mainClassName = 'Main'
+    mainClassName = 'Launcher'
 }
 
 
