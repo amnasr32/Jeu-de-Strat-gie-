@@ -1,4 +1,6 @@
-package model;
+package model.entity;
+
+import model.Player;
 
 public abstract class Entity {
     int x; //position x

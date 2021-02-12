@@ -1,5 +1,7 @@
 package model;
 
+import model.entity.Entity;
+
 import java.util.LinkedList;
 
 public class Game {
@@ -35,8 +37,10 @@ public class Game {
         return entTeam1<=0 || entTeam2<=0;
     }
 
-
+    // déroulement d'un round pour l'entité e
     private void round(Entity e) {
 
     }
+
+
 }
