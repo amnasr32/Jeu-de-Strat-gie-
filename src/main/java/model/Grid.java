@@ -30,11 +30,11 @@ public class Grid {
     }
 
     /* renvoie la cellule adjascente aux coordonnées entrées, en fonction de l'entier direction, ou null si celà ferait sortir de la grille
-               direction prends une valeur entre 1 et 6. représentation vusielle de la cellule renvoyée :
-                 5   0
-                4  o  1
-                 3   2
-            */
+       direction prends une valeur entre 1 et 6. représentation vusielle de la cellule renvoyée :
+         5   0
+        4  o  1
+         3   2
+    */
     public Cell getAdjCell(int h, int w, int direction) {
         boolean odd = h%2==0;
         switch (direction) {
@@ -66,4 +66,10 @@ public class Grid {
         }
         return null;
     }
+
+    // TODO : un joli commentaire car là j'ai la flemme
+    public String getPath(int x1, int y1, int x2, int y2, int maxLength) {
+        return "";
+    }
+
 }
