@@ -1,7 +1,5 @@
 package model;
-
 import model.entity.Entity;
-
 import java.util.LinkedList;
 
 public class Game {
@@ -39,6 +37,11 @@ public class Game {
 
     // déroulement d'un round pour l'entité e
     private void round(Entity e) {
+
+    }
+
+    // bouge l'entité e au point x,y
+    private void move(Entity e, int x, int y) {
 
     }
 
