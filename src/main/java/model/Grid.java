@@ -67,9 +67,11 @@ public class Grid {
         return null;
     }
 
-    // TODO : un joli commentaire car là j'ai la flemme
-    public String getPath(int x1, int y1, int x2, int y2, int maxLength) {
-        return "";
+    // renvoie une tableau d'entiers, chaque entier représente la cellule adjascente
+    // qu'il faut prendre pour avancer dans le chemin
+    // renvoie null si le chemin n'existe pas
+    public byte[] getPath(int x1, int y1, int x2, int y2, int maxLength) {
+        return null;
     }
 
 }
