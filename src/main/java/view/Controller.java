@@ -60,13 +60,20 @@ public class Controller {
         });
 
         scene.setOnMouseDragged(event -> {
+
             double x=event.getSceneY()-anchorY;
             double y=anchorX-event.getSceneX();
 
             anchorX=event.getSceneX();
             anchorY=event.getSceneY();
 
-            camera.translate(y/4,x/4);
+            if (event.isSecondaryButtonDown()) {
+                camera.translate(y/4,x/4);
+            }
+            else if (event.isMiddleButtonDown()) {
+                camera.rotateY(-y/4);
+                camera.rotateX(-x/4);
+            }
         });
 
     }
