@@ -1,11 +1,7 @@
 package view;
 
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.stage.Stage;
 
 public class Controller {
 
@@ -25,40 +21,12 @@ public class Controller {
             camera.zoom(delta);
         });
 
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, event ->  {
-            switch (event.getCode()) {
-                case Z:
-                    camera.rotateX(5);
-                    break;
-                case S:
-                    camera.rotateX(-5);
-                    break;
-                case Q:
-                    camera.rotateY(-5);
-                    break;
-                case D:
-                    camera.rotateY(5);
-                    break;
-                case UP:
-                    camera.translate(0,5);
-                    break;
-                case DOWN:
-                    camera.translate(0,-5);
-                    break;
-                case LEFT:
-                    camera.translate(-5,0);
-                    break;
-                case RIGHT:
-                    camera.translate(5,0);
-                    break;
-            }
-        });
-
         scene.setOnMousePressed(event -> {
             anchorX=event.getSceneX();
             anchorY=event.getSceneY();
         });
 
+        // permet de déplacer / trouner la caméra avec le click droit ou le click molette
         scene.setOnMouseDragged(event -> {
 
             double x=event.getSceneY()-anchorY;
