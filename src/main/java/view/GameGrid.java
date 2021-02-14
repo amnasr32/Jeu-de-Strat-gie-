@@ -1,13 +1,7 @@
 package view;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.shape.*;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.transform.Rotate;
-import javafx.stage.Stage;
 
 public class GameGrid extends Group {
 
@@ -22,17 +16,20 @@ public class GameGrid extends Group {
                 getChildren().add(hexagons[i][j]);
             }
         }
+        this.setTranslateZ(((float)height/2)*13);
+        this.setTranslateX(((float)width/2)*-15);
     }
 
     private MeshView makeHexagon(int i, int j) {
         TriangleMesh p = new TriangleMesh();
         p.getPoints().addAll(0,0,0,
-                3.5f,0,2,
-                7,0,0,
-                7,0,-4,
-                3.5f,0,-6,
-                0,0,-4
+                7,0,4,
+                14,0,0,
+                14,0,-8,
+                7,0,-12,
+                0,0,-8
         );
+        // je sais pas à quoi ça sert, ni si c'est correct
         p.getTexCoords().addAll(
                 0,0.5f,
                 0.33f,1,
@@ -49,9 +46,9 @@ public class GameGrid extends Group {
         );
         System.out.println(p.getTexCoordElementSize());
         MeshView m=new MeshView(p);
-        float f = (i%2==0) ? 0 : 4f;
-        m.setTranslateZ(i*-7);
-        m.setTranslateX(f+j*8);
+        float f = (i%2==0) ? 0 : 7.5f;
+        m.setTranslateZ(i*-13);
+        m.setTranslateX(f+j*15);
         return m;
     }
 

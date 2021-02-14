@@ -32,11 +32,13 @@ public class GameCamera extends PerspectiveCamera {
 
     public GameCamera() {
         super(true);
-        setFarClip(10000);
+        setFarClip(1000);
         setNearClip(0);
         setTranslateX(0);
         setTranslateY(0);
         setTranslateZ(0);
+        zoom(-200);
+        rotateX(-20);
     }
 
     public void zoom(double distance) {
