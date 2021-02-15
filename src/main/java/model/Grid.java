@@ -1,10 +1,11 @@
 package model;
+import model.entity.Entity;
 
 public class Grid {
-    private Cell[][] cells;
+    private final Cell[][] cells;
 
-    private int height;
-    private int width;
+    private final int height;
+    private final int width;
 
     public Grid(int h, int w) {
         height=h;
@@ -67,9 +68,21 @@ public class Grid {
         return null;
     }
 
-    // TODO : un joli commentaire car là j'ai la flemme
-    public String getPath(int x1, int y1, int x2, int y2, int maxLength) {
-        return "";
+    // renvoie une tableau d'entiers, chaque entier représente la cellule adjascente
+    // qu'il faut prendre pour avancer dans le chemin
+    // renvoie null si le chemin n'existe pas, ou s'il demande plus de maxlenght mouvements
+    public byte[] getPath(int x1, int y1, int x2, int y2, int maxLength) {
+        return null;
+    }
+
+    //bouge l'entité d'une case, et update ses coordoonées internes
+    //on suppose que le mouvement est possible
+    public void move(Entity e, int direction) {
+        int x=e.getX();
+        int y=e.getY();
+        getAdjCell(x,y,direction).setEntity(e);
+        getCell(x,y).setEntity(null);
+        e.updateCoords(direction);
     }
 
 }
