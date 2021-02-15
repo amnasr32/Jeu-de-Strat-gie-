@@ -40,8 +40,12 @@ public class Game {
 
     }
 
-    // bouge l'entité e au point x,y
-    private void move(Entity e, int x, int y) {
+    // bouge l'entité e en suivant le chemin donné en paramètre
+    private void move(Entity e, byte[] path) {
+        for (byte b: path) {
+            grid.move(e, b);
+            // TODO : update view
+        }
 
     }
 

@@ -32,4 +32,33 @@ public abstract class Entity {
             hp-=dmg;
         }
     }
+
+    // update les coordonnées x et y
+    public void updateCoords(int direction) {
+        boolean odd = x%2==0;
+        switch (direction) {
+            case 0:
+                x--;
+                if (!odd) y++;
+                break;
+            case 1:
+                y++;
+                break;
+            case 2:
+                x++;
+                if (!odd) y++;
+                break;
+            case 3:
+                x++;
+                if (odd) y--;
+                break;
+            case 4:
+                y--;
+                break;
+            case 5:
+                x--;
+                if (odd) y--;
+                break;
+        }
+    }
 }
