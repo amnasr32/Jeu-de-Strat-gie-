@@ -9,7 +9,7 @@ javafx {
 }
 
 application {
-    mainClassName = 'Launcher'
+    mainClassName = 'view.MainView'
 }
 
 

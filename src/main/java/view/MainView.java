@@ -1,3 +1,6 @@
+package view;
+
+import model.Player;
 import view.*;
 
 import javafx.application.Application;
@@ -5,7 +8,9 @@ import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class Launcher extends Application {
+public class MainView extends Application {
+
+    Player player;
 
     Controller ctrl;
 
@@ -15,13 +20,14 @@ public class Launcher extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        GameCamera camera = new GameCamera();
+
         GameGrid grid = new GameGrid(10, 10);
 
         Scene scene = new Scene(grid, width, height);
-        ctrl = new Controller(scene);
+        GameCamera camera = new GameCamera();
         scene.setFill(Color.SILVER);
         scene.setCamera(camera);
+        ctrl = new Controller(scene);
         ctrl.setCameraControls(camera);
 
         primaryStage.setTitle("jeu de stratégie");
