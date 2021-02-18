@@ -1,5 +1,7 @@
 package model;
 import model.entity.Entity;
+import model.entity.Soldier;
+
 import java.util.LinkedList;
 
 public class Game {
@@ -12,7 +14,14 @@ public class Game {
     int entTeam2; // nombre d'entités de l'équipe 2 actuellement en jeu
 
     public Game(Grid grid, Player player1, Player player2) {
+        this.grid=grid;
+        this.player1=player1;
+        this.player2=player2;
 
+    }
+
+    public Grid getGrid() {
+        return grid;
     }
 
     void start() {
@@ -27,7 +36,16 @@ public class Game {
 
     // chaque joueur pose ses unités
     private void initPlayableEntities() {
-
+        int h=grid.getHeight();
+        int w=grid.getWidth();
+        Entity e1 = new Soldier(1,1,player1);
+        Entity e2 = new Soldier(h-2,w-2,player2);
+        grid.getCell(1,1).setEntity(e1);
+        grid.getCell(h-2,w-2).setEntity(e2);
+        player1.addEntityToView(e1);
+        player1.addEntityToView(e2);
+        player2.addEntityToView(e1);
+        player2.addEntityToView(e2);
     }
 
     // renvoie true si le jeu est fini

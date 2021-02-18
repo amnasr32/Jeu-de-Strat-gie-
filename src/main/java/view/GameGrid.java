@@ -3,16 +3,35 @@ package view;
 import javafx.scene.Group;
 import javafx.scene.shape.*;
 
+import java.util.LinkedList;
+
 public class GameGrid extends Group {
 
     MeshView[][] hexagons;
+    LinkedList<Sphere> entities;
+
+    public GameGrid(byte[][] heightGrid) {
+        super();
+        int height = heightGrid.length;
+        int width = heightGrid[0].length;
+        hexagons = new MeshView[height][width];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                hexagons[i][j]=makeHexagon(i,j, heightGrid[i][j]);
+                getChildren().add(hexagons[i][j]);
+            }
+        }
+        this.setTranslateZ(((float)height/2)*13);
+        this.setTranslateX(((float)width/2)*-15);
+        entities=new LinkedList<>();
+    }
 
     public GameGrid(int height, int width) {
         super();
         hexagons = new MeshView[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                hexagons[i][j]=makeHexagon(i,j);
+                hexagons[i][j]=makeHexagon(i,j, 0);
                 getChildren().add(hexagons[i][j]);
             }
         }
@@ -20,7 +39,7 @@ public class GameGrid extends Group {
         this.setTranslateX(((float)width/2)*-15);
     }
 
-    private MeshView makeHexagon(int i, int j) {
+    private MeshView makeHexagon(int i, int j, int h) {
         TriangleMesh p = new TriangleMesh();
         p.getPoints().addAll(0,0,0,
                 7,0,4,
@@ -49,7 +68,18 @@ public class GameGrid extends Group {
         float f = (i%2==0) ? 0 : 7.5f;
         m.setTranslateZ(i*-13);
         m.setTranslateX(f+j*15);
+        m.setTranslateY(h*-3);
         return m;
+    }
+
+    public void addEntity(int x, int z) {
+        Sphere s = new Sphere(5);
+        float f = (x%2==0) ? 0 : 7.5f;
+        s.setTranslateZ(hexagons[x][z].getTranslateZ()-3.6f);
+        s.setTranslateX(hexagons[x][z].getTranslateX()+7.2f);
+        s.setTranslateY(hexagons[x][z].getTranslateY()-5);
+        entities.add(s);
+        getChildren().add(s);
     }
 
 

@@ -33,6 +33,8 @@ public abstract class Entity {
         }
     }
 
+    public abstract Entity copy();
+
     // update les coordonnées x et y
     public void updateCoords(int direction) {
         boolean odd = x%2==0;

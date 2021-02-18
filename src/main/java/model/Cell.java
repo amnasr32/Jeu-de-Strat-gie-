@@ -4,7 +4,7 @@ import model.entity.Entity;
 
 public class Cell {
     Entity entity;
-    int height;
+    byte height;
 
     Cell() {
         entity=null;
@@ -17,6 +17,14 @@ public class Cell {
 
     public void setEntity(Entity entity) {
         this.entity = entity;
+    }
+
+    public byte getHeight() {
+        return height;
+    }
+
+    public void setHeight(byte height) {
+        this.height = height;
     }
 }
 
