@@ -4,9 +4,12 @@ import model.action.Action;
 import model.Player;
 
 public abstract class Entity {
-    protected int x; //position x
-    protected int y; //position y
-    protected int hp; // points de vie
+    protected int x;  //position x
+    protected int y;  //position y
+    protected int hp; //points de vie
+    protected int maxHp; //points de vie max
+    protected int mp; //points de mouvements
+    protected int maxMp;//points de mouvements max
     protected Action[] actions;
     protected Player player;
 
@@ -62,5 +65,13 @@ public abstract class Entity {
                 if (odd) y--;
                 break;
         }
+    }
+
+    public void decreaseMp() {
+        mp--;
+    }
+
+    public void resetMp() {
+        mp=maxMp;
     }
 }
