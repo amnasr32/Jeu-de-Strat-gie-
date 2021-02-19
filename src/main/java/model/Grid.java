@@ -68,10 +68,26 @@ public class Grid {
         return null;
     }
 
+    private boolean isMovePossible(int x, int y, int orientation) {
+        Cell c = getAdjCell(x, y, orientation);
+        int delta = cells[x][y].getHeight() - c.getHeight();
+        return (c.getEntity()==null && delta <= 1 && delta >=-1 );
+    }
+
     // renvoie une tableau d'entiers, chaque entier représente la cellule adjascente
     // qu'il faut prendre pour avancer dans le chemin
     // renvoie null si le chemin n'existe pas, ou s'il demande plus de maxlenght mouvements
     public byte[] getPath(int x1, int y1, int x2, int y2, int maxLength) {
+        if (maxLength<=0) return null;
+        byte[] b = new byte[1];
+        for (int i = 0; i < 6; i++) {
+            if (cells[x2][y2]==getAdjCell(x1,y1,i)) {
+                if (isMovePossible(x1,y1,i)) {
+                    b[0]=(byte)i;
+                    return b;
+                }
+            }
+        }
         return null;
     }
 
@@ -83,6 +99,7 @@ public class Grid {
         getAdjCell(x,y,direction).setEntity(e);
         getCell(x,y).setEntity(null);
         e.updateCoords(direction);
+        e.decreaseMp();
     }
 
 }
