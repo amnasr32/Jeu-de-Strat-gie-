@@ -63,7 +63,6 @@ public class GameGrid extends Group {
                 2,2,5,5,3,3,
                 3,3,5,5,4,4
         );
-        System.out.println(p.getTexCoordElementSize());
         MeshView m=new MeshView(p);
         float f = (i%2==0) ? 0 : 7.5f;
         m.setTranslateZ(i*-13);
