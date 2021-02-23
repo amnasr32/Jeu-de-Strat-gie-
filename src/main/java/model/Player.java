@@ -2,6 +2,7 @@ package model;
 import model.entity.Entity;
 import view.GameGrid;
 import view.MainView;
+import javafx.scene.control.Button;
 
 /**
  * La classe Player représente un joueur
@@ -11,6 +12,8 @@ import view.MainView;
 public class Player {
     MainView view;
     Game game;
+    boolean endTurn = false;
+    Button finDeTour = new Button("Fin de tour");
 
     public Player() {
         view=null;
@@ -63,6 +66,31 @@ public class Player {
         // l'utilisateur puisse modifier l'entité originale
         Entity copy = e.copy();
         view.addEntity(copy);
+    }
+
+    public void round(Entity e){
+
+        //todo : event pour le clique sur l'entité e ->
+
+        //todo : event pour le clique d'une entité autre que e ->
+        if (e.isAlly(/* entité cliquée */ e)) {
+            //todo : cliquer sur une entité allié montre certaines choses
+        } else {
+            //todo : attaquer etc
+        }
+
+        //le joueur appuie sur le button de fin de tour
+        finDeTour.setOnAction((event) -> endTurn() ); //todo : ajouter le bouton à la vue (faire attention à ne pas
+        //ajouter un nouveau bouton à chaque nouveau tour)
+
+    }
+
+    boolean endTurn(){
+        return endTurn = true;
+    }
+
+    boolean startTurn(){
+        return endTurn = false;
     }
 
 
