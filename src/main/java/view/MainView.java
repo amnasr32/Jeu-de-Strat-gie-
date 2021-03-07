@@ -1,5 +1,7 @@
 package view;
 
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import model.Player;
 import model.entity.Entity;
 import view.*;
@@ -9,10 +11,14 @@ import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+
 public class MainView extends Application {
 
-    Player player;
-    Controller ctrl;
+    private Controller ctrl;
+    private Scene mainScene; // tout ce qui est en 2D : les boutons, les menus, etc
+    private SubScene scene3D; // tout ce qui est en 3D est ici
+    private Group mainGroup;
 
     private int height = 720;
     private int width = 1080;
@@ -21,29 +27,34 @@ public class MainView extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        mainGroup = new Group();
+        mainScene=new Scene(mainGroup,width,height);
+        ctrl = new Controller(this);
 
-        player=new Player(this);
-        player.loadLevel();
-        byte[][] heightGrid = player.getHeightGrid();
-
-        Scene scene = makeGameScene(heightGrid);
 
         primaryStage.setTitle("jeu de stratégie");
-        primaryStage.setScene(scene);
+        primaryStage.setScene(mainScene);
         primaryStage.show();
 
-        player.start();
+        ctrl.initializePlayer();
+        ctrl.loadLevel();
+        ctrl.mkGameGrid();
+        ctrl.startGame();
+
+        Button b = new Button();
+        mainGroup.getChildren().add(b);
+
     }
 
-    public Scene makeGameScene(byte[][] heightGrid) {
+    public void makeGameScene(byte[][] heightGrid) {
+
         gameGrid = new GameGrid(heightGrid);
-        Scene scene = new Scene(gameGrid, width, height);
+        scene3D=new SubScene(gameGrid, width, height);
         GameCamera camera = new GameCamera();
-        scene.setFill(Color.SILVER);
-        scene.setCamera(camera);
-        ctrl = new Controller(scene);
-        ctrl.setCameraControls(camera);
-        return scene;
+        scene3D.setCamera(camera);
+        scene3D.setFill(Color.SILVER);
+        ctrl.setCameraControls(camera, scene3D);
+        mainGroup.getChildren().add(scene3D);
     }
 
     public void addEntity(Entity e) {
