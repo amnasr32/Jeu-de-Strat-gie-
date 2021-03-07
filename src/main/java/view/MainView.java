@@ -54,6 +54,7 @@ public class MainView extends Application {
         scene3D.setCamera(camera);
         scene3D.setFill(Color.SILVER);
         ctrl.setCameraControls(camera, scene3D);
+        ctrl.setGameGridControls(gameGrid);
         mainGroup.getChildren().add(scene3D);
     }
 
