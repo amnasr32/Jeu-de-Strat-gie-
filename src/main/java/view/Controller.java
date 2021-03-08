@@ -35,6 +35,10 @@ public class Controller {
         player.start();
     }
 
+    public void endTurn() {
+        player.endTurn();
+    }
+
     // initialise les contôles de la caméra
     public void setCameraControls(GameCamera camera, SubScene scene) {
 

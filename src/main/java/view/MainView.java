@@ -55,7 +55,7 @@ public class MainView extends Application {
         ctrl.setGameGridControls(gameGrid);
 
         mainGroup.getChildren().add(scene3D);
-        mainGroup.getChildren().add(new UserInterface(width, height));
+        mainGroup.getChildren().add(new UserInterface(width, height, ctrl));
     }
 
     public void addEntity(Entity e) {
