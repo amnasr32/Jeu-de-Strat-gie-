@@ -11,7 +11,7 @@ public class Hexagon extends Group {
 
     public Hexagon(int i, int j, int h) {
         super();
-        cylinder = new Cylinder(8, 0.5+h*3, 6);
+        cylinder = new Cylinder(8, 1+h*3, 6);
         getChildren().add(cylinder);
         float f = (i%2==0) ? 0 : 7.5f;
         setTranslateZ(i*-13);

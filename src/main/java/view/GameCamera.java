@@ -32,8 +32,8 @@ public class GameCamera extends PerspectiveCamera {
 
     public GameCamera() {
         super(true);
-        setFarClip(1000);
-        setNearClip(0);
+        setFarClip(10000);
+        setNearClip(0.05);
         setTranslateX(0);
         setTranslateY(0);
         setTranslateZ(0);

@@ -49,7 +49,7 @@ public class MainView extends Application {
     public void makeGameScene(byte[][] heightGrid) {
 
         gameGrid = new GameGrid(heightGrid);
-        scene3D=new SubScene(gameGrid, width, height);
+        scene3D=new SubScene(gameGrid, width, height, true, SceneAntialiasing.BALANCED);
         GameCamera camera = new GameCamera();
         scene3D.setCamera(camera);
         scene3D.setFill(Color.SILVER);
