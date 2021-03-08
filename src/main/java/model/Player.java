@@ -2,7 +2,6 @@ package model;
 import model.entity.Entity;
 import view.GameGrid;
 import view.MainView;
-import javafx.scene.control.Button;
 
 /**
  * La classe Player représente un joueur
@@ -13,7 +12,6 @@ public class Player {
     MainView view;
     Game game;
     boolean endTurn = false;
-    Button finDeTour = new Button("Fin de tour");
 
     public Player() {
         view=null;
@@ -80,8 +78,8 @@ public class Player {
         }
 
         //le joueur appuie sur le button de fin de tour
-        finDeTour.setOnAction((event) -> endTurn() ); //todo : ajouter le bouton à la vue (faire attention à ne pas
-        //ajouter un nouveau bouton à chaque nouveau tour)
+         //todo : ajouter la possibilité au joueur de finir le tour en appuyant sur un bouton qui change juste
+        //l'attribut endTurn
 
     }
 
