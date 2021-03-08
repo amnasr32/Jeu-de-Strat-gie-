@@ -29,7 +29,10 @@ public class Game {
         while (!gameIsOver()) {
             // les entités jouent les unes après les autres
             for (Entity e : playableEntities) {
-                round(e);
+                //tant que le boutton de fin de tour n'est pas appuié, on reste sur la même entité
+                while (e.getPlayer().endTurn) {
+                    round(e);
+                }
             }
         }
     }
@@ -49,13 +52,21 @@ public class Game {
     }
 
     // renvoie true si le jeu est fini
-    private boolean gameIsOver() {
+    boolean gameIsOver() {
         return entTeam1<=0 || entTeam2<=0;
     }
 
     // déroulement d'un round pour l'entité e
     private void round(Entity e) {
-
+            if (e.getPlayer() == player1) {
+                //on s'assure qu'à chaque tour le button est réinitialisé à false
+                player1.startTurn();
+                player1.round(e);
+            } else {
+                player2.startTurn();
+                player2.round(e);
+            }
+            e.getPlayer().endTurn();
     }
 
     // bouge l'entité e en suivant le chemin donné en paramètre

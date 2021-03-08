@@ -36,6 +36,11 @@ public abstract class Entity {
         }
     }
 
+    //sert à savoir si une entité quelconque appartient au même joueur que l'entité source
+    public boolean isAlly(Entity e){
+        return e.getPlayer() == player;
+    }
+
     public abstract Entity copy();
 
     // update les coordonnées x et y
