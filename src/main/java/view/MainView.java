@@ -1,7 +1,9 @@
 package view;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import model.Player;
 import model.entity.Entity;
 import view.*;
@@ -40,10 +42,6 @@ public class MainView extends Application {
         ctrl.loadLevel();
         ctrl.mkGameGrid();
         ctrl.startGame();
-
-        Button b = new Button();
-        mainGroup.getChildren().add(b);
-
     }
 
     public void makeGameScene(byte[][] heightGrid) {
@@ -52,10 +50,12 @@ public class MainView extends Application {
         scene3D=new SubScene(gameGrid, width, height, true, SceneAntialiasing.BALANCED);
         GameCamera camera = new GameCamera();
         scene3D.setCamera(camera);
-        scene3D.setFill(Color.SILVER);
+
         ctrl.setCameraControls(camera, scene3D);
         ctrl.setGameGridControls(gameGrid);
+
         mainGroup.getChildren().add(scene3D);
+        mainGroup.getChildren().add(new UserInterface(width, height));
     }
 
     public void addEntity(Entity e) {
