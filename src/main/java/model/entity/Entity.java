@@ -72,6 +72,11 @@ public abstract class Entity {
         }
     }
 
+    public void updateCoords(int x, int y) {
+        this.x=x;
+        this.y=y;
+    }
+
     public void decreaseMp() {
         mp--;
     }

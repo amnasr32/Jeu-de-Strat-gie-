@@ -11,23 +11,21 @@ import java.util.LinkedList;
 
 public class GameGrid extends Group {
 
-    Hexagon[][] hexagons;
-    LinkedList<Sphere> entities;
+    Hexagon[][] destination;
 
     public GameGrid(byte[][] heightGrid) {
         super();
         int height = heightGrid.length;
         int width = heightGrid[0].length;
-        hexagons = new Hexagon[height][width];
+        destination = new Hexagon[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                hexagons[i][j]=new Hexagon(i,j, heightGrid[i][j]);
-                getChildren().add(hexagons[i][j]);
+                destination[i][j]=new Hexagon(i,j, heightGrid[i][j]);
+                getChildren().add(destination[i][j]);
             }
         }
         this.setTranslateZ(((float)height/2)*13);
         this.setTranslateX(((float)width/2)*-15);
-        entities=new LinkedList<>();
 
         initLight();
         initSky();
@@ -68,17 +66,57 @@ public class GameGrid extends Group {
     }
 
     public Hexagon[][] getHexagons() {
-        return hexagons;
+        return destination;
     }
 
-    public void addEntity(int x, int z) {
-        Sphere s = new Sphere(5);
-        float f = (x%2==0) ? 0 : 7.5f;
-        s.setTranslateZ(hexagons[x][z].getTranslateZ());
-        s.setTranslateX(hexagons[x][z].getTranslateX());
-        s.setTranslateY(hexagons[x][z].getTranslateY()-5);
-        entities.add(s);
-        getChildren().add(s);
+    public void addEntity(Unit u, int x, int z) {
+        u.setTranslateX(destination[x][z].getTranslateX());
+        u.setTranslateZ(destination[x][z].getTranslateZ());
+        u.setTranslateY(destination[x][z].getTranslateY()-6.5);
+        getChildren().add(u);
+    }
+
+    public void moveUnit(Unit u, byte direction) {
+        Hexagon destination = getAdjHexagon(u.getX(),u.getY(),direction);
+        u.updateCoords(direction);
+        u.setTranslateX(destination.getTranslateX());
+        u.setTranslateZ(destination.getTranslateZ());
+        u.setTranslateY(destination.getTranslateY()-5);
+    }
+
+    // copie de la fonction getAdjCell de model.Cell.java
+    public Hexagon getAdjHexagon(int h, int w, int direction) {
+        boolean odd = h%2==0;
+        int width = destination.length;
+        int height = destination[0].length;
+        switch (direction) {
+            case 0:
+                if (h<=0 || !odd && w>=width-1) return null;
+                if (odd) return destination[h-1][w];
+                else return destination[h-1][w+1];
+            case 1:
+                if (w>=width-1) return null;
+                return destination[h][w+1];
+            case 2:
+                if (h>=height-1 || !odd && w>=width-1) return null;
+                if (odd) return destination[h+1][w];
+                else return destination[h+1][w+1];
+            case 3:
+                if (h>=height-1 || odd && w<=0) return null;
+                if (odd) return destination[h+1][w-1];
+                else return destination[h+1][w];
+            case 4:
+                if (w<=0) return null;
+                return destination[h][w-1];
+            case 5:
+                if (h<=0 || odd && w<=0) return null;
+                if (odd) return destination[h-1][w-1];
+                else return destination[h-1][w];
+
+            default:
+                break;
+        }
+        return null;
     }
 
 

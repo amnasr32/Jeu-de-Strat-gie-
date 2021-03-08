@@ -10,7 +10,9 @@ public class PlayerBot extends Player {
     }
 
     @Override
-    public void addEntityToView(Entity e) {
-        // vide
-    }
+    public void addEntityToView(Entity e) {}
+    @Override
+    protected void focusFirstEntity(int i) {}
+    @Override
+    protected void focusNextEntity(int i) {}
 }

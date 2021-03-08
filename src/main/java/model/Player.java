@@ -59,11 +59,16 @@ public class Player {
         return heightGrid;
     }
 
-    public void addEntityToView(Entity e) {
-        // une copie est envoyé car il ne fait pas que
-        // l'utilisateur puisse modifier l'entité originale
-        Entity copy = e.copy();
-        view.addEntity(copy);
+    protected void addEntityToView(Entity e) {
+        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this);
+    }
+
+    protected void focusFirstEntity(int i) {
+        view.focusFirstEntity(i);
+    }
+
+    protected void focusNextEntity(int i) {
+        view.focusNextEntity(i);
     }
 
     public void round(Entity e){
@@ -84,6 +89,7 @@ public class Player {
     }
 
     public boolean endTurn(){
+        game.nextRound();
         return endTurn = true;
     }
 
