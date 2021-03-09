@@ -78,7 +78,6 @@ public class GridView extends Group {
 
     public void moveEntity(EntityView u, byte direction) {
         Hexagon destination = getAdjHexagon(u.getX(),u.getY(),direction);
-        if (destination==null) return;
         u.updateCoords(direction);
         u.setTranslateX(destination.getTranslateX());
         u.setTranslateZ(destination.getTranslateZ());
@@ -92,8 +91,8 @@ public class GridView extends Group {
     // copie de la fonction getAdjCell de model.Cell.java
     public Hexagon getAdjHexagon(int h, int w, int direction) {
         boolean odd = h%2==0;
-        int width = hexagons.length;
-        int height = hexagons[0].length;
+        int height = hexagons.length;
+        int width = hexagons[0].length;
         switch (direction) {
             case 0:
                 if (h<=0 || !odd && w>=width-1) return null;
