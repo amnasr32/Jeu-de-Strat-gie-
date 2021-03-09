@@ -104,4 +104,5 @@ public class Unit extends Group {
     public void highlight(boolean bool) {
         outerSphere.setVisible(bool);
     }
+
 }
