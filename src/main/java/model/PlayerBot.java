@@ -3,7 +3,8 @@ package model;
 import model.entity.Entity;
 import view.MainView;
 
-// on verra plus tard ce que fait cette classe
+// pour le moment cette classe ne sert que à override les fonctions
+// qui causeraient un NullPointerException
 public class PlayerBot extends Player {
     public PlayerBot() {
         super(null);

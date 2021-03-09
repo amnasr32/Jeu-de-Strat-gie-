@@ -2,9 +2,7 @@ package model;
 import model.entity.Entity;
 import model.entity.Soldier;
 
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Timer;
 
 public class Game {
 
@@ -16,14 +14,8 @@ public class Game {
     private Player currentPlayer=null; // le joueur dont c'est le tour
     private Entity currentEntity=null;
 
-    private int gameState; // état de jeu
-
+    private int gameState; // état de jeu : 0 : phase de selection des entités, 1 : phase de jeu
     private int entInd; // index de l'entité courante
-
-    //byte[] path;
-
-    //Timer timer; plus tard
-
 
 
     public Game(Grid grid, Player player1, Player player2) {
@@ -45,6 +37,8 @@ public class Game {
         firstRound();
     }
 
+    // premier tour de jeu
+    // current player et current entity sont correctement initialisée
     private void firstRound() {
         entInd=0;
         currentEntity=playableEntities.get(entInd);
@@ -54,8 +48,9 @@ public class Game {
         }
     }
 
+    // permet de passer au tour de l'entité suivante
     protected void nextRound(Player pp) {
-        if (currentPlayer!=pp) return;
+        if (currentPlayer!=pp) return; // seul le joueur courant peut effectuer l'action
         entInd=(entInd+1)%playableEntities.size();
         currentEntity=playableEntities.get(entInd);
         currentPlayer=currentEntity.getPlayer();
@@ -75,6 +70,7 @@ public class Game {
         addEntityToGame(e2, h-2,w-2,1);
     }
 
+    // permet d'ajouter un entité au model et à la view de tous les joueurs
     private void addEntityToGame(Entity e, int x, int y, int playerNb) {
         e.updateCoords(x, y);
         grid.getCell(x,y).setEntity(e);
@@ -97,6 +93,7 @@ public class Game {
     }
 
     // bouge l'entité e en suivant le chemin donné en paramètre
+    // met à jour la vue de tous les joueurs
     protected void move(Player p, byte[] path) {
         if (p!=currentPlayer || path==null) return;
         for (byte dir: path) {
@@ -108,9 +105,10 @@ public class Game {
 
     }
 
+    // renvoie le chemin menant de la position de l'entité en cours et les coords x y
+    // renvoie null si le chemin n'exsite pas
     protected byte[] makePath(int x, int y) {
         return grid.getPath(currentEntity.getX(), currentEntity.getY(), x, y, currentEntity.getMp());
-        //return path;
     }
 
 

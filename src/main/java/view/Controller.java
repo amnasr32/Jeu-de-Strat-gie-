@@ -1,8 +1,7 @@
 package view;
 
-import javafx.scene.SubScene;
-import javafx.scene.input.ScrollEvent;
 import model.Player;
+
 
 public class Controller {
 
