@@ -43,6 +43,11 @@ public class Player {
         game.nextRound(this);
     }
 
+    public void makePath(int x, int y) {
+        byte[] path = game.makePath(x,y);
+        view.drawPath(path);
+    }
+
     // ---------------------------------
     //  fonctions qui modifient la vue :
     // ---------------------------------

@@ -20,6 +20,8 @@ public class Game {
 
     private int entInd; // index de l'entité courante
 
+    byte[] path;
+
     //Timer timer; plus tard
 
 
@@ -95,12 +97,17 @@ public class Game {
     }
 
     // bouge l'entité e en suivant le chemin donné en paramètre
-    private void move(Entity e, byte[] path) {
+    protected void move(Entity e, byte[] path) {
         for (byte b: path) {
             grid.move(e, b);
             // TODO : update view
         }
 
+    }
+
+    protected byte[] makePath(int x, int y) {
+        path = grid.getPath(currentEntity.getX(), currentEntity.getY(), x, y, currentEntity.getMp());
+        return path;
     }
 
 
