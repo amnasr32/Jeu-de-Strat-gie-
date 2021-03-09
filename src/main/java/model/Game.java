@@ -16,6 +16,8 @@ public class Game {
     private Player currentPlayer=null; // le joueur dont c'est le tour
     private Entity currentEntity=null;
 
+    private int gameState; // état de jeu
+
     private int entInd; // index de l'entité courante
 
     //Timer timer; plus tard
@@ -39,14 +41,6 @@ public class Game {
     void start() {
         initPlayableEntities();
         firstRound();
-        /*
-        while (!gameIsOver()) {
-            // les entités jouent les unes après les autres
-            for (Entity e : playableEntities) {
-                round(e);
-            }
-        }
-        */
     }
 
     private void firstRound() {
@@ -58,7 +52,8 @@ public class Game {
         }
     }
 
-    protected void nextRound() {
+    protected void nextRound(Player pp) {
+        if (currentPlayer!=pp) return;
         entInd=(entInd+1)%playableEntities.size();
         currentEntity=playableEntities.get(entInd);
         currentPlayer=currentEntity.getPlayer();
@@ -68,6 +63,7 @@ public class Game {
     }
 
     // chaque joueur pose ses unités
+    // TODO
     private void initPlayableEntities() {
         int h=grid.getHeight();
         int w=grid.getWidth();
@@ -96,19 +92,6 @@ public class Game {
             if (i>0) b=true;
         }
         return true;
-    }
-
-    // déroulement d'un round pour l'entité e
-    private void round(Entity e) {
-        Player player = e.getPlayer();
-        player.startTurn();
-        //tant que le boutton de fin de tour n'est pas appuié, on reste sur la même entité
-
-
-        while (!e.getPlayer().endTurn) {
-            //vide
-        }
-        player.endTurn();
     }
 
     // bouge l'entité e en suivant le chemin donné en paramètre

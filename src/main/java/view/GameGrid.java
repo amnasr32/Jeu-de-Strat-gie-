@@ -7,21 +7,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
 
-import java.util.LinkedList;
-
 public class GameGrid extends Group {
 
-    Hexagon[][] destination;
+    Hexagon[][] hexagons;
 
     public GameGrid(byte[][] heightGrid) {
         super();
         int height = heightGrid.length;
         int width = heightGrid[0].length;
-        destination = new Hexagon[height][width];
+        hexagons = new Hexagon[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                destination[i][j]=new Hexagon(i,j, heightGrid[i][j]);
-                getChildren().add(destination[i][j]);
+                hexagons[i][j]=new Hexagon(i,j, heightGrid[i][j]);
+                getChildren().add(hexagons[i][j]);
             }
         }
         this.setTranslateZ(((float)height/2)*13);
@@ -66,13 +64,13 @@ public class GameGrid extends Group {
     }
 
     public Hexagon[][] getHexagons() {
-        return destination;
+        return hexagons;
     }
 
     public void addEntity(Unit u, int x, int z) {
-        u.setTranslateX(destination[x][z].getTranslateX());
-        u.setTranslateZ(destination[x][z].getTranslateZ());
-        u.setTranslateY(destination[x][z].getTranslateY()-6.5);
+        u.setTranslateX(hexagons[x][z].getTranslateX());
+        u.setTranslateZ(hexagons[x][z].getTranslateZ());
+        u.setTranslateY(hexagons[x][z].getTranslateY()-6.5);
         getChildren().add(u);
     }
 
@@ -87,31 +85,31 @@ public class GameGrid extends Group {
     // copie de la fonction getAdjCell de model.Cell.java
     public Hexagon getAdjHexagon(int h, int w, int direction) {
         boolean odd = h%2==0;
-        int width = destination.length;
-        int height = destination[0].length;
+        int width = hexagons.length;
+        int height = hexagons[0].length;
         switch (direction) {
             case 0:
                 if (h<=0 || !odd && w>=width-1) return null;
-                if (odd) return destination[h-1][w];
-                else return destination[h-1][w+1];
+                if (odd) return hexagons[h-1][w];
+                else return hexagons[h-1][w+1];
             case 1:
                 if (w>=width-1) return null;
-                return destination[h][w+1];
+                return hexagons[h][w+1];
             case 2:
                 if (h>=height-1 || !odd && w>=width-1) return null;
-                if (odd) return destination[h+1][w];
-                else return destination[h+1][w+1];
+                if (odd) return hexagons[h+1][w];
+                else return hexagons[h+1][w+1];
             case 3:
                 if (h>=height-1 || odd && w<=0) return null;
-                if (odd) return destination[h+1][w-1];
-                else return destination[h+1][w];
+                if (odd) return hexagons[h+1][w-1];
+                else return hexagons[h+1][w];
             case 4:
                 if (w<=0) return null;
-                return destination[h][w-1];
+                return hexagons[h][w-1];
             case 5:
                 if (h<=0 || odd && w<=0) return null;
-                if (odd) return destination[h-1][w-1];
-                else return destination[h-1][w];
+                if (odd) return hexagons[h-1][w-1];
+                else return hexagons[h-1][w];
 
             default:
                 break;

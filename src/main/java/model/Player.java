@@ -9,9 +9,8 @@ import view.MainView;
  * est responsable de transmettre l'état du jeu à la View
  * */
 public class Player {
-    MainView view;
-    Game game;
-    boolean endTurn = false;
+    private MainView view;
+    private Game game;
 
     public Player() {
         view=null;
@@ -38,6 +37,10 @@ public class Player {
 
     public void start() {
         game.start();
+    }
+
+    public void endTurn() {
+        game.nextRound(this);
     }
 
     // ---------------------------------
@@ -71,31 +74,7 @@ public class Player {
         view.focusNextEntity(i);
     }
 
-    public void round(Entity e){
 
-        //todo : event pour le clique sur l'entité e ->
-
-        //todo : event pour le clique d'une entité autre que e ->
-        if (e.isAlly(/* entité cliquée */ e)) {
-            //todo : cliquer sur une entité allié montre certaines choses
-        } else {
-            //todo : attaquer etc
-        }
-
-        //le joueur appuie sur le button de fin de tour
-         //todo : ajouter la possibilité au joueur de finir le tour en appuyant sur un bouton qui change juste
-        //l'attribut endTurn
-
-    }
-
-    public boolean endTurn(){
-        game.nextRound();
-        return endTurn = true;
-    }
-
-    boolean startTurn(){
-        return endTurn = false;
-    }
 
 
 }
