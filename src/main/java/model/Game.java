@@ -50,7 +50,7 @@ public class Game {
         currentEntity=playableEntities.get(entInd);
         currentPlayer=currentEntity.getPlayer();
         for (Player p:players) {
-            p.focusFirstEntity(entInd);
+            p.focusFirstEntity(entInd, p==currentPlayer);
         }
     }
 
@@ -60,7 +60,7 @@ public class Game {
         currentEntity=playableEntities.get(entInd);
         currentPlayer=currentEntity.getPlayer();
         for (Player p:players) {
-            p.focusNextEntity(entInd);
+            p.focusNextEntity(entInd, p==currentPlayer);
         }
     }
 

@@ -94,9 +94,6 @@ public class MainView extends Application {
         GameCamera camera = new GameCamera();
         scene3D.setCamera(camera);
         camera.initialiseControls(scene3D);
-
-        ctrl.setGameGridControls(gridView);
-
         ui = new UserInterface(width, height, ctrl);
 
         mainGroup.getChildren().add(scene3D);
@@ -118,6 +115,10 @@ public class MainView extends Application {
         currentEntityView.highlight(false);
         currentEntityView = entityViews.get(i);
         currentEntityView.highlight(true);
+    }
+
+    public void allowGridViewControls(boolean bool) {
+        gridView.allowControls(bool);
     }
 
     public static void main(String[] args) throws Exception {

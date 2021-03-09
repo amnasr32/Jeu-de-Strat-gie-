@@ -74,12 +74,14 @@ public class Player {
         view.addEntity(e.getX(), e.getY(), e.getPlayer()==this);
     }
 
-    protected void focusFirstEntity(int i) {
+    protected void focusFirstEntity(int i, boolean isCurrentPlayer) {
         view.focusFirstEntity(i);
+        view.allowGridViewControls(isCurrentPlayer);
     }
 
-    protected void focusNextEntity(int i) {
+    protected void focusNextEntity(int i, boolean isCurrentPlayer) {
         view.focusNextEntity(i);
+        view.allowGridViewControls(isCurrentPlayer);
     }
 
     protected void moveEntityInView(byte direction) {
