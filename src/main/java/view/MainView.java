@@ -1,19 +1,10 @@
 package view;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
-import model.Player;
-import model.entity.Entity;
-import view.*;
-
 import javafx.application.Application;
 import javafx.scene.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import javax.swing.*;
+import java.util.LinkedList;
 
 public class MainView extends Application {
 
@@ -24,6 +15,10 @@ public class MainView extends Application {
 
     private int height = 720;
     private int width = 1080;
+
+    LinkedList<Unit> units;
+    private Unit currentUnit;
+    private int unitInd;
 
     GameGrid gameGrid=null;
 
@@ -46,6 +41,7 @@ public class MainView extends Application {
 
     public void makeGameScene(byte[][] heightGrid) {
 
+        units =new LinkedList<>();
         gameGrid = new GameGrid(heightGrid);
         scene3D=new SubScene(gameGrid, width, height, true, SceneAntialiasing.BALANCED);
         GameCamera camera = new GameCamera();
@@ -58,8 +54,21 @@ public class MainView extends Application {
         mainGroup.getChildren().add(new UserInterface(width, height, ctrl));
     }
 
-    public void addEntity(Entity e) {
-        gameGrid.addEntity(e.getX(), e.getY());
+    public void addEntity(int x, int y, boolean isAlly) {
+        Unit u = new Unit(x,y,isAlly);
+        units.add(u);
+        gameGrid.addEntity(u,x,y);
+    }
+
+    public void focusFirstEntity(int i) {
+        currentUnit=units.get(i);
+        currentUnit.highlight(true);
+    }
+
+    public void focusNextEntity(int i) {
+        currentUnit.highlight(false);
+        currentUnit=units.get(i);
+        currentUnit.highlight(true);
     }
 
     public static void main(String[] args) throws Exception {
