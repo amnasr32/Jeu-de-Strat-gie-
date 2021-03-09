@@ -78,6 +78,7 @@ public class Grid {
     // qu'il faut prendre pour avancer dans le chemin
     // renvoie null si le chemin n'existe pas, ou s'il demande plus de maxlenght mouvements
     public byte[] getPath(int x1, int y1, int x2, int y2, int maxLength) {
+        if (x1<0 || x2<0) return null;
         if (maxLength<=0) return null;
         byte[] b = new byte[1];
         for (int i = 0; i < 6; i++) {
@@ -92,14 +93,15 @@ public class Grid {
     }
 
     //bouge l'entité d'une case, et update ses coordoonées internes
-    //on suppose que le mouvement est possible
     public void move(Entity e, int direction) {
         int x=e.getX();
         int y=e.getY();
+        if (!isMovePossible(x,y,direction)) return;
         getAdjCell(x,y,direction).setEntity(e);
         getCell(x,y).setEntity(null);
         e.updateCoords(direction);
         e.decreaseMp();
+
     }
 
 }

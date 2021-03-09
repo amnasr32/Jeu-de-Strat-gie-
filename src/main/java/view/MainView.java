@@ -16,11 +16,17 @@ public class MainView extends Application {
     private int height = 720;
     private int width = 1080;
 
-    LinkedList<Unit> units;
-    private Unit currentUnit;
+    LinkedList<EntityView> entityViews;
+    private EntityView currentEntityView;
     private int unitInd;
 
-    GameGrid gameGrid=null;
+    GridView gridView =null;
+    UserInterface ui=null;
+
+    int pointedX=-1;
+    int pointedY=-1;
+
+    byte[] path=null;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -39,36 +45,80 @@ public class MainView extends Application {
         ctrl.startGame();
     }
 
+    public void setPointedXY(int x, int y) {
+        pointedX = x;
+        pointedY = y;
+    }
+
+    public void makePath(int x, int y) {
+        ctrl.makePath(x,y);
+    }
+
+    public void drawPath(byte[] newPath) {
+        cleanPath();
+        path=newPath;
+        Hexagon h= gridView.getHexagon(currentEntityView.getX(), currentEntityView.getY());
+        if (path!=null) {
+            for (byte dir:path) {
+                h= gridView.getAdjHexagon(h,dir);
+                if(h!=null) h.makeGreen(true);
+            }
+        }
+    }
+
+    public void cleanPath() {
+        Hexagon h= gridView.getHexagon(currentEntityView.getX(), currentEntityView.getY());
+        if (path!=null) {
+            for (byte dir:path) {
+                h= gridView.getAdjHexagon(h,dir);
+                if(h!=null) h.makeGreen(false);
+            }
+        }
+    }
+
+    public void moveModelEntity() {
+        cleanPath();
+        ctrl.move(path);
+        path=null;
+    }
+
+    public void moveViewEntity(byte direction) {
+        gridView.moveEntity(currentEntityView, direction);
+    }
+
     public void makeGameScene(byte[][] heightGrid) {
 
-        units =new LinkedList<>();
-        gameGrid = new GameGrid(heightGrid);
-        scene3D=new SubScene(gameGrid, width, height, true, SceneAntialiasing.BALANCED);
+        entityViews =new LinkedList<>();
+        gridView = new GridView(heightGrid, this);
+        scene3D=new SubScene(gridView, width, height, true, SceneAntialiasing.BALANCED);
         GameCamera camera = new GameCamera();
         scene3D.setCamera(camera);
-
-        ctrl.setCameraControls(camera, scene3D);
-        ctrl.setGameGridControls(gameGrid);
+        camera.initialiseControls(scene3D);
+        ui = new UserInterface(width, height, ctrl);
 
         mainGroup.getChildren().add(scene3D);
-        mainGroup.getChildren().add(new UserInterface(width, height, ctrl));
+        mainGroup.getChildren().add(ui);
     }
 
     public void addEntity(int x, int y, boolean isAlly) {
-        Unit u = new Unit(x,y,isAlly);
-        units.add(u);
-        gameGrid.addEntity(u,x,y);
+        EntityView u = new EntityView(x,y,isAlly);
+        entityViews.add(u);
+        gridView.addEntity(u,x,y);
     }
 
     public void focusFirstEntity(int i) {
-        currentUnit=units.get(i);
-        currentUnit.highlight(true);
+        currentEntityView = entityViews.get(i);
+        currentEntityView.highlight(true);
     }
 
     public void focusNextEntity(int i) {
-        currentUnit.highlight(false);
-        currentUnit=units.get(i);
-        currentUnit.highlight(true);
+        currentEntityView.highlight(false);
+        currentEntityView = entityViews.get(i);
+        currentEntityView.highlight(true);
+    }
+
+    public void allowGridViewControls(boolean bool) {
+        gridView.allowControls(bool);
     }
 
     public static void main(String[] args) throws Exception {

@@ -7,18 +7,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
 
-public class GameGrid extends Group {
+public class GridView extends Group {
 
-    Hexagon[][] hexagons;
+    private final Hexagon[][] hexagons;
+    private final MainView view;
 
-    public GameGrid(byte[][] heightGrid) {
+    public GridView(byte[][] heightGrid, MainView view) {
         super();
+        this.view=view;
         int height = heightGrid.length;
         int width = heightGrid[0].length;
         hexagons = new Hexagon[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                hexagons[i][j]=new Hexagon(i,j, heightGrid[i][j]);
+                hexagons[i][j]=new Hexagon(i,j, heightGrid[i][j], view);
                 getChildren().add(hexagons[i][j]);
             }
         }
@@ -67,19 +69,24 @@ public class GameGrid extends Group {
         return hexagons;
     }
 
-    public void addEntity(Unit u, int x, int z) {
+    public void addEntity(EntityView u, int x, int z) {
         u.setTranslateX(hexagons[x][z].getTranslateX());
         u.setTranslateZ(hexagons[x][z].getTranslateZ());
         u.setTranslateY(hexagons[x][z].getTranslateY()-6.5);
         getChildren().add(u);
     }
 
-    public void moveUnit(Unit u, byte direction) {
+    public void moveEntity(EntityView u, byte direction) {
         Hexagon destination = getAdjHexagon(u.getX(),u.getY(),direction);
+        if (destination==null) return;
         u.updateCoords(direction);
         u.setTranslateX(destination.getTranslateX());
         u.setTranslateZ(destination.getTranslateZ());
-        u.setTranslateY(destination.getTranslateY()-5);
+        u.setTranslateY(destination.getTranslateY()-6.5-destination.height*2);
+    }
+
+    public Hexagon getHexagon(int x, int y) {
+        return hexagons[x][y];
     }
 
     // copie de la fonction getAdjCell de model.Cell.java
@@ -117,5 +124,18 @@ public class GameGrid extends Group {
         return null;
     }
 
+    public Hexagon getAdjHexagon(Hexagon h, int direction) {
+        if (h==null) return null;
+        return getAdjHexagon(h.getX(), h.getY(), direction);
+    }
+
+    public void allowControls(boolean bool) {
+        for (int i = 0; i < hexagons.length; i++) {
+            for (int j = 0; j < hexagons[0].length; j++) {
+                hexagons[i][j].allowHighlight(bool);
+                hexagons[i][j].allowMovement(bool);
+            }
+        }
+    }
 
 }

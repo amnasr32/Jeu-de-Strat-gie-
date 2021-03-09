@@ -1,6 +1,8 @@
 package view;
 
 import javafx.scene.PerspectiveCamera;
+import javafx.scene.SubScene;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
@@ -29,6 +31,8 @@ public class GameCamera extends PerspectiveCamera {
     private double posXMax=300;
     private double posZMin=-300;
     private double posZMax=300;
+
+    private double anchorX=0, anchorY=0;
 
     public GameCamera() {
         super(true);
@@ -137,6 +141,40 @@ public class GameCamera extends PerspectiveCamera {
         posXMax=xMax;
         posZMin=zMin;
         posZMax=zMax;
+    }
+
+    // initialise les contôles de la caméra
+    public void initialiseControls(SubScene scene) {
+
+        // permet de zoomer avec la roue de la souris
+        scene.addEventHandler(ScrollEvent.SCROLL, event -> {
+            double delta = event.getDeltaY()/2;
+            this.zoom(delta);
+        });
+
+        scene.setOnMousePressed(event -> {
+            anchorX=event.getSceneX();
+            anchorY=event.getSceneY();
+        });
+
+        // permet de déplacer / trouner la caméra avec le click droit ou le click molette
+        scene.setOnMouseDragged(event -> {
+
+            double x=event.getSceneY()-anchorY;
+            double y=anchorX-event.getSceneX();
+
+            anchorX=event.getSceneX();
+            anchorY=event.getSceneY();
+
+            if (event.isSecondaryButtonDown()) {
+                this.translate(y/4,x/4);
+            }
+            else if (event.isMiddleButtonDown()) {
+                this.rotateY(-y/4);
+                this.rotateX(-x/4);
+            }
+        });
+
     }
 
 }

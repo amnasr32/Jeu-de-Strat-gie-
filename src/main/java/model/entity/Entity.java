@@ -26,6 +26,10 @@ public abstract class Entity {
         return hp;
     }
 
+    public int getMp() {
+        return mp;
+    }
+
     public Player getPlayer() {
         return player;
     }

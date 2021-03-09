@@ -1,6 +1,5 @@
 package model;
 import model.entity.Entity;
-import view.GameGrid;
 import view.MainView;
 
 /**
@@ -43,6 +42,15 @@ public class Player {
         game.nextRound(this);
     }
 
+    public void makePath(int x, int y) {
+        byte[] path = game.makePath(x,y);
+        view.drawPath(path);
+    }
+
+    public void move(byte[] path) {
+        game.move(this, path);
+    }
+
     // ---------------------------------
     //  fonctions qui modifient la vue :
     // ---------------------------------
@@ -66,12 +74,18 @@ public class Player {
         view.addEntity(e.getX(), e.getY(), e.getPlayer()==this);
     }
 
-    protected void focusFirstEntity(int i) {
+    protected void focusFirstEntity(int i, boolean isCurrentPlayer) {
         view.focusFirstEntity(i);
+        view.allowGridViewControls(isCurrentPlayer);
     }
 
-    protected void focusNextEntity(int i) {
+    protected void focusNextEntity(int i, boolean isCurrentPlayer) {
         view.focusNextEntity(i);
+        view.allowGridViewControls(isCurrentPlayer);
+    }
+
+    protected void moveEntityInView(byte direction) {
+        view.moveViewEntity(direction);
     }
 
 

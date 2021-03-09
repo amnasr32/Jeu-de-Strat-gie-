@@ -3,7 +3,8 @@ package model;
 import model.entity.Entity;
 import view.MainView;
 
-// on verra plus tard ce que fait cette classe
+// pour le moment cette classe ne sert que à override les fonctions
+// qui causeraient un NullPointerException
 public class PlayerBot extends Player {
     public PlayerBot() {
         super(null);
@@ -12,7 +13,9 @@ public class PlayerBot extends Player {
     @Override
     public void addEntityToView(Entity e) {}
     @Override
-    protected void focusFirstEntity(int i) {}
+    protected void focusFirstEntity(int i, boolean isCurrentPlayer) {}
     @Override
-    protected void focusNextEntity(int i) {}
+    protected void focusNextEntity(int i, boolean isCurrentPlayer) {}
+    @Override
+    protected void moveEntityInView(byte direction) {}
 }
