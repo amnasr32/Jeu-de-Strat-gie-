@@ -93,8 +93,8 @@ public class MainView extends Application {
         scene3D=new SubScene(gridView, width, height, true, SceneAntialiasing.BALANCED);
         GameCamera camera = new GameCamera();
         scene3D.setCamera(camera);
+        camera.initialiseControls(scene3D);
 
-        ctrl.setCameraControls(camera, scene3D);
         ctrl.setGameGridControls(gridView);
 
         ui = new UserInterface(width, height, ctrl);
