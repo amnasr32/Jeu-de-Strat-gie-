@@ -93,14 +93,15 @@ public class Grid {
     }
 
     //bouge l'entité d'une case, et update ses coordoonées internes
-    //on suppose que le mouvement est possible
     public void move(Entity e, int direction) {
         int x=e.getX();
         int y=e.getY();
+        if (!isMovePossible(x,y,direction)) return;
         getAdjCell(x,y,direction).setEntity(e);
         getCell(x,y).setEntity(null);
         e.updateCoords(direction);
         e.decreaseMp();
+
     }
 
 }
