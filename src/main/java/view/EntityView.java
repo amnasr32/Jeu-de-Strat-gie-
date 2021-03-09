@@ -1,6 +1,7 @@
 package view;
 
 import javafx.scene.Group;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.CullFace;
@@ -8,14 +9,14 @@ import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.Sphere;
 
 // Affichage des unités
-public class Unit extends Group {
+public class EntityView extends Group {
 
     private Sphere sphere;
     private Sphere outerSphere;
     private Cylinder cylinder;
     private int x, y;
 
-    Unit(int x, int y, boolean isAlly) {
+    EntityView(int x, int y, boolean isAlly) {
         super();
         initSphere();
         initCylinder(isAlly);
@@ -93,8 +94,19 @@ public class Unit extends Group {
         PhongMaterial m = new PhongMaterial();
         if (isAlly) {
             m.setDiffuseColor(Color.LIGHTGREEN);
+            try {
+                m.setSelfIlluminationMap(new Image("greenPixel.jpg"));
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         } else {
             m.setDiffuseColor(Color.RED);
+            try {
+                m.setSelfIlluminationMap(new Image("redPixel.jpg"));
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+
         }
         outerSphere.setMaterial(m);
         outerSphere.setCullFace(CullFace.FRONT);

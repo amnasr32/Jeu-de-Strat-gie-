@@ -16,11 +16,17 @@ public class MainView extends Application {
     private int height = 720;
     private int width = 1080;
 
-    LinkedList<Unit> units;
-    private Unit currentUnit;
+    LinkedList<EntityView> entityViews;
+    private EntityView currentEntityView;
     private int unitInd;
 
     GameGrid gameGrid=null;
+    UserInterface ui=null;
+
+    int pointedX=-1;
+    int pointedY=-1;
+
+    byte[] path=null;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -39,10 +45,41 @@ public class MainView extends Application {
         ctrl.startGame();
     }
 
+    public void setPointedXY(int x, int y) {
+        pointedX = x;
+        pointedY = y;
+    }
+
+    public void makePath() {
+        ctrl.makePath(pointedX,pointedY);
+    }
+
+    public void drawPath(byte[] newPath) {
+        cleanPath();
+        path=newPath;
+        Hexagon h=gameGrid.getHexagon(currentEntityView.getX(), currentEntityView.getY());
+        if (path!=null) {
+            for (byte dir:path) {
+                h=gameGrid.getAdjHexagon(h,dir);
+                h.makeGreen(true);
+            }
+        }
+    }
+
+    public void cleanPath() {
+        Hexagon h=gameGrid.getHexagon(currentEntityView.getX(), currentEntityView.getY());
+        if (path!=null) {
+            for (byte dir:path) {
+                h=gameGrid.getAdjHexagon(h,dir);
+                h.makeGreen(false);
+            }
+        }
+    }
+
     public void makeGameScene(byte[][] heightGrid) {
 
-        units =new LinkedList<>();
-        gameGrid = new GameGrid(heightGrid);
+        entityViews =new LinkedList<>();
+        gameGrid = new GameGrid(heightGrid, this);
         scene3D=new SubScene(gameGrid, width, height, true, SceneAntialiasing.BALANCED);
         GameCamera camera = new GameCamera();
         scene3D.setCamera(camera);
@@ -50,25 +87,27 @@ public class MainView extends Application {
         ctrl.setCameraControls(camera, scene3D);
         ctrl.setGameGridControls(gameGrid);
 
+        ui = new UserInterface(width, height, ctrl);
+
         mainGroup.getChildren().add(scene3D);
-        mainGroup.getChildren().add(new UserInterface(width, height, ctrl));
+        mainGroup.getChildren().add(ui);
     }
 
     public void addEntity(int x, int y, boolean isAlly) {
-        Unit u = new Unit(x,y,isAlly);
-        units.add(u);
+        EntityView u = new EntityView(x,y,isAlly);
+        entityViews.add(u);
         gameGrid.addEntity(u,x,y);
     }
 
     public void focusFirstEntity(int i) {
-        currentUnit=units.get(i);
-        currentUnit.highlight(true);
+        currentEntityView = entityViews.get(i);
+        currentEntityView.highlight(true);
     }
 
     public void focusNextEntity(int i) {
-        currentUnit.highlight(false);
-        currentUnit=units.get(i);
-        currentUnit.highlight(true);
+        currentEntityView.highlight(false);
+        currentEntityView = entityViews.get(i);
+        currentEntityView.highlight(true);
     }
 
     public static void main(String[] args) throws Exception {
