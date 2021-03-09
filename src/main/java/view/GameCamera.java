@@ -32,8 +32,8 @@ public class GameCamera extends PerspectiveCamera {
 
     public GameCamera() {
         super(true);
-        setFarClip(1000);
-        setNearClip(0);
+        setFarClip(10000);
+        setNearClip(0.05);
         setTranslateX(0);
         setTranslateY(0);
         setTranslateZ(0);
@@ -95,7 +95,13 @@ public class GameCamera extends PerspectiveCamera {
         latitude = (latitude+angle)%360;
     }
 
+    /*
+    * TODO : faire en sorte que la caméra s'arrête bien à la limite définie
+    *  la méthode éssayée pour empêcher la caméra d'aller trop loin de fonctionne pas
+    * */
     public void translate(double x, double z) {
+        /* ne fonctionne pas
+
         if (x+posX>posXMax) {
             x=posXMax-posX;
         } else if (x+posX<posXMin) {
@@ -109,6 +115,7 @@ public class GameCamera extends PerspectiveCamera {
 
         posX+=x;
         posZ+=z;
+        */
 
         double x2 = -this.getTranslateX();
         double y2 = -this.getTranslateY();

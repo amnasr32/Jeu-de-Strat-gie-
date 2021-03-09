@@ -1,81 +1,81 @@
 package view;
 
+import javafx.scene.AmbientLight;
 import javafx.scene.Group;
+import javafx.scene.PointLight;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
 
 import java.util.LinkedList;
 
 public class GameGrid extends Group {
 
-    MeshView[][] hexagons;
+    Hexagon[][] hexagons;
     LinkedList<Sphere> entities;
 
     public GameGrid(byte[][] heightGrid) {
         super();
         int height = heightGrid.length;
         int width = heightGrid[0].length;
-        hexagons = new MeshView[height][width];
+        hexagons = new Hexagon[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                hexagons[i][j]=makeHexagon(i,j, heightGrid[i][j]);
+                hexagons[i][j]=new Hexagon(i,j, heightGrid[i][j]);
                 getChildren().add(hexagons[i][j]);
             }
         }
         this.setTranslateZ(((float)height/2)*13);
         this.setTranslateX(((float)width/2)*-15);
         entities=new LinkedList<>();
+
+        initLight();
+        initSky();
+        initGround();
     }
 
-    public GameGrid(int height, int width) {
-        super();
-        hexagons = new MeshView[height][width];
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                hexagons[i][j]=makeHexagon(i,j, 0);
-                getChildren().add(hexagons[i][j]);
-            }
-        }
-        this.setTranslateZ(((float)height/2)*13);
-        this.setTranslateX(((float)width/2)*-15);
+    // créé les lumières de la scène
+    private void initLight() {
+        AmbientLight ambientLight = new AmbientLight(Color.rgb(50,30,20));
+        PointLight pointLight = new PointLight(Color.rgb(255,240,250));
+        pointLight.setTranslateY(-1400);
+        pointLight.setTranslateX(-300);
+        getChildren().add(ambientLight);
+        getChildren().add(pointLight);
     }
 
-    private MeshView makeHexagon(int i, int j, int h) {
-        TriangleMesh p = new TriangleMesh();
-        p.getPoints().addAll(0,0,0,
-                7,0,4,
-                14,0,0,
-                14,0,-8,
-                7,0,-12,
-                0,0,-8
-        );
-        // je sais pas à quoi ça sert, ni si c'est correct
-        p.getTexCoords().addAll(
-                0,0.5f,
-                0.33f,1,
-                0.66f,1,
-                1,0.5f,
-                0.66f,0,
-                0.33f,0
-        );
-        p.getFaces().addAll(
-            0,0,2,2,1,1,
-                0,0,5,5,2,2,
-                2,2,5,5,3,3,
-                3,3,5,5,4,4
-        );
-        MeshView m=new MeshView(p);
-        float f = (i%2==0) ? 0 : 7.5f;
-        m.setTranslateZ(i*-13);
-        m.setTranslateX(f+j*15);
-        m.setTranslateY(h*-3);
-        return m;
+    // créé une sphère qui sert de ciel
+    private void initSky() {
+        Sphere sky = new Sphere(3000);
+        PhongMaterial material = new PhongMaterial();
+        material.setSpecularColor(Color.SKYBLUE);
+        material.setDiffuseColor(Color.WHITE);
+        material.setSpecularPower(5);
+        sky.setMaterial(material);
+        sky.setCullFace(CullFace.FRONT);
+        getChildren().add(sky);
+    }
+
+    // créé un cube qui sert de sol
+    private void initGround() {
+        Box ground = new Box(30000, 2, 30000);
+        PhongMaterial material = new PhongMaterial();
+        material.setSpecularColor(Color.BLACK);
+        material.setDiffuseColor(Color.SANDYBROWN);
+        ground.setMaterial(material);
+        ground.setTranslateY(8);
+        getChildren().add(ground);
+    }
+
+    public Hexagon[][] getHexagons() {
+        return hexagons;
     }
 
     public void addEntity(int x, int z) {
         Sphere s = new Sphere(5);
         float f = (x%2==0) ? 0 : 7.5f;
-        s.setTranslateZ(hexagons[x][z].getTranslateZ()-3.6f);
-        s.setTranslateX(hexagons[x][z].getTranslateX()+7.2f);
+        s.setTranslateZ(hexagons[x][z].getTranslateZ());
+        s.setTranslateX(hexagons[x][z].getTranslateX());
         s.setTranslateY(hexagons[x][z].getTranslateY()-5);
         entities.add(s);
         getChildren().add(s);

@@ -83,7 +83,7 @@ public class Player {
 
     }
 
-    boolean endTurn(){
+    public boolean endTurn(){
         return endTurn = true;
     }
 

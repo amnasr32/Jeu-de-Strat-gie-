@@ -1,19 +1,46 @@
 package view;
 
 import javafx.scene.Scene;
+import javafx.scene.SubScene;
+import javafx.scene.control.Label;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.shape.MeshView;
+import model.Player;
 
 public class Controller {
 
-    Scene scene;
+    Player player;
+    MainView view;
 
     private double anchorX=0, anchorY=0;
 
-    public Controller(Scene scene) {
-        this.scene=scene;
+    public Controller(MainView view) {
+        this.view = view;
     }
 
-    public void setCameraControls(GameCamera camera) {
+    public void initializePlayer() {
+        player=new Player(view);
+    }
+
+    public void loadLevel() {
+        player.loadLevel();
+    }
+
+    public void mkGameGrid() {
+        byte[][] heightGrid = player.getHeightGrid();
+        view.makeGameScene(heightGrid);
+    }
+
+    public void startGame() {
+        player.start();
+    }
+
+    public void endTurn() {
+        player.endTurn();
+    }
+
+    // initialise les contôles de la caméra
+    public void setCameraControls(GameCamera camera, SubScene scene) {
 
         // permet de zoomer avec la roue de la souris
         scene.addEventHandler(ScrollEvent.SCROLL, event -> {
@@ -44,5 +71,14 @@ public class Controller {
             }
         });
 
+    }
+
+    public void setGameGridControls(GameGrid grid) {
+        Hexagon[][] hexagons = grid.getHexagons();
+        for (int i = 0; i < hexagons.length; i++) {
+            for (int j = 0; j < hexagons[0].length; j++) {
+                hexagons[i][j].allowHighlight(true);
+            }
+        }
     }
 }
