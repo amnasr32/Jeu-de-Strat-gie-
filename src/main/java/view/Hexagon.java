@@ -12,7 +12,7 @@ public class Hexagon extends Group {
 
     Cylinder cylinder;
     Cylinder outerCylinder;
-    int x, y;
+    int x, y, height;
 
     MainView view;
 
@@ -21,6 +21,7 @@ public class Hexagon extends Group {
         this.view=view;
         x=i;
         y=j;
+        height=h;
         cylinder = new Cylinder(8, 1+h*3, 6);
         initOuterCylinder(h);
         getChildren().add(cylinder);
@@ -54,6 +55,10 @@ public class Hexagon extends Group {
         return y;
     }
 
+    public int getHeight() {
+        return height;
+    }
+
     public void makeGreen(boolean bool) {
         PhongMaterial material = new PhongMaterial();
         if (bool) {
@@ -74,7 +79,7 @@ public class Hexagon extends Group {
             setOnMouseEntered(event -> {
                 setHighlight(true);
                 view.setPointedXY(x,y);
-                view.makePath();
+                view.makePath(x,y);
             });
             setOnMouseExited(event -> {
                 setHighlight(false);
@@ -84,6 +89,17 @@ public class Hexagon extends Group {
             setOnMouseEntered( event -> {});
             setOnMouseExited( event -> {});
             makeGreen(false);
+            setHighlight(false);
+        }
+    }
+
+    public void allowMovement(boolean bool) {
+        if (bool) {
+            setOnMouseClicked( event -> {
+                view.moveModelEntity();
+            });
+        } else {
+            setOnMouseClicked( event -> {});
         }
     }
 

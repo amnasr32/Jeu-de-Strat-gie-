@@ -7,12 +7,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
 
-public class GameGrid extends Group {
+public class GridView extends Group {
 
     private final Hexagon[][] hexagons;
     private final MainView view;
 
-    public GameGrid(byte[][] heightGrid, MainView view) {
+    public GridView(byte[][] heightGrid, MainView view) {
         super();
         this.view=view;
         int height = heightGrid.length;
@@ -76,12 +76,13 @@ public class GameGrid extends Group {
         getChildren().add(u);
     }
 
-    public void moveUnit(EntityView u, byte direction) {
+    public void moveEntity(EntityView u, byte direction) {
         Hexagon destination = getAdjHexagon(u.getX(),u.getY(),direction);
+        if (destination==null) return;
         u.updateCoords(direction);
         u.setTranslateX(destination.getTranslateX());
         u.setTranslateZ(destination.getTranslateZ());
-        u.setTranslateY(destination.getTranslateY()-5);
+        u.setTranslateY(destination.getTranslateY()-6.5-destination.height*2);
     }
 
     public Hexagon getHexagon(int x, int y) {
@@ -124,6 +125,7 @@ public class GameGrid extends Group {
     }
 
     public Hexagon getAdjHexagon(Hexagon h, int direction) {
+        if (h==null) return null;
         return getAdjHexagon(h.getX(), h.getY(), direction);
     }
 

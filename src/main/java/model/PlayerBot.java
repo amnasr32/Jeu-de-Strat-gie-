@@ -15,4 +15,6 @@ public class PlayerBot extends Player {
     protected void focusFirstEntity(int i) {}
     @Override
     protected void focusNextEntity(int i) {}
+    @Override
+    protected void moveEntityInView(byte direction) {}
 }

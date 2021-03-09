@@ -70,16 +70,21 @@ public class Controller {
 
     }
 
-    public void setGameGridControls(GameGrid grid) {
+    public void setGameGridControls(GridView grid) {
         Hexagon[][] hexagons = grid.getHexagons();
         for (int i = 0; i < hexagons.length; i++) {
             for (int j = 0; j < hexagons[0].length; j++) {
                 hexagons[i][j].allowHighlight(true);
+                hexagons[i][j].allowMovement(true);
             }
         }
     }
 
     public void makePath(int x, int y) {
         player.makePath(x,y);
+    }
+
+    public void move(byte[] path) {
+        player.move(path);
     }
 }

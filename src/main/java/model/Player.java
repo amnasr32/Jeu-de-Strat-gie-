@@ -1,6 +1,5 @@
 package model;
 import model.entity.Entity;
-import view.GameGrid;
 import view.MainView;
 
 /**
@@ -48,6 +47,10 @@ public class Player {
         view.drawPath(path);
     }
 
+    public void move(byte[] path) {
+        game.move(this, path);
+    }
+
     // ---------------------------------
     //  fonctions qui modifient la vue :
     // ---------------------------------
@@ -77,6 +80,10 @@ public class Player {
 
     protected void focusNextEntity(int i) {
         view.focusNextEntity(i);
+    }
+
+    protected void moveEntityInView(byte direction) {
+        view.moveViewEntity(direction);
     }
 
 
