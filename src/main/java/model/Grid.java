@@ -70,6 +70,7 @@ public class Grid {
 
     private boolean isMovePossible(int x, int y, int orientation) {
         Cell c = getAdjCell(x, y, orientation);
+        if (c==null) return false;
         int delta = cells[x][y].getHeight() - c.getHeight();
         return (c.getEntity()==null && delta <= 1 && delta >=-1 );
     }
