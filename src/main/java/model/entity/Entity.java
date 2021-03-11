@@ -1,5 +1,6 @@
 package model.entity;
 
+import model.Cell;
 import model.action.Action;
 import model.Player;
 
@@ -30,6 +31,10 @@ public abstract class Entity {
         return mp;
     }
 
+    public Action[] getActions() {
+        return actions;
+    }
+
     public Player getPlayer() {
         return player;
     }
@@ -37,6 +42,7 @@ public abstract class Entity {
     public void damage(int dmg) {
         if (dmg>0) {
             hp-=dmg;
+            if (hp<0) hp=0;
         }
     }
 
@@ -87,5 +93,10 @@ public abstract class Entity {
 
     public void resetMp() {
         mp=maxMp;
+    }
+
+    // renvoie false si l'action échoue
+    public boolean doAction(int i, Cell c) {
+        return actions[i].doAction(c);
     }
 }

@@ -97,7 +97,7 @@ public class Grid {
     public void move(Entity e, int direction) {
         int x=e.getX();
         int y=e.getY();
-        if (!isMovePossible(x,y,direction)) return;
+        if (!isMovePossible(x,y,direction) || e.getMp()<=0) return;
         getAdjCell(x,y,direction).setEntity(e);
         getCell(x,y).setEntity(null);
         e.updateCoords(direction);

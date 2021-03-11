@@ -14,8 +14,8 @@ public class Soldier extends Entity {
         super.mp=4;
         super.maxMp=4;
         super.actions = new Action[2];
-        actions[0]=new Attack(1,1,5,0);
-        actions[1]=new Attack(2,10,7,0);
+        actions[0]=new Attack("attaque de mélée", 1,1,5,0);
+        actions[1]=new Attack("attaque à distance", 2,10,7,0);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package view;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.util.LinkedList;
@@ -25,6 +27,7 @@ public class MainView extends Application {
 
     int pointedX=-1;
     int pointedY=-1;
+    int chosenAction=-1;
 
     byte[] path=null;
 
@@ -43,6 +46,10 @@ public class MainView extends Application {
         ctrl.loadLevel();
         ctrl.mkGameGrid();
         ctrl.startGame();
+    }
+
+    public int getChosenAction() {
+        return chosenAction;
     }
 
     public void setPointedXY(int x, int y) {
@@ -84,6 +91,7 @@ public class MainView extends Application {
 
     public void moveViewEntity(byte direction) {
         gridView.moveEntity(currentEntityView, direction);
+        currentEntityView.decreaseMp();
     }
 
     public void makeGameScene(byte[][] heightGrid) {
@@ -94,14 +102,14 @@ public class MainView extends Application {
         GameCamera camera = new GameCamera();
         scene3D.setCamera(camera);
         camera.initialiseControls(scene3D);
-        ui = new UserInterface(width, height, ctrl);
+        ui = new UserInterface(width, height, ctrl, this);
 
         mainGroup.getChildren().add(scene3D);
         mainGroup.getChildren().add(ui);
     }
 
-    public void addEntity(int x, int y, boolean isAlly) {
-        EntityView u = new EntityView(x,y,isAlly);
+    public void addEntity(int x, int y, boolean isAlly, int hp, int mp, String[][]actions) {
+        EntityView u = new EntityView(this, x,y,isAlly, hp, mp, actions);
         entityViews.add(u);
         gridView.addEntity(u,x,y);
     }
@@ -117,11 +125,60 @@ public class MainView extends Application {
         currentEntityView.highlight(true);
     }
 
+    public void showActionButtons(boolean bool) {
+        if (bool) ui.updateActionButtons(currentEntityView);
+        ui.showActionButtons(bool);
+    }
+
     public void allowGridViewControls(boolean bool) {
         gridView.allowControls(bool);
+        for (EntityView e: entityViews) {
+            e.showInfoOnHover(bool);
+        }
     }
+
+    public void highlightHexagon(int x, int y, boolean b) {
+        gridView.getHexagon(x,y).setHighlight(b);
+    }
+
+    public void showEntityDetails(EntityView e) {
+        ui.updateEntityDetails(e);
+        ui.showEntityDetails(true);
+    }
+
+    public void hideEntityDetails() {
+        ui.showEntityDetails(false);
+    }
+
 
     public static void main(String[] args) throws Exception {
         launch(args);
+    }
+
+    public void setAction(int actionNb) {
+        chosenAction=actionNb;
+        allowActionOnEntities(true);
+        //TODO : afficher les cases où l'action est possible
+    }
+
+    public void resetAction() {
+        chosenAction=-1;
+        allowActionOnEntities(false);
+        ui.resetActionButtons();
+    }
+
+    public void doAction() {
+        ctrl.doAction(chosenAction, pointedX, pointedY);
+    }
+
+    public void updateHp(int i, int newHp) {
+        entityViews.get(i).setHp(newHp);
+        ui.updateEntityDetails(entityViews.get(i));
+    }
+
+    private void allowActionOnEntities(boolean bool) {
+        for (EntityView e:entityViews) {
+            e.allowActionOnClick(bool);
+        }
     }
 }

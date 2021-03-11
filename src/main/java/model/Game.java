@@ -54,6 +54,7 @@ public class Game {
         entInd=(entInd+1)%playableEntities.size();
         currentEntity=playableEntities.get(entInd);
         currentPlayer=currentEntity.getPlayer();
+        currentEntity.resetMp();
         for (Player p:players) {
             p.focusNextEntity(entInd, p==currentPlayer);
         }
@@ -112,4 +113,18 @@ public class Game {
     }
 
 
+    public void doAction(Player player, int action, int x, int y) {
+        if (player!=currentPlayer) return;
+        Cell c = grid.getCell(x,y);
+        //TODO : vérifier que la cible est à portée
+        if (currentEntity.doAction(action,c)) {
+            // pour l'instant on update les points de vie de toutes les entités, ce n'est pas idéal
+            for (Player p : players) {
+                for (int i = 0; i < playableEntities.size(); i++) {
+                    p.updateHpView(i, playableEntities.get(i).getHp());
+                }
+            }
+        }
+        player.resetAction();
+    }
 }

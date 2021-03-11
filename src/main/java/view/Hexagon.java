@@ -79,7 +79,7 @@ public class Hexagon extends Group {
             setOnMouseEntered(event -> {
                 setHighlight(true);
                 view.setPointedXY(x,y);
-                view.makePath(x,y);
+                hoverAction();
             });
             setOnMouseExited(event -> {
                 setHighlight(false);
@@ -93,14 +93,23 @@ public class Hexagon extends Group {
         }
     }
 
-    public void allowMovement(boolean bool) {
+    public void allowClickAction(boolean bool) {
         if (bool) {
             setOnMouseClicked( event -> {
-                view.moveModelEntity();
+                clickAction();
             });
         } else {
             setOnMouseClicked( event -> {});
         }
+    }
+
+    private void hoverAction() {
+        if (view.getChosenAction()==-1) view.makePath(x,y);
+    }
+
+    private void clickAction() {
+        if (view.getChosenAction()==-1) view.moveModelEntity();
+        else view.doAction();
     }
 
 }

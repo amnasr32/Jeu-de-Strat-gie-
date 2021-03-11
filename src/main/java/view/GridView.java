@@ -132,7 +132,7 @@ public class GridView extends Group {
         for (int i = 0; i < hexagons.length; i++) {
             for (int j = 0; j < hexagons[0].length; j++) {
                 hexagons[i][j].allowHighlight(bool);
-                hexagons[i][j].allowMovement(bool);
+                hexagons[i][j].allowClickAction(bool);
             }
         }
     }

@@ -40,4 +40,8 @@ public class Controller {
     public void move(byte[] path) {
         player.move(path);
     }
+
+    public void doAction(int actionNb, int x, int y) {
+        player.doAction(actionNb, x, y);
+    }
 }
