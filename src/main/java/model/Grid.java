@@ -1,8 +1,15 @@
 package model;
 import model.entity.Entity;
+import java.io.Serializable;
+public class Grid implements Serializable {
+    
 
-public class Grid {
-    private final Cell[][] cells;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9029502583635790499L;
+
+	private final Cell[][] cells;
 
     private final int height;
     private final int width;
