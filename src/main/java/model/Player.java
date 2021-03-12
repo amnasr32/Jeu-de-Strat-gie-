@@ -10,12 +10,14 @@ import view.MainView;
 public class Player {
     private MainView view;
     private Game game;
+    private Level level;
 
     public Player() {
         view=null;
         game=null;
     }
 
+    
     public Player(MainView view) {
         this.view=view;
         game=null;
@@ -31,7 +33,12 @@ public class Player {
         grid.getCell(3,4).setHeight((byte)1);
         grid.getCell(5,5).setHeight((byte)1);
         grid.getCell(5,6).setHeight((byte)2);
-        game = new Game(grid, this, new PlayerBot());
+        Level level = new Level();
+        /**ici on set la grille du niveau =>on la sérialise  **/
+        //level.SetGrid(grid);
+        //level.createLevel();
+        /**ici on affiche la grille qu'on a sérialisé => on deserialise**/
+        game = new Game(level.showLevel(), this, new PlayerBot());
     }
 
     public void start() {
