@@ -86,13 +86,14 @@ public class Game implements Serializable {
         }
     }
 
+    
     // renvoie true si le jeu est fini
     // vérifie que seule une équipe ait encore des unités en jeu
     private boolean gameIsOver() {
         boolean b=false;
         for (int i:entTeam) {
             if (b && i>0) return false;
-            if (i>0) b=true;
+            if (i>0) b=true;   
         }
         return true;
     }
@@ -109,7 +110,7 @@ public class Game implements Serializable {
         }
 
     }
-
+   
     // renvoie le chemin menant de la position de l'entité en cours et les coords x y
     // renvoie null si le chemin n'exsite pas
     protected byte[] makePath(int x, int y) {

@@ -8,6 +8,7 @@ public class Cell implements Serializable {
     /**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = -3335477979607629338L;
 	Entity entity;
     byte height;

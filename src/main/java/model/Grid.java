@@ -4,9 +4,7 @@ import java.io.Serializable;
 public class Grid implements Serializable {
     
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -9029502583635790499L;
 
 	private final Cell[][] cells;

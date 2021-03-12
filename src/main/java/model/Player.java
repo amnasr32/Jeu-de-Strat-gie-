@@ -17,6 +17,7 @@ public class Player {
         game=null;
     }
 
+    
     public Player(MainView view) {
         this.view=view;
         game=null;
@@ -33,7 +34,7 @@ public class Player {
         grid.getCell(5,5).setHeight((byte)1);
         grid.getCell(5,6).setHeight((byte)2);
         Level level = new Level();
-        /**ici on set la grille du niveau et on la sérialise**/
+        /**ici on set la grille du niveau =>on la sérialise  **/
         //level.SetGrid(grid);
         //level.createLevel();
         /**ici on affiche la grille qu'on a sérialisé => on deserialise**/

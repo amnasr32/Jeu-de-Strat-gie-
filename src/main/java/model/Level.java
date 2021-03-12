@@ -17,7 +17,7 @@ public class Level  implements Serializable {
 	private Grid grid;
 	
 	/*
-	 * Constructeur
+	 * Le Constructeur
 	 */
 	Level() {
 	  
@@ -35,7 +35,7 @@ public class Level  implements Serializable {
 	
 	
 	public void createLevel() {
-		//sérialiser la grille de départ dans un fichier level1 dans le dossier Levels
+		//pour sérialiser la grille de départ dans un fichier level1 dans le dossier Levels
         try {
 			FileOutputStream fos = new FileOutputStream("src/main/Levels/level1");
 		    ObjectOutputStream os = new ObjectOutputStream(fos);
