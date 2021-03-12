@@ -230,6 +230,13 @@ public class Grid implements Serializable {
         return result;
     }
 
+    // distance réelle entre deux cellules
+    private double distance(int x1, int y1, int x2, int y2) {
+        double[] c1=getEffectiveXY(x1,y1);
+        double[] c2=getEffectiveXY(x2,y2);
+        return Math.sqrt((c1[0]-c2[0])*(c1[0]-c2[0])+(c1[1]-c2[1])*(c1[1]-c2[1]));
+    }
+
     public boolean isInCoordList(int x, int y) {
         for (int[] coord: coordList) {
             if (x==coord[0] && y==coord[1]) return true;
