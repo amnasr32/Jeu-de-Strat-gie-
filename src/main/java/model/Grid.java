@@ -164,6 +164,7 @@ public class Grid implements Serializable {
     // qu'il faut prendre pour avancer dans le chemin
     // renvoie null si le chemin n'existe pas, ou s'il demande plus de maxlenght mouvements
     public byte[] getPath(int x1, int y1, int x2, int y2, int maxLength) {
+        System.out.println(distance(x1, y1, x2, y2));
         if (x1<0 || x2<0) return null;
         if (maxLength<=0) return null;
         byte[] b = new byte[1];
@@ -230,8 +231,25 @@ public class Grid implements Serializable {
         return result;
     }
 
+    // calcule la distance entre deux cellules
+    // je sais pas comment ça marche mais je prie petit jésus
+    // allègrement copié depuis https://www.redblobgames.com/grids/hexagons/#distances
+    private int distance(int x1, int y1, int x2, int y2) {
+        int a1 = y1 - (x1 - ((x1%2==0)?0:1))/2;
+        int c1 = x1;
+        int b1 = -a1-c1;
+
+        int a2 = y2 - (x2 - ((x2%2==0)?0:1))/2;;
+        int c2 = x2;
+        int b2 = -a2-c2;
+
+        System.out.println(" "+a2+" "+b2+" "+c2);
+
+        return (Math.abs(a1-a2)+Math.abs(b1-b2)+Math.abs(c1-c2)) / 2;
+    }
+
     // distance réelle entre deux cellules
-    private double distance(int x1, int y1, int x2, int y2) {
+    private double distanceR(int x1, int y1, int x2, int y2) {
         double[] c1=getEffectiveXY(x1,y1);
         double[] c2=getEffectiveXY(x2,y2);
         return Math.sqrt((c1[0]-c2[0])*(c1[0]-c2[0])+(c1[1]-c2[1])*(c1[1]-c2[1]));
