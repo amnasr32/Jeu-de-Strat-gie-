@@ -2,11 +2,16 @@ package model;
 import model.entity.Entity;
 import model.entity.Soldier;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Game {
+public class Game implements Serializable {
 
-    private Grid grid;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7373047453891668295L;
+	private Grid grid;
     private Player[] players;
     private LinkedList<Entity> playableEntities; // liste de toutes les entités en jeu
     private int[] entTeam; // nombre d'entités pour chaque équipe actuellement en jeu
@@ -82,13 +87,14 @@ public class Game {
         }
     }
 
+    
     // renvoie true si le jeu est fini
     // vérifie que seule une équipe ait encore des unités en jeu
     private boolean gameIsOver() {
         boolean b=false;
         for (int i:entTeam) {
             if (b && i>0) return false;
-            if (i>0) b=true;
+            if (i>0) b=true;   
         }
         return true;
     }
@@ -105,7 +111,7 @@ public class Game {
         }
 
     }
-
+   
     // renvoie le chemin menant de la position de l'entité en cours et les coords x y
     // renvoie null si le chemin n'exsite pas
     protected byte[] makePath(int x, int y) {
