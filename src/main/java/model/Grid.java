@@ -171,10 +171,10 @@ public class Grid {
     // qu'il faut prendre pour avancer dans le chemin
     // renvoie null si le chemin n'existe pas, ou s'il demande plus de maxlength mouvements
     public byte[] getPath(int x1, int y1, int x2, int y2, int maxLength) {
-        /*if (x1<0 || x2<0) return null;
+        if (x1<0 || x2<0) return null;
         if (maxLength<=0) return null;
 
-        int distance[][] = new int [this.height][this.width];
+        /*int distance[][] = new int [this.height][this.width];
         boolean visite[][] = new boolean [this.height][this.width];
 
         for(int i = 0; i<distance.length; i++){
