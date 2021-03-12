@@ -105,4 +105,22 @@ public class Grid {
 
     }
 
+    public boolean isWithinRange(int x1, int y1, int x2, int y2, int minRange, int maxRange) {
+        double coordX1=getEffectiveX(x1);
+        double coordY1=getEffectiveY(y1);
+        double coordX2=getEffectiveX(x2);
+        double coordY2=getEffectiveY(y2);
+        double distance = Math.sqrt((coordX1-coordX2)*(coordX1-coordX2)+(coordY1-coordY2)*(coordY1-coordY2));
+        return distance>=minRange && distance<=maxRange;
+    }
+
+    // renvoie les coordonnées carthésienne de la position de cells[x][y];
+    private double getEffectiveX(int x) {
+        return (x%2==0)? x:x+0.5;
+    }
+
+    private double getEffectiveY(int y) {
+        return y*0.75;
+    }
+
 }
