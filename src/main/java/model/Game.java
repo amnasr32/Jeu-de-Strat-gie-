@@ -2,6 +2,7 @@ package model;
 import model.entity.Entity;
 import model.entity.Soldier;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Game {
@@ -110,6 +111,5 @@ public class Game {
     protected byte[] makePath(int x, int y) {
         return grid.getPath(currentEntity.getX(), currentEntity.getY(), x, y, currentEntity.getMp());
     }
-
 
 }

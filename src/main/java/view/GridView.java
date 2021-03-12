@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
 
+import java.util.*;
+
 public class GridView extends Group {
 
     private final Hexagon[][] hexagons;
@@ -128,6 +130,77 @@ public class GridView extends Group {
         return getAdjHexagon(h.getX(), h.getY(), direction);
     }
 
+    /*public Map<Hexagon, List<Hexagon>> getListOfAdj(Hexagon[][] hexs, Map<Hexagon, List<Hexagon>> m){
+        Map<Hexagon, List<Hexagon>> adjHexagons=new HashMap<>();
+        for (int i = 0; i < hexs.length; i++) {
+            for (int j = 0; j < hexs[i].length; j++) {
+                List<Hexagon> listHexs = null;
+                if(i%2==0){
+                    if(i>0){
+                        if(j>0){
+                            if(hexs[i-1][j-1] == null  && (hexs[i-1][j-1].getHeight() == hexs[i][j].getHeight() || hexs[i-1][j-1].getHeight() == hexs[i][j].getHeight()-1 || hexs[i-1][j-1].getHeight() == hexs[i][j].getHeight()+1)){
+                                listHexs.add(hexs[i-1][j-1]);
+                            }
+                        }
+                        if(hexs[i-1][j] == null && (hexs[i-1][j].getHeight() == hexs[i][j].getHeight() || hexs[i][j-1].getHeight() == hexs[i][j].getHeight()-1 || hexs[i][j-1].getHeight() == hexs[i][j].getHeight()+1)){
+                            listHexs.add(hexs[i-1][j]);
+                        }
+                    }
+                    if(j>0){
+                        if(hexs[i][j-1] == null && (hexs[i][j-1].getHeight() == hexs[i][j].getHeight() || hexs[i][j-1].getHeight() == hexs[i][j].getHeight()-1 || hexs[i][j-1].getHeight() == hexs[i][j].getHeight()+1)){
+                            listHexs.add(hexs[i][j-1]);
+                        }
+                    }
+                    if(j<hexs[i].length-1){
+                        if(hexs[i][j+1] == null && (hexs[i][j+1].getHeight() == hexs[i][j].getHeight() || hexs[i][j+1].getHeight() == hexs[i][j].getHeight()-1 || hexs[i][j+1].getHeight() == hexs[i][j].getHeight()+1)){
+                            listHexs.add(hexs[i][j+1]);
+                        }
+                    }
+                    if(i<hexs.length-1){
+                        if(j>0){
+                            if(hexs[i+1][j-1] == null && (hexs[i+1][j-1].getHeight() == hexs[i][j].getHeight() || hexs[i+1][j-1].getHeight() == hexs[i][j].getHeight()-1 || hexs[i+1][j-1].getHeight() == hexs[i][j].getHeight()+1)){
+                                listHexs.add(hexs[i+1][j-1]);
+                            }
+                        }
+                        if(hexs[i+1][j] == null && (hexs[i+1][j].getHeight() == hexs[i][j].getHeight() || hexs[i+1][j].getHeight() == hexs[i][j].getHeight()-1 || hexs[i+1][j].getHeight() == hexs[i][j].getHeight()+1)){
+                            listHexs.add(hexs[i+1][j]);
+                        }
+                    }
+                }
+                else{
+                    if(hexs[i-1][j] == null && (hexs[i-1][j].getHeight() == hexs[i][j].getHeight() || hexs[i-1][j].getHeight() == hexs[i][j].getHeight()-1 || hexs[i-1][j].getHeight() == hexs[i][j].getHeight()+1)){
+                        listHexs.add(hexs[i-1][j]);
+                    }
+                    if(j<hexs[i].length-1){
+                        if(hexs[i-1][j+1] == null && (hexs[i-1][j+1].getHeight() == hexs[i][j].getHeight() || hexs[i-1][j+1].getHeight() == hexs[i][j].getHeight()-1 || hexs[i-1][j+1].getHeight() == hexs[i][j].getHeight()+1)){
+                            listHexs.add(hexs[i-1][j+1]);
+                        }
+                        if(hexs[i][j+1] == null && (hexs[i][j+1].getHeight() == hexs[i][j].getHeight() || hexs[i][j+1].getHeight() == hexs[i][j].getHeight()-1 || hexs[i][j+1].getHeight() == hexs[i][j].getHeight()+1)){
+                            listHexs.add(hexs[i][j+1]);
+                        }
+                    }
+                    if(j>0){
+                        if(hexs[i][j-1] == null && (hexs[i][j-1].getHeight() == hexs[i][j].getHeight() || hexs[i][j-1].getHeight() == hexs[i][j].getHeight()-1 || hexs[i][j-1].getHeight() == hexs[i][j].getHeight()+1)){
+                            listHexs.add(hexs[i][j-1]);
+                        }
+                    }
+                    if(i<hexs.length-1){
+                        if(hexs[i+1][j] == null && (hexs[i+1][j].getHeight() == hexs[i][j].getHeight() || hexs[i+1][j].getHeight() == hexs[i][j].getHeight()-1 || hexs[i+1][j].getHeight() == hexs[i][j].getHeight()+1)){
+                            listHexs.add(hexs[i+1][j]);
+                        }
+                        if(j<hexs[i].length-1){
+                            if(hexs[i+1][j+1] == null && (hexs[i+1][j+1].getHeight() == hexs[i][j].getHeight() || hexs[i+1][j+1].getHeight() == hexs[i][j].getHeight()-1 || hexs[i+1][j+1].getHeight() == hexs[i][j].getHeight()+1)){
+                                listHexs.add(hexs[i+1][j+1]);
+                            }
+                        }
+                    }
+                }
+                adjHexagons.put(hexs[i][j], listHexs);
+            }
+        }
+        return adjHexagons;
+    }*/
+
     public void allowControls(boolean bool) {
         for (int i = 0; i < hexagons.length; i++) {
             for (int j = 0; j < hexagons[0].length; j++) {
@@ -136,5 +209,4 @@ public class GridView extends Group {
             }
         }
     }
-
 }
