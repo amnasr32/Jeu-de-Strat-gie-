@@ -31,6 +31,10 @@ public abstract class Entity {
         return mp;
     }
 
+    public Action getAction(int i) {
+        return actions[i];
+    }
+
     public Action[] getActions() {
         return actions;
     }
@@ -99,4 +103,5 @@ public abstract class Entity {
     public boolean doAction(int i, Cell c) {
         return actions[i].doAction(c);
     }
+
 }

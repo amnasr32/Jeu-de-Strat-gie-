@@ -1,6 +1,8 @@
 package model;
 import model.entity.Entity;
 import java.io.Serializable;
+import java.util.LinkedList;
+
 public class Grid implements Serializable {
     
 
@@ -12,6 +14,10 @@ public class Grid implements Serializable {
     private final int height;
     private final int width;
 
+    private LinkedList<int[]> coordList;
+
+    final double offset=0.8660254037844386; // = (racine 3) / 2
+
     public Grid(int h, int w) {
         height=h;
         width=w;
@@ -21,6 +27,7 @@ public class Grid implements Serializable {
                 cells[i][j]=new Cell(); 
             }
         }
+        coordList = new LinkedList<>();
     }
 
     public Cell getCell(int h, int w) {
@@ -33,6 +40,15 @@ public class Grid implements Serializable {
 
     public int getWidth() {
         return width;
+    }
+
+    // vérifie que les coordonées sont dans la grille
+    private boolean isInBounds(int x, int y) {
+        return (x>=0 && y>=0 && x<height && y<width);
+    }
+
+    private boolean isInBounds(int[] coords) {
+        return (coords[0]>=0 && coords[1]>=0 && coords[0]<height && coords[1]<width);
     }
 
     /* renvoie la cellule adjascente aux coordonnées entrées, en fonction de l'entier direction, ou null si celà ferait sortir de la grille
@@ -73,7 +89,71 @@ public class Grid implements Serializable {
         return null;
     }
 
-    private boolean isMovePossible(int x, int y, int orientation) {
+    // meme chose que getAdjCell mais a la place d'envoyer une cellule elle envoie les
+    // coordonnees de la cellule adjacente
+    // 5   0
+    //4  x  1
+    // 3   2
+    public int[] getAdjCellCoordinates(int h, int w, int direction) {
+        boolean odd = h % 2 == 0;
+        int[] result = new int[2];
+        switch (direction) {
+            case 0:
+                if (odd) {
+                    result[0] = h - 1;
+                    result[1] = w;
+                    return result;
+                } else {
+                    result[0] = h - 1;
+                    result[1] = w + 1;
+                    return result;
+                }
+            case 1:
+                result[0] = h;
+                result[1] = w + 1;
+                return result;
+            case 2:
+                if (odd) {
+                    result[0] = h + 1;
+                    result[1] = w;
+                    return result;
+                } else {
+                    result[0] = h + 1;
+                    result[1] = w + 1;
+                    return result;
+                }
+            case 3:
+                if (odd) {
+                    result[0] = h + 1;
+                    result[1] = w - 1;
+                    return result;
+                } else {
+                    result[0] = h + 1;
+                    result[1] = w;
+                    return result;
+                }
+            case 4:
+                result[0] = h;
+                result[1] = w - 1;
+                return result;
+            case 5:
+                if (odd) {
+                    result[0] = h - 1;
+                    result[1] = w - 1;
+                    return result;
+                } else {
+                    result[0] = h - 1;
+                    result[1] = w;
+                    return result;
+                }
+
+            default:
+                break;
+        }
+        return null;
+    }
+
+        private boolean isMovePossible(int x, int y, int orientation) {
         Cell c = getAdjCell(x, y, orientation);
         if (c==null) return false;
         int delta = cells[x][y].getHeight() - c.getHeight();
@@ -110,22 +190,51 @@ public class Grid implements Serializable {
 
     }
 
-    public boolean isWithinRange(int x1, int y1, int x2, int y2, int minRange, int maxRange) {
-        double coordX1=getEffectiveX(x1);
-        double coordY1=getEffectiveY(y1);
-        double coordX2=getEffectiveX(x2);
-        double coordY2=getEffectiveY(y2);
-        double distance = Math.sqrt((coordX1-coordX2)*(coordX1-coordX2)+(coordY1-coordY2)*(coordY1-coordY2));
-        return distance>=minRange && distance<=maxRange;
+    public void selectCellsWithinRange(int x, int y, int minRange, int maxRange) {
+        clearCoordList();
+        for (int i = minRange; i <= maxRange; i++) {
+            addCellsAtDistance(x,y,i);
+        }
+    }
+
+    // ajoute le cercle de distance dist à coordList
+    private void addCellsAtDistance(int x, int y, int dist) {
+        int[] coord={x,y+dist};
+        if (isInBounds(coord)) coordList.add(coord);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < dist; j++) {
+                coord=getAdjCellCoordinates(coord[0],coord[1],(i+3)%6);
+                // TODO : vérifier que la cible est directement visible (pas d'obstacle)
+                if (isInBounds(coord)) {
+                    coordList.add(coord);
+                }
+            }
+        }
+    }
+
+    public LinkedList<int[]> getCoordList() {
+        return coordList;
+    }
+
+    public void clearCoordList() {
+        if (coordList==null) coordList = new LinkedList<>();
+        else coordList.clear();
     }
 
     // renvoie les coordonnées carthésienne de la position de cells[x][y];
-    private double getEffectiveX(int x) {
-        return (x%2==0)? x:x+0.5;
+    // utile pour calculer des distances
+    private double[] getEffectiveXY(int x, int y) {
+        double[] result = new double[2];
+        result[0]=x*offset;
+        result[1]=(x%2==0)? y:y+0.5;
+        return result;
     }
 
-    private double getEffectiveY(int y) {
-        return y*0.75;
+    public boolean isInCoordList(int x, int y) {
+        for (int[] coord: coordList) {
+            if (x==coord[0] && y==coord[1]) return true;
+        }
+        return false;
     }
 
 }

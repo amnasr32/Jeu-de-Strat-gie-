@@ -68,7 +68,7 @@ public class MainView extends Application {
         if (path!=null) {
             for (byte dir:path) {
                 h= gridView.getAdjHexagon(h,dir);
-                if(h!=null) h.makeGreen(true);
+                if(h!=null) h.color(1);
             }
         }
     }
@@ -78,7 +78,7 @@ public class MainView extends Application {
         if (path!=null) {
             for (byte dir:path) {
                 h= gridView.getAdjHexagon(h,dir);
-                if(h!=null) h.makeGreen(false);
+                if(h!=null) h.color(0);
             }
         }
     }
@@ -157,14 +157,16 @@ public class MainView extends Application {
 
     public void setAction(int actionNb) {
         chosenAction=actionNb;
+        ctrl.selectAction(actionNb);
         allowActionOnEntities(true);
-        //TODO : afficher les cases où l'action est possible
     }
 
     public void resetAction() {
+        ctrl.cancelAction();
         chosenAction=-1;
         allowActionOnEntities(false);
         ui.resetActionButtons();
+        gridView.clearSelectedHex();
     }
 
     public void doAction() {
@@ -180,5 +182,11 @@ public class MainView extends Application {
         for (EntityView e:entityViews) {
             e.allowActionOnClick(bool);
         }
+    }
+
+    public void updateActionRange(int[][] newCoords) {
+        gridView.clearSelectedHex();
+        gridView.setCoords(newCoords);
+        gridView.updateSelectedHex();
     }
 }

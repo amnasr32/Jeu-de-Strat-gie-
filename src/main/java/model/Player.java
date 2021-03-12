@@ -3,6 +3,8 @@ import model.action.Action;
 import model.entity.Entity;
 import view.MainView;
 
+import java.util.LinkedList;
+
 /**
  * La classe Player représente un joueur
  * Elle reçoit directement les inputs de la View, et
@@ -68,6 +70,10 @@ public class Player {
         game.doAction(this, actionNb, x, y);
     }
 
+    public void selectAction(int actionNb) {
+        game.selectAction(this, actionNb);
+    }
+
     // ---------------------------------
     //  fonctions qui modifient la vue :
     // ---------------------------------
@@ -121,5 +127,18 @@ public class Player {
 
     protected void resetAction() {
         view.resetAction();
+    }
+
+    public void updateActionRangeView(LinkedList<int[]> coordList) {
+        int[][] coords = new int[coordList.size()][2];
+        for (int i = 0; i < coords.length; i++) {
+            coords[i][0]=coordList.get(i)[0];
+            coords[i][1]=coordList.get(i)[1];
+        }
+        view.updateActionRange(coords);
+    }
+
+    public void cancelAction() {
+        game.cancelAction(this);
     }
 }

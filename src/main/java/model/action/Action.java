@@ -17,4 +17,12 @@ public abstract class Action {
     public String getName() {
         return name;
     }
+
+    public int getMinRange() {
+        return minRange;
+    }
+
+    public int getMaxRange() {
+        return maxRange;
+    }
 }
