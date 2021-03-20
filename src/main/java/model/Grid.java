@@ -143,8 +143,7 @@ public class Grid {
         return (c.getEntity()==null && delta <= 1 && delta >=-1 );
     }
 
-
-    double estimatedDistance(int x1, int y1, int x2, int y2){
+    double heuristicDistance(int x1, int y1, int x2, int y2){
         int distX = Math.abs(x1-x2);
         int distY = Math.abs(y1-y2);
         return Math.sqrt(distX*distX+distY*distY);
@@ -158,13 +157,28 @@ public class Grid {
         distanceMinimale = Double.MAX_VALUE;
 
         for(byte i = 0; i < 6; i++){
-            int [] adjCell = getAdjCellCoordinates(x1, x2, i);
-            if(estimatedDistance(adjCell[0], adjCell[1], x2, y2) < distanceMinimale && isMovePossible(adjCell[0], adjCell[1], i)){
+            int [] adjCellCoordinates = getAdjCellCoordinates(x1, x2, i);
+            if(heuristicDistance(adjCellCoordinates[0], adjCellCoordinates[1], x2, y2) < distanceMinimale && 
+            isMovePossible(adjCellCoordinates[0], adjCellCoordinates[1], i)){
                 meilleureDirection = i;
-                distanceMinimale = estimatedDistance(adjCell[0], adjCell[1], x2, y2);
+                distanceMinimale = heuristicDistance(adjCellCoordinates[0], adjCellCoordinates[1], x2, y2);
             }
         }
         return meilleureDirection;
+    }
+
+    byte retournerDirection(byte direction){
+        return (byte)Math.abs(direction-3);
+    }
+
+    boolean existeOuvert(boolean open[][]){
+        for(int i = 0; i < open.length; i++){
+            for(int j = 0; j < open[i].length; j++){
+                if(open[i][j] == true)
+                    return true;
+            }
+        }
+        return false;
     }
 
     // renvoie une tableau d'entiers, chaque entier représente la cellule adjascente
@@ -174,55 +188,116 @@ public class Grid {
         if (x1<0 || x2<0) return null;
         if (maxLength<=0) return null;
 
-        /*int distance[][] = new int [this.height][this.width];
-        boolean visite[][] = new boolean [this.height][this.width];
+        double heuristic[][] = new double[this.height][this.width]; //distance au point final
+        int distance[][] = new int[this.height][this.width]; //distance au point d'origine
+        byte origin[][] = new byte[this.height][this.width]; // direction qu'il faut prendre pour arriver à la cellule de laquelle on vient
+        boolean open[][] = new boolean [this.height][this.width]; // cellules qu'on a pas encore empruntées mais pour lesquelles on a déjà colculé les valeurs
+        boolean closed[][] = new boolean [this.height][this.width];
 
-        for(int i = 0; i<distance.length; i++){
-            for(int j = 0; j<distance[i].length; j++)
-                distance[i][j] = Integer.MAX_VALUE;
-        }
-
-        for(int i = 0; i<visite.length; i++){
-            for(int j = 0; j<visite[i].length; j++)
-                visite[i][j] = false;
-        }
-
-        LinkedList<Byte> path= new LinkedList<Byte>();
-
-        int nombreDePas = 0;
-
-        while(x1!=x2 && y1!=y2 && nombreDePas < maxLength){
-            byte meilleureDirection = meilleureDirection(x1, y1, x2, y2);
-            path.add(meilleureDirection);
-            int [] adjCellCoordinates = getAdjCellCoordinates(x1, y1, meilleureDirection);
-            x1 = adjCellCoordinates[0];
-            y1 = adjCellCoordinates[1];
-            nombreDePas++;
-        }
-
-        if(x1==x2 && y1==y2){
-            byte [] pathbyte = new byte [nombreDePas];
-            for(byte i = 0; i<nombreDePas; i++){
-                pathbyte[i] = path.get(i);
+        // initialisation de origin
+        for(int i = 0; i < distance.length; i++){
+            for(int j = 0; j < distance[i].length; j++){
+                origin[i][j] = -1;
+                // System.out.print(origin[i][j] + " ");
             }
-            return pathbyte;
+            // System.out.println();
         }
 
-        return null;
+        // initialisation de distance
+        for(int i = 0; i < distance.length; i++){
+            for(int j = 0; j < distance[i].length; j++){
+                distance[i][j] = Integer.MAX_VALUE;
+                // System.out.print(distance[i][j] + " ");
+            }
+            // System.out.println();
+        }
+        distance[x1][y1] = 0;
 
-        */
+        // initialisation de heuristic
+        for(int i = 0; i < heuristic.length; i++){
+            for(int j = 0; j < heuristic[i].length; j++){
+                heuristic[i][j] = heuristicDistance(i, j, x2, y2);
+                // System.out.print(heuristic[i][j] + " ");
+            }
+            // System.out.println();
+        }
 
+        open[x1][y1] = true;
 
-        byte[] b = new byte[1];
+        int xCourant = x1;
+        int yCourant = y1;
+
+        while(existeOuvert(open) && xCourant !=x2 && yCourant != y2){
+
+            double min = Double.MAX_VALUE;
+            for(int i = 0; i < this.height; i++){
+                for(int j = 0; j < this.width; j++){
+                    if(open[i][j] && (distance[i][j] + heuristic[i][j] < min)){
+                        xCourant = i;
+                        yCourant = j;
+                        System.out.print(i + " " + j);
+                        System.out.println();
+                        min = distance[i][j] + heuristic[i][j];
+                    }
+                }
+            }
+
+            open[xCourant][yCourant] = false;
+            closed[xCourant][yCourant] = true;
+
+            for(byte i = 0; i < 6; i++){
+                if(isMovePossible(xCourant, yCourant, i) && !closed[xCourant][yCourant]){
+                    int xAdjCell = getAdjCellCoordinates(xCourant, yCourant, i)[0];
+                    int yAdjCell = getAdjCellCoordinates(xCourant, yCourant, i)[1];
+                    if(distance[xCourant][yCourant] + 1 < distance[xAdjCell][yAdjCell] || !open[xAdjCell][yAdjCell]){
+                        distance[xAdjCell][yAdjCell] = distance[xCourant][yCourant] + 1;
+                        origin[xAdjCell][yAdjCell] = retournerDirection(i);
+                        if(!open[xAdjCell][yAdjCell]){
+                            open[xAdjCell][yAdjCell] = true;
+                        }
+                    }
+                }
+                
+            }
+        }
+
+        xCourant = x2;
+        yCourant = y2;
+        
+        LinkedList<Byte> path = new LinkedList<Byte>();
+
+        while(xCourant != x1 && yCourant != y1){
+            path.add(origin[xCourant][yCourant]);
+        }
+
+        if(path.size() > maxLength){
+            return null;
+        }
+        else{
+            byte[] b = new byte[path.size()];
+            for(int i = 0; i < path.size(); i++){
+                b[i] = path.get(i);
+            }
+            return b;
+        }
+
+        /*byte[] b = new byte[path.size()];
+        for(int i = 0; i < path.size(); i++){
+            b[i] = path.get(i);
+        }*/
+
+        /*byte[] b = new byte[1];
         for (int i = 0; i < 6; i++) {
             if (cells[x2][y2]==getAdjCell(x1,y1,i)) {
                 if (isMovePossible(x1,y1,i)) {
+                    //System.out.println(getAdjCellCoordinates(x1,y1,i)[0]);
+                    //System.out.println(getAdjCellCoordinates(x1,y1,i)[1]);
                     b[0]=(byte)i;
                     return b;
                 }
             }
         }
-        return null;
+        return null;*/
     }
 
     //bouge l'entité d'une case, et update ses coordoonées internes
