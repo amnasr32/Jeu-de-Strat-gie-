@@ -2,10 +2,19 @@ package view;
 
 import javafx.application.Application;
 import javafx.scene.*;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.LinkedList;
-
+import javafx.scene.paint.Color;
+import javafx.scene.text.*;
 public class MainView extends Application {
 
     private Controller ctrl;
@@ -31,18 +40,40 @@ public class MainView extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         mainGroup = new Group();
-        mainScene=new Scene(mainGroup,width,height);
         ctrl = new Controller(this);
-
-
+        Text gc = new Text ();
+        gc.setText ("Bienvenue dans notre jeu de stratégie");
+        gc.setFont (new Font ("Verdana", 50));
+        TextFlow textFlow = new TextFlow(); //cree une zone de texte vide
+        textFlow.getChildren().addAll(gc);//on ajoute le texte à la zone crée
+        Group textgroup = new Group(textFlow);
+        mainScene=new Scene(textgroup,width,height);
+        mainScene.setFill((Paint)(Color.SANDYBROWN));
+        ui = new UserInterface(width, height, ctrl,0);
+        textgroup.getChildren().add(ui);
+      
+      
+      
+       Button play= new Button("Jouer");
+        mainGroup.getChildren().add(play);
         primaryStage.setTitle("jeu de stratégie");
         primaryStage.setScene(mainScene);
         primaryStage.show();
-
-        ctrl.initializePlayer();
-        ctrl.loadLevel();
-        ctrl.mkGameGrid();
-        ctrl.startGame();
+        
+        play.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
+        	Group buyGroup = new Group();
+        	Scene buyScene = new Scene(buyGroup,width,height);
+          	primaryStage.setScene(buyScene);
+            primaryStage.show();
+      
+            ctrl.initializePlayer();
+        	ctrl.loadLevel();
+            ctrl.mkGameGrid();
+            ctrl.startGame();
+        });
+        primaryStage.show();
+     
+       
     }
 
     public void setPointedXY(int x, int y) {

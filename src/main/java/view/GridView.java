@@ -62,7 +62,7 @@ public class GridView extends Group {
         material.setDiffuseColor(Color.SANDYBROWN);
         ground.setMaterial(material);
         ground.setTranslateY(8);
-        getChildren().add(ground);
+        getChildren().add(ground) ;
     }
 
     public Hexagon[][] getHexagons() {
