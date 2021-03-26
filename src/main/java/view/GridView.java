@@ -12,6 +12,8 @@ public class GridView extends Group {
     private final Hexagon[][] hexagons;
     private final MainView view;
 
+    int[][] coords=new int[0][0];
+
     public GridView(byte[][] heightGrid, MainView view) {
         super();
         this.view=view;
@@ -30,6 +32,10 @@ public class GridView extends Group {
         initLight();
         initSky();
         initGround();
+    }
+
+    public void setCoords(int[][] coords) {
+        this.coords = coords;
     }
 
     // créé les lumières de la scène
@@ -132,8 +138,20 @@ public class GridView extends Group {
         for (int i = 0; i < hexagons.length; i++) {
             for (int j = 0; j < hexagons[0].length; j++) {
                 hexagons[i][j].allowHighlight(bool);
-                hexagons[i][j].allowMovement(bool);
+                hexagons[i][j].allowClickAction(bool);
             }
+        }
+    }
+
+    public void updateSelectedHex() {
+        for (int[] coord:coords) {
+            hexagons[coord[0]][coord[1]].color(2);
+        }
+    }
+
+    public void clearSelectedHex() {
+        for (int[] coord:coords) {
+            hexagons[coord[0]][coord[1]].color(0);
         }
     }
 

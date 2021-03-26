@@ -56,9 +56,11 @@ public class Game implements Serializable {
     // permet de passer au tour de l'entité suivante
     protected void nextRound(Player pp) {
         if (currentPlayer!=pp) return; // seul le joueur courant peut effectuer l'action
+        grid.clearCoordList();
         entInd=(entInd+1)%playableEntities.size();
         currentEntity=playableEntities.get(entInd);
         currentPlayer=currentEntity.getPlayer();
+        currentEntity.resetMp();
         for (Player p:players) {
             p.focusNextEntity(entInd, p==currentPlayer);
         }
@@ -118,4 +120,31 @@ public class Game implements Serializable {
     }
 
 
+    public void doAction(Player player, int action, int x, int y) {
+        if (player!=currentPlayer) return;
+        Cell c = grid.getCell(x,y);
+        if (grid.isInCoordList(x,y) && currentEntity.doAction(action,c)) {
+            // pour l'instant on update les points de vie de toutes les entités, ce n'est pas idéal
+            for (Player p : players) {
+                for (int i = 0; i < playableEntities.size(); i++) {
+                    p.updateHpView(i, playableEntities.get(i).getHp());
+                }
+            }
+        }
+        grid.clearCoordList();
+        player.resetAction();
+    }
+
+    public void selectAction(Player player, int actionNb) {
+        if (player!=currentPlayer) return;
+        int minRange=currentEntity.getAction(actionNb).getMinRange();
+        int maxRange=currentEntity.getAction(actionNb).getMaxRange();
+        grid.selectCellsWithinRange(currentEntity.getX(), currentEntity.getY(), minRange, maxRange);
+        player.updateActionRangeView(grid.getCoordList());
+    }
+
+    public void cancelAction(Player player) {
+        if (player!=currentPlayer) return;
+        grid.clearCoordList();
+    }
 }

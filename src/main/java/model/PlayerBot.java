@@ -15,7 +15,12 @@ public class PlayerBot extends Player {
     @Override
     protected void focusFirstEntity(int i, boolean isCurrentPlayer) {}
     @Override
-    protected void focusNextEntity(int i, boolean isCurrentPlayer) {}
+    protected void focusNextEntity(int i, boolean isCurrentPlayer) {
+        if (isCurrentPlayer) endTurn();
+    }
     @Override
     protected void moveEntityInView(byte direction) {}
+
+    @Override
+    protected void updateHpView(int i, int newHp) {}
 }

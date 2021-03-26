@@ -29,7 +29,7 @@ public class Hexagon extends Group {
         setTranslateZ(i*-13);
         setTranslateX(f+j*15);
         setTranslateY(h*-1.5);
-        makeGreen(false);
+        color(0);
     }
 
     private void initOuterCylinder(int h) {
@@ -59,12 +59,22 @@ public class Hexagon extends Group {
         return height;
     }
 
-    public void makeGreen(boolean bool) {
+    // 0: par défaut  1: chemin  2: portée
+    public void color(int i) {
         PhongMaterial material = new PhongMaterial();
-        if (bool) {
-            material.setDiffuseColor(Color.LAWNGREEN);
-        } else {
-            material.setDiffuseColor(Color.LIGHTYELLOW);
+        switch (i) {
+            case 0:
+                material.setDiffuseColor(Color.LIGHTYELLOW);
+                break;
+            case 1:
+                material.setDiffuseColor(Color.LAWNGREEN);
+                break;
+            case 2:
+                material.setDiffuseColor(Color.DEEPSKYBLUE);
+                break;
+            default:
+                material.setDiffuseColor(Color.PINK);
+                break;
         }
         material.setSpecularColor(Color.BLACK);
         cylinder.setMaterial(material);
@@ -79,7 +89,7 @@ public class Hexagon extends Group {
             setOnMouseEntered(event -> {
                 setHighlight(true);
                 view.setPointedXY(x,y);
-                view.makePath(x,y);
+                hoverAction();
             });
             setOnMouseExited(event -> {
                 setHighlight(false);
@@ -88,19 +98,28 @@ public class Hexagon extends Group {
         } else {
             setOnMouseEntered( event -> {});
             setOnMouseExited( event -> {});
-            makeGreen(false);
+            color(0);
             setHighlight(false);
         }
     }
 
-    public void allowMovement(boolean bool) {
+    public void allowClickAction(boolean bool) {
         if (bool) {
             setOnMouseClicked( event -> {
-                view.moveModelEntity();
+                clickAction();
             });
         } else {
             setOnMouseClicked( event -> {});
         }
+    }
+
+    private void hoverAction() {
+        if (view.getChosenAction()==-1) view.makePath(x,y);
+    }
+
+    private void clickAction() {
+        if (view.getChosenAction()==-1) view.moveModelEntity();
+        else view.doAction();
     }
 
 }

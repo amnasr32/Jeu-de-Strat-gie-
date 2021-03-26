@@ -1,6 +1,9 @@
 package model;
+import model.action.Action;
 import model.entity.Entity;
 import view.MainView;
+
+import java.util.LinkedList;
 
 /**
  * La classe Player représente un joueur
@@ -17,10 +20,13 @@ public class Player {
         game=null;
     }
 
-    
     public Player(MainView view) {
         this.view=view;
         game=null;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     // ---------------------------------
@@ -38,7 +44,9 @@ public class Player {
         //level.SetGrid(grid);
         //level.createLevel();
         /**ici on affiche la grille qu'on a sérialisé => on deserialise**/
-        game = new Game(level.showLevel(), this, new PlayerBot());
+        PlayerBot pb = new PlayerBot();
+        game = new Game(level.showLevel(), this, pb);
+        pb.setGame(game);
     }
 
     public void start() {
@@ -56,6 +64,14 @@ public class Player {
 
     public void move(byte[] path) {
         game.move(this, path);
+    }
+
+    public void doAction(int actionNb, int x, int y) {
+        game.doAction(this, actionNb, x, y);
+    }
+
+    public void selectAction(int actionNb) {
+        game.selectAction(this, actionNb);
     }
 
     // ---------------------------------
@@ -78,24 +94,51 @@ public class Player {
     }
 
     protected void addEntityToView(Entity e) {
-        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this);
+        Action[] actions = e.getActions();
+        String[][] array = new String[actions.length][2];
+        for (int i = 0; i < actions.length; i++) {
+            array[i][0]=actions[i].getName();
+            array[i][1]=actions[i].getDescription();
+        }
+        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this, e.getHp(), e.getMp(), array);
     }
 
     protected void focusFirstEntity(int i, boolean isCurrentPlayer) {
         view.focusFirstEntity(i);
         view.allowGridViewControls(isCurrentPlayer);
+        view.showActionButtons(isCurrentPlayer);
+        view.resetAction();
     }
 
     protected void focusNextEntity(int i, boolean isCurrentPlayer) {
         view.focusNextEntity(i);
         view.allowGridViewControls(isCurrentPlayer);
+        view.showActionButtons(isCurrentPlayer);
+        view.resetAction();
     }
 
     protected void moveEntityInView(byte direction) {
         view.moveViewEntity(direction);
     }
 
+    protected void updateHpView(int i, int newHp) {
+        view.updateHp(i, newHp);
+    }
 
+    protected void resetAction() {
+        view.resetAction();
+    }
 
+    public void updateActionRangeView(LinkedList<int[]> coordList) {
+        int[][] coords = new int[coordList.size()][2];
+        for (int i = 0; i < coords.length; i++) {
+            coords[i][0]=coordList.get(i)[0];
+            coords[i][1]=coordList.get(i)[1];
+        }
+        view.updateActionRange(coords);
+    }
 
+    public void cancelAction() {
+        game.cancelAction(this);
+    }
 }
