@@ -1,5 +1,6 @@
 package model;
 import model.entity.Entity;
+import model.entity.Knight;
 import model.entity.Soldier;
 
 import java.io.Serializable;
@@ -66,10 +67,14 @@ public class Game implements Serializable {
     private void initPlayableEntities() {
         int h=grid.getHeight();
         int w=grid.getWidth();
-        Entity e1 = new Soldier(1,1,players[0]);
-        Entity e2 = new Soldier(h-2,w-2,players[1]);
+        Entity e1 = new Soldier(players[0]);
+        Entity e2 = new Soldier(players[1]);
+        Entity e3 = new Knight(players[0]);
+        Entity e4 = new Knight(players[1]);
         addEntityToGame(e1, 1,1);
         addEntityToGame(e2, h-2,w-2);
+        addEntityToGame(e3, 4,3);
+        addEntityToGame(e4, h-4,w-5);
     }
 
     // permet d'ajouter un entité au model et à la view de tous les joueurs
@@ -149,14 +154,17 @@ public class Game implements Serializable {
 
     // s'occupe de "tuer" l'entité playableEntities[i] si ses pv == 0
     private void removeIfDead(int i) {
-        Entity e = playableEntities.get(i);
-        if (e.getHp()<=0) {
-            grid.getCell(e.getX(),e.getY()).setEntity(null);
-            playableEntities.remove(i);
-            if (i<=entInd) entInd--; // on fait attention à ne pas changer l'ordre de jeu es entités
-            for (Player p: players) {
-                p.removeEntity(i);
-            }
+        if (playableEntities.get(i).getHp()<=0) {
+            removeEntity(i);
+        }
+    }
+
+    private void removeEntity(int i) {
+        grid.getCell(playableEntities.get(i).getX(),playableEntities.get(i).getY()).setEntity(null);
+        playableEntities.remove(i);
+        if (i<=entInd) entInd--; // on fait attention à ne pas changer l'ordre de jeu des entités
+        for (Player p: players) {
+            p.removeEntity(i);
         }
     }
 }
