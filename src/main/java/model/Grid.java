@@ -185,6 +185,7 @@ public class Grid {
         return false;
     }
 
+    /* Algorithme A*
     // renvoie une tableau d'entiers, chaque entier représente la cellule adjascente
     // qu'il faut prendre pour avancer dans le chemin
     // renvoie null si le chemin n'existe pas, ou s'il demande plus de maxlength mouvements
@@ -203,7 +204,7 @@ public class Grid {
         // cellules par lesquelles on est déjà passés
         boolean closed[][] = new boolean [this.height][this.width];
 
-        // Initialisation du tableau indoquant la direction de laquelle on est venus pour arriver à chaque cellule
+        // Initialisation du tableau indiquant la direction de laquelle on est venus pour arriver à chaque cellule
         for(int i = 0; i < distance.length; i++){
             for(int j = 0; j < distance[i].length; j++){
                 origin[i][j] = -1;
@@ -258,20 +259,23 @@ public class Grid {
             if(xCourant !=x2 && yCourant != y2){
                 for(byte i = 0; i < 6; i++){
 
-                    int xAdjCell = getAdjCellCoordinates(xCourant, yCourant, i)[0];
-                    int yAdjCell = getAdjCellCoordinates(xCourant, yCourant, i)[1];
+                    if(getAdjCellCoordinates(xCourant, yCourant, i) != null){
+                        int xAdjCell = getAdjCellCoordinates(xCourant, yCourant, i)[0];
+                        int yAdjCell = getAdjCellCoordinates(xCourant, yCourant, i)[1];
 
-                    if(isMovePossible(xCourant, yCourant, i) && !closed[xAdjCell][yAdjCell]){
-                        
-                        // On vérifie si il existe un raccourci à chaque cellule voisine en passant par la cellule sélectionnée
-                        if((distance[xCourant][yCourant] + 1 < distance[xAdjCell][yAdjCell] ) || !open[xAdjCell][yAdjCell]){
-                            distance[xAdjCell][yAdjCell] = distance[xCourant][yCourant] + 1;
-                            origin[xAdjCell][yAdjCell] = retournerDirection(i);
-                            if(!open[xAdjCell][yAdjCell]){
-                                open[xAdjCell][yAdjCell] = true;
+                        if(isMovePossible(xCourant, yCourant, i) && !closed[xAdjCell][yAdjCell]){
+                            
+                            // On vérifie si il existe un raccourci à chaque cellule voisine en passant par la cellule sélectionnée
+                            if((distance[xCourant][yCourant] + 1 < distance[xAdjCell][yAdjCell] ) || !open[xAdjCell][yAdjCell]){
+                                distance[xAdjCell][yAdjCell] = distance[xCourant][yCourant] + 1;
+                                origin[xAdjCell][yAdjCell] = retournerDirection(i);
+                                if(!open[xAdjCell][yAdjCell]){
+                                    open[xAdjCell][yAdjCell] = true;
+                                }
                             }
                         }
                     }
+                    
                 }
             }
             
@@ -314,10 +318,10 @@ public class Grid {
         // Nous avons les directions pour aller du point d'arrivée au point de départ mais on a besoin des directions dans l'autre sens
         // On met les éléments de la liste dans un tableau et on retourne chaque direction 
         // On ne vérifie pas si le chemin est plus long que la valeur maximale pour le moment pour pouvoir faire des tests
-        /*if(path.size() > maxLength){
+        if(path.size() > maxLength){
             return null;
         }
-        else{*/
+        else{
             byte[] b = new byte[path.size()];
             for(int i = 0; i < path.size(); i++){
                  b[i] = retournerDirection(path.get(i));
@@ -332,9 +336,9 @@ public class Grid {
         /*byte[] b = new byte[path.size()];
         for(int i = 0; i < path.size(); i++){
             b[i] = path.get(i);
-        }*/
+        }
 
-        /*byte[] b = new byte[1];
+        byte[] b = new byte[1];
         for (int i = 0; i < 6; i++) {
             if (cells[x2][y2]==getAdjCell(x1,y1,i)) {
                 if (isMovePossible(x1,y1,i)) {
@@ -345,7 +349,137 @@ public class Grid {
                 }
             }
         }
-        return null;*/
+        return null;
+    }*/
+
+    int[] minDistance(int distance[][], boolean processed[][]){
+        int min = Integer.MAX_VALUE;
+        int[] result = new int[2];
+        result[0] = -1;
+        result[1] = -1;
+
+        for(int i = 0; i < distance.length; i++){
+            for(int j = 0; j < distance[i].length; j++){
+                if(distance[i][j] < min && !processed[i][j]){
+                    min = distance[i][j];
+                    result[0] = i;
+                    result[1] = j;
+                }
+            }
+        }
+        return result;
+    }
+
+    // Algorithme de Dijkstra
+    public byte[] getPath(int x1, int y1, int x2, int y2, int maxLength) {
+        if (x1<0 || x2<0) return null;
+        if (maxLength<=0) return null;
+
+        //distance au point d'origine
+        int distance[][] = new int[this.height][this.width]; 
+        // direction qu'il faut prendre pour arriver à la cellule de laquelle on vient
+        byte origin[][] = new byte[this.height][this.width]; 
+        // cellules qu'on a pas encore empruntées mais pour lesquelles on a déjà colculé les valeurs
+        boolean processed[][] = new boolean[this.height][this.width]; 
+
+        // Initialisation du tableau indiquant la direction de laquelle on est venus pour arriver à chaque cellule
+        for(int i = 0; i < distance.length; i++){
+            for(int j = 0; j < distance[i].length; j++){
+                origin[i][j] = -1;
+            }
+        }
+
+        // Initialisation du tableau des distances au point de départ
+        for(int i = 0; i < distance.length; i++){
+            for(int j = 0; j < distance[i].length; j++){
+                distance[i][j] = Integer.MAX_VALUE;
+            }
+        }
+        distance[x1][y1] = 0;
+
+        int[] celluleCourante = {x1, y1};
+
+        System.out.println("On commence l'algorithme de Dijkstra");
+
+        for(int count = 0; count < this.height*this.width; count++){
+            celluleCourante = minDistance(distance, processed);
+            processed[celluleCourante[0]][celluleCourante[1]] = true;
+            System.out.println("Cellule courante: " + celluleCourante[0] + ", " + celluleCourante[1]);
+
+            for(byte i = 0; i < 6; i++){
+                if(getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], i) != null && isMovePossible(celluleCourante[0], celluleCourante[1], i)){
+                    int xAdjCell = getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], i)[0];
+                    int yAdjCell = getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], i)[1];
+
+                    if(isMovePossible(celluleCourante[0], celluleCourante[1], i) && !processed[xAdjCell][yAdjCell]){
+                        
+                        // On vérifie si il existe un raccourci à chaque cellule voisine en passant par la cellule sélectionnée
+                        if((distance[celluleCourante[0]][celluleCourante[1]] + 1 < distance[xAdjCell][yAdjCell] ) ){
+                            distance[xAdjCell][yAdjCell] = distance[celluleCourante[0]][celluleCourante[1]] + 1;
+                            origin[xAdjCell][yAdjCell] = retournerDirection(i);
+                        }
+                    }
+                }
+                
+            }
+
+        }
+
+        // imprime les distances (pour tester)
+        for(int i = 0; i < distance.length; i++){
+            for(int j = 0; j < distance[i].length; j++){
+                if(distance[i][j] == Integer.MAX_VALUE){
+                    System.out.print("x  ");
+                }
+                else{
+                    int result = distance[i][j];
+                    if(result < 10){
+                        System.out.print(result + "  ");
+                    }
+                    else{
+                        System.out.print(result + " ");
+                    }
+                }
+                
+            }
+            System.out.println();
+        }
+        System.out.println();
+
+        /*for(int i = 0; i < processed.length; i++){
+            for(int j = 0; j < processed[i].length; j++){
+                System.out.print(processed[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();*/
+
+        celluleCourante[0] = x2;
+        celluleCourante[1] = y2;
+
+        // On crée une liste contenant toutes les directions menant du point d'arrivée au point de départ
+        LinkedList<Byte> path = new LinkedList<Byte>();
+
+        while(celluleCourante[0] != x1 && celluleCourante[1] != y1){
+            path.add(origin[celluleCourante[0]][celluleCourante[1]]);
+            int parentCoordinates[] = getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], origin[celluleCourante[0]][celluleCourante[1]]);
+            celluleCourante[0] = parentCoordinates[0];
+            celluleCourante[1] = parentCoordinates[1];
+        }
+
+        // Nous avons les directions pour aller du point d'arrivée au point de départ mais on a besoin des directions dans l'autre sens
+        // On met les éléments de la liste dans un tableau et on retourne chaque direction 
+        // On ne vérifie pas si le chemin est plus long que la valeur maximale pour le moment pour pouvoir faire des tests
+        /*if(path.size() > maxLength){
+            return null;
+        }
+        else{*/
+            byte[] b = new byte[path.size()];
+            for(int i = 0; i < path.size(); i++){
+                b[i] = retournerDirection(path.get(i));
+            }
+            return b;
+        //}
     }
 
     // Bouge l'entité d'une case, et update ses coordoonées internes
