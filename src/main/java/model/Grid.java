@@ -89,12 +89,9 @@ public class Grid implements Serializable {
         return null;
     }
 
-    // meme chose que getAdjCell mais a la place d'envoyer une cellule elle envoie les
-    // coordonnees de la cellule adjacente
-    // 5   0
-    //4  x  1
-    // 3   2
-    public int[] getAdjCellCoordinates(int h, int w, int direction) {
+    // même chose que getAdjCellCoordinates dans le code de Matyas, mais renvoie toujours des coordonnées,
+    // jamais null, même si elles seraient en dehors de la grille
+    public int[] getAdjCellCoordinates_2(int h, int w, int direction) {
         boolean odd = h % 2 == 0;
         int[] result = new int[2];
         switch (direction) {
@@ -153,7 +150,7 @@ public class Grid implements Serializable {
         return null;
     }
 
-        private boolean isMovePossible(int x, int y, int orientation) {
+    private boolean isMovePossible(int x, int y, int orientation) {
         Cell c = getAdjCell(x, y, orientation);
         if (c==null) return false;
         int delta = cells[x][y].getHeight() - c.getHeight();
@@ -203,7 +200,7 @@ public class Grid implements Serializable {
         if (isInBounds(coord)) coordList.add(coord);
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < dist; j++) {
-                coord=getAdjCellCoordinates(coord[0],coord[1],(i+3)%6);
+                coord= getAdjCellCoordinates_2(coord[0],coord[1],(i+3)%6);
                 // TODO : vérifier que la cible est directement visible (pas d'obstacle)
                 if (isInBounds(coord)) {
                     coordList.add(coord);
