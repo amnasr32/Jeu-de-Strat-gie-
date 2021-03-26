@@ -104,7 +104,7 @@ public class Player {
             array[i][0]=actions[i].getName();
             array[i][1]=actions[i].getDescription();
         }
-        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this, e.getHp(), e.getMp(), array);
+        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this,e.toString(), e.getHp(), e.getMp(), array);
     }
 
     protected void focusFirstEntity(int i, boolean isCurrentPlayer) {

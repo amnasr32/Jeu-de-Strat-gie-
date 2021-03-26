@@ -108,8 +108,8 @@ public class MainView extends Application {
         mainGroup.getChildren().add(ui);
     }
 
-    public void addEntity(int x, int y, boolean isAlly, int hp, int mp, String[][]actions) {
-        EntityView u = new EntityView(this, x,y,isAlly, hp, mp, actions);
+    public void addEntity(int x, int y, boolean isAlly,String name, int hp, int mp, String[][]actions) {
+        EntityView u = new EntityView(this, x,y,isAlly,name, hp, mp, actions);
         entityViews.add(u);
         gridView.addEntity(u,x,y);
     }

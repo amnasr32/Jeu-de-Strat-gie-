@@ -20,7 +20,7 @@ public class Soldier extends Entity {
 
     @Override
     public String toString() {
-        return "soldier";
+        return "Soldat";
     }
 
     @Override

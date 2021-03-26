@@ -22,7 +22,7 @@ public class Knight extends Entity {
 
     @Override
     public String toString() {
-        return "knight";
+        return "Chevalier";
     }
 
     @Override
