@@ -189,4 +189,9 @@ public class MainView extends Application {
         gridView.setCoords(newCoords);
         gridView.updateSelectedHex();
     }
+
+    public void removeEntity(int i) {
+        gridView.getChildren().remove(entityViews.get(i));
+        entityViews.remove(i);
+    }
 }

@@ -7,14 +7,10 @@ import java.util.LinkedList;
 
 public class Game implements Serializable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 7373047453891668295L;
 	private Grid grid;
     private Player[] players;
     private LinkedList<Entity> playableEntities; // liste de toutes les entités en jeu
-    private int[] entTeam; // nombre d'entités pour chaque équipe actuellement en jeu
 
     private Player currentPlayer=null; // le joueur dont c'est le tour
     private Entity currentEntity=null;
@@ -23,14 +19,13 @@ public class Game implements Serializable {
     private int entInd; // index de l'entité courante
 
 
-    public Game(Grid grid, Player player1, Player player2) {
-        //TODO : permettre l'initialisation pour un nombre quelconque de joueurs
+    public Game(Grid grid, Player ... playerlist) {
         playableEntities = new LinkedList<>();
         this.grid=grid;
-        players = new Player[2];
-        players[0]=player1;
-        players[1]=player2;
-        entTeam=new int[2];
+
+        players = new Player[playerlist.length];
+        // copie playerList dans players
+        System.arraycopy(playerlist, 0, players, 0, playerlist.length);
     }
 
     protected Grid getGrid() {
@@ -73,15 +68,14 @@ public class Game implements Serializable {
         int w=grid.getWidth();
         Entity e1 = new Soldier(1,1,players[0]);
         Entity e2 = new Soldier(h-2,w-2,players[1]);
-        addEntityToGame(e1, 1,1,0);
-        addEntityToGame(e2, h-2,w-2,1);
+        addEntityToGame(e1, 1,1);
+        addEntityToGame(e2, h-2,w-2);
     }
 
     // permet d'ajouter un entité au model et à la view de tous les joueurs
-    private void addEntityToGame(Entity e, int x, int y, int playerNb) {
+    private void addEntityToGame(Entity e, int x, int y) {
         e.updateCoords(x, y);
         grid.getCell(x,y).setEntity(e);
-        entTeam[playerNb]++;
         playableEntities.add(e);
         for (Player p : players) {
             p.addEntityToView(e);
@@ -92,10 +86,10 @@ public class Game implements Serializable {
     // renvoie true si le jeu est fini
     // vérifie que seule une équipe ait encore des unités en jeu
     private boolean gameIsOver() {
-        boolean b=false;
-        for (int i:entTeam) {
-            if (b && i>0) return false;
-            if (i>0) b=true;   
+        if (playableEntities.size()<=1) return true;
+        Player p = playableEntities.get(0).getPlayer();
+        for (int i = 1; i < playableEntities.size(); i++) {
+            if (p != playableEntities.get(i).getPlayer()) return false;
         }
         return true;
     }
@@ -125,14 +119,19 @@ public class Game implements Serializable {
         Cell c = grid.getCell(x,y);
         if (grid.isInCoordList(x,y) && currentEntity.doAction(action,c)) {
             // pour l'instant on update les points de vie de toutes les entités, ce n'est pas idéal
-            for (Player p : players) {
-                for (int i = 0; i < playableEntities.size(); i++) {
+            for (int i = 0; i < playableEntities.size(); i++) {
+                for (Player p : players) {
                     p.updateHpView(i, playableEntities.get(i).getHp());
                 }
+                removeIfDead(i);
             }
+
         }
         grid.clearCoordList();
         player.resetAction();
+        if (gameIsOver()) {
+            System.out.println("fin de la partie");
+        }
     }
 
     public void selectAction(Player player, int actionNb) {
@@ -146,5 +145,18 @@ public class Game implements Serializable {
     public void cancelAction(Player player) {
         if (player!=currentPlayer) return;
         grid.clearCoordList();
+    }
+
+    // s'occupe de "tuer" l'entité playableEntities[i] si ses pv == 0
+    private void removeIfDead(int i) {
+        Entity e = playableEntities.get(i);
+        if (e.getHp()<=0) {
+            grid.getCell(e.getX(),e.getY()).setEntity(null);
+            playableEntities.remove(i);
+            if (i<=entInd) entInd--; // on fait attention à ne pas changer l'ordre de jeu es entités
+            for (Player p: players) {
+                p.removeEntity(i);
+            }
+        }
     }
 }

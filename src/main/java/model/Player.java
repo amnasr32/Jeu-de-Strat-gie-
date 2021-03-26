@@ -74,6 +74,10 @@ public class Player {
         game.selectAction(this, actionNb);
     }
 
+    public void cancelAction() {
+        game.cancelAction(this);
+    }
+
     // ---------------------------------
     //  fonctions qui modifient la vue :
     // ---------------------------------
@@ -129,7 +133,7 @@ public class Player {
         view.resetAction();
     }
 
-    public void updateActionRangeView(LinkedList<int[]> coordList) {
+    protected void updateActionRangeView(LinkedList<int[]> coordList) {
         int[][] coords = new int[coordList.size()][2];
         for (int i = 0; i < coords.length; i++) {
             coords[i][0]=coordList.get(i)[0];
@@ -138,7 +142,7 @@ public class Player {
         view.updateActionRange(coords);
     }
 
-    public void cancelAction() {
-        game.cancelAction(this);
+    protected void removeEntity(int i) {
+        view.removeEntity(i);
     }
 }
