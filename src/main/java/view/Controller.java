@@ -1,5 +1,7 @@
 package view;
 
+import javafx.scene.Group;
+import javafx.stage.Stage;
 import model.Player;
 
 
@@ -7,9 +9,10 @@ public class Controller {
 
     Player player;
     MainView view;
-
+   
     public Controller(MainView view) {
         this.view = view;
+        
     }
 
     public void initializePlayer() {
@@ -40,4 +43,14 @@ public class Controller {
     public void move(byte[] path) {
         player.move(path);
     }
-}
+    //on récupere le primaryStage de mainView
+    public Stage getStage() {
+    	return this.view.getPrimaryStage();
+    }
+    //On récupere le mainGroup dans le quel on va make la grid
+    public Group getmainGroup() {
+    	return this.view.getmainGroup();
+    }
+ }
+ 
+

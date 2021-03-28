@@ -31,7 +31,7 @@ public class GridView extends Group {
         initSky();
         initGround();
     }
-
+    	
     // créé les lumières de la scène
     private void initLight() {
         AmbientLight ambientLight = new AmbientLight(Color.rgb(50,30,20));

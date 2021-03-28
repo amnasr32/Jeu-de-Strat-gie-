@@ -14,7 +14,7 @@ public class UserInterface extends Group {
     Controller ctrl;
     Button endTurn;
     Button attack;
-    Button play;
+    Button back;
 
     int width;
     int height;
@@ -29,27 +29,19 @@ public class UserInterface extends Group {
 
         endTurn = makeButton("Fin du tour");
         attack = makeButton("attaque !");
-
+        back = makeButton("Go Back");
+        addButton(back);
         addButton(endTurn);
         addButton(attack);
 
         endTurn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             ctrl.endTurn();
         });
+        back.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            System.out.println("went back");
+        });
     }
-    UserInterface(int width, int height, Controller controller,int a) {
-        super();
-        this.width=width;
-        this.height=height;
-        ctrl=controller;
-
-        play = makeButton("Jouer");
-      
-        addButton(play);
-
-        
-    }
-
+    
     private void addButton(Button b) {
         getChildren().add(b);
         b.setTranslateX(nbOfButtons*200);
