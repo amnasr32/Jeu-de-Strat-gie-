@@ -48,21 +48,7 @@ public class WelcomeInterface extends Group {
         	ctrl.initializePlayer();
             ctrl.loadLevel();
             ctrl.mkGameGrid();
-           
-
-        	
-       
-	           /* DialogPane dialogPane = new DialogPane();
-	            dialogPane.setMinSize(200, 150);
-	            dialogPane.setHeaderText("choisir votre entité");
-	            
-	            Scene dialogScene = (new Scene(dialogPane));
-	           dialogScene.setFill((Paint)(Color.SANDYBROWN));
-	           
-	        	Stage dialogStage = new Stage();
-	        	
-	            dialogStage.setScene(dialogScene);
-	            dialogStage.show();*/
+        
 	        	
          
         });
