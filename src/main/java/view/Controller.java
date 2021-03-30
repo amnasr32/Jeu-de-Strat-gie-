@@ -8,6 +8,8 @@ public class Controller {
     Player player;
     MainView view;
 
+    public Controller() {}
+
     public Controller(MainView view) {
         this.view = view;
     }

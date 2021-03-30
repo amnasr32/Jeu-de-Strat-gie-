@@ -2,6 +2,7 @@ package view;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -33,6 +34,7 @@ public class MainView extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        //Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
         mainGroup = new Group();
         mainScene=new Scene(mainGroup,width,height);
         ctrl = new Controller(this);
