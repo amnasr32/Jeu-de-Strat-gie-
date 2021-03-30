@@ -43,7 +43,7 @@ public class Controller {
 
     public void move(byte[] path) {
         player.move(path);
-    }
+    }// to game 
     public void addEntityToView(Entity e) {
     	player.addEntityToView(e);
     
