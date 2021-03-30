@@ -24,6 +24,7 @@ public class EntityView extends Group {
         getChildren().add(sphere);
         getChildren().add(cylinder);
         getChildren().add(outerSphere);
+         
         this.x=x;
         this.y=y;
     }

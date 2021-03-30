@@ -77,7 +77,7 @@ public class Player {
         return heightGrid;
     }
 
-    protected void addEntityToView(Entity e) {
+    public void addEntityToView(Entity e) {
         view.addEntity(e.getX(), e.getY(), e.getPlayer()==this);
     }
 

@@ -3,6 +3,7 @@ package view;
 import javafx.scene.Group;
 import javafx.stage.Stage;
 import model.Player;
+import model.entity.Entity;
 
 
 public class Controller {
@@ -42,6 +43,10 @@ public class Controller {
 
     public void move(byte[] path) {
         player.move(path);
+    }
+    public void addEntityToView(Entity e) {
+    	player.addEntityToView(e);
+    
     }
     //on récupere le primaryStage de mainView
     public Stage getStage() {
