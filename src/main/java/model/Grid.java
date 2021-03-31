@@ -352,6 +352,18 @@ public class Grid {
         return null;
     }*/
 
+    boolean isFull( boolean processed[][]){
+        //teste s'il reste encore des sommets à visiter
+        for(int i = 0; i < processed.length; i++){
+            for(int j= 0; j < processed[i].length; j++){
+                if(processed[i][j] == false)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
     int[] minDistance(int distance[][], boolean processed[][]){
         int min = Integer.MAX_VALUE;
         int[] result = new int[2];
@@ -367,6 +379,9 @@ public class Grid {
                 }
             }
         }
+        
+        // System.out.println("Distance minimale minDistance: " + result[0] + ", " + result[1]);
+
         return result;
     }
 
@@ -379,7 +394,7 @@ public class Grid {
         int distance[][] = new int[this.height][this.width]; 
         // direction qu'il faut prendre pour arriver à la cellule de laquelle on vient
         byte origin[][] = new byte[this.height][this.width]; 
-        // cellules qu'on a pas encore empruntées mais pour lesquelles on a déjà colculé les valeurs
+        // cellules pour lesquelles on a colculé les valeurs
         boolean processed[][] = new boolean[this.height][this.width]; 
 
         // Initialisation du tableau indiquant la direction de laquelle on est venus pour arriver à chaque cellule
@@ -397,24 +412,37 @@ public class Grid {
         }
         distance[x1][y1] = 0;
 
+        for(int i = 0; i < processed.length; i++){
+            for(int j = 0; j < processed[i].length; j++){
+                processed[i][j] = false;
+            }
+        }
+
         int[] celluleCourante = {x1, y1};
 
         System.out.println("On commence l'algorithme de Dijkstra");
 
-        for(int count = 0; count < this.height*this.width; count++){
+        while(!isFull(processed)){
             celluleCourante = minDistance(distance, processed);
+            //System.out.println("Distance minimale getPath" + celluleCourante[0] + ", " + celluleCourante[1]);
+
+            if(celluleCourante[0] == -1 || celluleCourante[1] == -1 || distance[celluleCourante[0]][celluleCourante[1]] == Integer.MAX_VALUE){
+                break;
+            }
+
             processed[celluleCourante[0]][celluleCourante[1]] = true;
-            System.out.println("Cellule courante: " + celluleCourante[0] + ", " + celluleCourante[1]);
+            //System.out.println("Cellule courante: " + celluleCourante[0] + ", " + celluleCourante[1]);
 
             for(byte i = 0; i < 6; i++){
                 if(getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], i) != null && isMovePossible(celluleCourante[0], celluleCourante[1], i)){
                     int xAdjCell = getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], i)[0];
                     int yAdjCell = getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], i)[1];
 
-                    if(isMovePossible(celluleCourante[0], celluleCourante[1], i) && !processed[xAdjCell][yAdjCell]){
+                    if(!processed[xAdjCell][yAdjCell]){
                         
                         // On vérifie si il existe un raccourci à chaque cellule voisine en passant par la cellule sélectionnée
                         if((distance[celluleCourante[0]][celluleCourante[1]] + 1 < distance[xAdjCell][yAdjCell] ) ){
+                            //System.out.println("J'actualise le chemin");
                             distance[xAdjCell][yAdjCell] = distance[celluleCourante[0]][celluleCourante[1]] + 1;
                             origin[xAdjCell][yAdjCell] = retournerDirection(i);
                         }
@@ -424,8 +452,8 @@ public class Grid {
             }
 
         }
-
-        // imprime les distances (pour tester)
+        
+        // affiche les distances (pour tester)
         for(int i = 0; i < distance.length; i++){
             for(int j = 0; j < distance[i].length; j++){
                 if(distance[i][j] == Integer.MAX_VALUE){
@@ -446,6 +474,19 @@ public class Grid {
         }
         System.out.println();
 
+        for(int i = 0; i < origin.length; i++){
+            for(int j = 0; j < origin[i].length; j++){
+                if(origin[i][j] == -1){
+                    System.out.print("x  ");
+                }
+                else{
+                    System.out.print(origin[i][j] + "  ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+
         /*for(int i = 0; i < processed.length; i++){
             for(int j = 0; j < processed[i].length; j++){
                 System.out.print(processed[i][j] + " ");
@@ -457,15 +498,22 @@ public class Grid {
         celluleCourante[0] = x2;
         celluleCourante[1] = y2;
 
+        // System.out.println(x2  + ", " + y2);
+
         // On crée une liste contenant toutes les directions menant du point d'arrivée au point de départ
         LinkedList<Byte> path = new LinkedList<Byte>();
 
-        while(celluleCourante[0] != x1 && celluleCourante[1] != y1){
+        while(celluleCourante[0] != x1 || celluleCourante[1] != y1){
             path.add(origin[celluleCourante[0]][celluleCourante[1]]);
+            // System.out.println(origin[celluleCourante[0]][celluleCourante[1]]);
+            // System.out.println(celluleCourante[0] + ", " + celluleCourante[1]);
             int parentCoordinates[] = getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], origin[celluleCourante[0]][celluleCourante[1]]);
             celluleCourante[0] = parentCoordinates[0];
             celluleCourante[1] = parentCoordinates[1];
         }
+
+
+        // System.out.println(path);
 
         // Nous avons les directions pour aller du point d'arrivée au point de départ mais on a besoin des directions dans l'autre sens
         // On met les éléments de la liste dans un tableau et on retourne chaque direction 
@@ -478,6 +526,10 @@ public class Grid {
             for(int i = 0; i < path.size(); i++){
                 b[i] = retournerDirection(path.get(i));
             }
+            for(int i = 0; i < b.length; i++){
+                System.out.print(b[i] + " ");
+            }
+            System.out.println();
             return b;
         //}
     }
