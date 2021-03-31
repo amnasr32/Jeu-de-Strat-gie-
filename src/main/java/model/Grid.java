@@ -412,6 +412,7 @@ public class Grid {
         }
         distance[x1][y1] = 0;
 
+        // Initialisation du tableau des cellules pour lesquelles on a calculé les valeurs
         for(int i = 0; i < processed.length; i++){
             for(int j = 0; j < processed[i].length; j++){
                 processed[i][j] = false;
@@ -420,25 +421,25 @@ public class Grid {
 
         int[] celluleCourante = {x1, y1};
 
-        System.out.println("On commence l'algorithme de Dijkstra");
-
         while(!isFull(processed)){
+            // On choisit la cellule qui a la plus petite distance du point de départ
             celluleCourante = minDistance(distance, processed);
-            //System.out.println("Distance minimale getPath" + celluleCourante[0] + ", " + celluleCourante[1]);
 
+            // On vérifie si on a fini de parcourir le tableau
             if(celluleCourante[0] == -1 || celluleCourante[1] == -1 || distance[celluleCourante[0]][celluleCourante[1]] == Integer.MAX_VALUE){
                 break;
             }
 
+            // On marque le cellule qu'on vient de choisir comme évaluée
             processed[celluleCourante[0]][celluleCourante[1]] = true;
-            //System.out.println("Cellule courante: " + celluleCourante[0] + ", " + celluleCourante[1]);
 
+            // On calcule les distances des cellules voisines à la cellule courante
             for(byte i = 0; i < 6; i++){
                 if(getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], i) != null && isMovePossible(celluleCourante[0], celluleCourante[1], i)){
                     int xAdjCell = getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], i)[0];
                     int yAdjCell = getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], i)[1];
 
-                    if(!processed[xAdjCell][yAdjCell]){
+                    if(isMovePossible(celluleCourante[0], celluleCourante[1], i) && !processed[xAdjCell][yAdjCell]){
                         
                         // On vérifie si il existe un raccourci à chaque cellule voisine en passant par la cellule sélectionnée
                         if((distance[celluleCourante[0]][celluleCourante[1]] + 1 < distance[xAdjCell][yAdjCell] ) ){
@@ -452,86 +453,34 @@ public class Grid {
             }
 
         }
-        
-        // affiche les distances (pour tester)
-        for(int i = 0; i < distance.length; i++){
-            for(int j = 0; j < distance[i].length; j++){
-                if(distance[i][j] == Integer.MAX_VALUE){
-                    System.out.print("x  ");
-                }
-                else{
-                    int result = distance[i][j];
-                    if(result < 10){
-                        System.out.print(result + "  ");
-                    }
-                    else{
-                        System.out.print(result + " ");
-                    }
-                }
-                
-            }
-            System.out.println();
-        }
-        System.out.println();
-
-        for(int i = 0; i < origin.length; i++){
-            for(int j = 0; j < origin[i].length; j++){
-                if(origin[i][j] == -1){
-                    System.out.print("x  ");
-                }
-                else{
-                    System.out.print(origin[i][j] + "  ");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
-
-        /*for(int i = 0; i < processed.length; i++){
-            for(int j = 0; j < processed[i].length; j++){
-                System.out.print(processed[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();*/
 
         celluleCourante[0] = x2;
         celluleCourante[1] = y2;
 
-        // System.out.println(x2  + ", " + y2);
-
         // On crée une liste contenant toutes les directions menant du point d'arrivée au point de départ
         LinkedList<Byte> path = new LinkedList<Byte>();
 
+        // On retourne à la cellule de départ depuis la cellule d'arrivée en ajoutant la direction qu'on prend à chaque fois
         while(celluleCourante[0] != x1 || celluleCourante[1] != y1){
             path.add(origin[celluleCourante[0]][celluleCourante[1]]);
-            // System.out.println(origin[celluleCourante[0]][celluleCourante[1]]);
-            // System.out.println(celluleCourante[0] + ", " + celluleCourante[1]);
             int parentCoordinates[] = getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], origin[celluleCourante[0]][celluleCourante[1]]);
             celluleCourante[0] = parentCoordinates[0];
             celluleCourante[1] = parentCoordinates[1];
         }
 
 
-        // System.out.println(path);
-
         // Nous avons les directions pour aller du point d'arrivée au point de départ mais on a besoin des directions dans l'autre sens
         // On met les éléments de la liste dans un tableau et on retourne chaque direction 
-        // On ne vérifie pas si le chemin est plus long que la valeur maximale pour le moment pour pouvoir faire des tests
-        /*if(path.size() > maxLength){
+        if(path.size() > maxLength){
             return null;
         }
-        else{*/
+        else{
             byte[] b = new byte[path.size()];
             for(int i = 0; i < path.size(); i++){
                 b[i] = retournerDirection(path.get(i));
             }
-            for(int i = 0; i < b.length; i++){
-                System.out.print(b[i] + " ");
-            }
-            System.out.println();
             return b;
-        //}
+        }
     }
 
     // Bouge l'entité d'une case, et update ses coordoonées internes
