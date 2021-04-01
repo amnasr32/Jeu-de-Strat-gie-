@@ -76,9 +76,8 @@ public class MainView extends Application {
     }
 
     public void cleanPath() {
-        if (chosenAction!=-1) return;
-        Hexagon h= gridView.getHexagon(currentEntityView.getX(), currentEntityView.getY());
-        if (path!=null) {
+        if (path!=null && chosenAction==-1) {
+            Hexagon h = gridView.getHexagon(currentEntityView.getX(), currentEntityView.getY());
             for (byte dir:path) {
                 h= gridView.getAdjHexagon(h,dir);
                 if(h!=null) h.color(0);
