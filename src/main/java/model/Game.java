@@ -36,6 +36,7 @@ public class Game implements Serializable {
     void start() {
         initPlayableEntities();
         firstRound();
+        gameState=1;
     }
 
     // premier tour de jeu
@@ -49,9 +50,15 @@ public class Game implements Serializable {
         }
     }
 
+    // vérifie qu'un joueur ait le droit de jouer, càd que c'est son tour
+    // et que gamestate == 1
+    private boolean canPlay(Player p) {
+        return (currentPlayer==p && gameState==1);
+    }
+
     // permet de passer au tour de l'entité suivante
-    protected void nextRound(Player pp) {
-        if (currentPlayer!=pp) return; // seul le joueur courant peut effectuer l'action
+    protected void nextRound(Player player) {
+        if (!canPlay(player)) return; // seul le joueur courant peut effectuer l'action
         grid.clearCoordList();
         entInd=(entInd+1)%playableEntities.size();
         currentEntity=playableEntities.get(entInd);
@@ -101,12 +108,12 @@ public class Game implements Serializable {
 
     // bouge l'entité e en suivant le chemin donné en paramètre
     // met à jour la vue de tous les joueurs
-    protected void move(Player p, byte[] path) {
-        if (p!=currentPlayer || path==null) return;
+    protected void move(Player player, byte[] path) {
+        if ((!canPlay(player)) || path==null) return;
         for (byte dir: path) {
             grid.move(currentEntity, dir);
-            for (Player pp:players) {
-                pp.moveEntityInView(dir);
+            for (Player p:players) {
+                p.moveEntityInView(dir);
             }
         }
 
@@ -120,7 +127,7 @@ public class Game implements Serializable {
 
 
     public void doAction(Player player, int action, int x, int y) {
-        if (player!=currentPlayer) return;
+        if (!canPlay(player)) return;
         Cell c = grid.getCell(x,y);
         if (grid.isInCoordList(x,y) && currentEntity.doAction(action,c)) {
             // pour l'instant on update les points de vie de toutes les entités, ce n'est pas idéal
@@ -135,12 +142,16 @@ public class Game implements Serializable {
         grid.clearCoordList();
         player.resetAction();
         if (gameIsOver()) {
-            System.out.println("fin de la partie");
+            gameState=2;
+            for (Player p : players) {
+                boolean hasWon = playableEntities.get(0).getPlayer()==p;
+                p.endGame(hasWon);
+            }
         }
     }
 
     public void selectAction(Player player, int actionNb) {
-        if (player!=currentPlayer) return;
+        if (!canPlay(player)) return;
         int minRange=currentEntity.getAction(actionNb).getMinRange();
         int maxRange=currentEntity.getAction(actionNb).getMaxRange();
         grid.selectCellsWithinRange(currentEntity.getX(), currentEntity.getY(), minRange, maxRange);
@@ -148,7 +159,7 @@ public class Game implements Serializable {
     }
 
     public void cancelAction(Player player) {
-        if (player!=currentPlayer) return;
+        if (!canPlay(player)) return;
         grid.clearCoordList();
     }
 

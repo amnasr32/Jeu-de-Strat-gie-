@@ -24,4 +24,8 @@ public class PlayerBot extends Player {
     protected void updateHpView(int i, int newHp) {}
     @Override
     protected void removeEntity(int i) {}
+    @Override
+    protected void endGame(boolean hasWon) {
+        if (hasWon) System.out.println("git gud casul");
+    }
 }

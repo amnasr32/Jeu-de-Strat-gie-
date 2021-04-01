@@ -76,6 +76,7 @@ public class MainView extends Application {
     }
 
     public void cleanPath() {
+        if (chosenAction!=-1) return;
         Hexagon h= gridView.getHexagon(currentEntityView.getX(), currentEntityView.getY());
         if (path!=null) {
             for (byte dir:path) {
@@ -195,5 +196,14 @@ public class MainView extends Application {
     public void removeEntity(int i) {
         gridView.getChildren().remove(entityViews.get(i));
         entityViews.remove(i);
+    }
+
+    public void endGame(boolean hasWon) {
+        resetAction();
+        allowGridViewControls(false);
+        allowActionOnEntities(false);
+        currentEntityView.highlight(false);
+        //chosenAction=-10;
+        //TODO : afficher un écran de fin de partie en fonction de la variable hasWon
     }
 }

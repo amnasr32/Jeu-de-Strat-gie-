@@ -145,4 +145,8 @@ public class Player {
     protected void removeEntity(int i) {
         view.removeEntity(i);
     }
+
+    protected void endGame(boolean hasWon) {
+        view.endGame(hasWon);
+    }
 }
