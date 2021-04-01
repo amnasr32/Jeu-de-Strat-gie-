@@ -14,6 +14,13 @@ public abstract class Entity {
     protected Action[] actions;
     protected Player player;
 
+    public Entity(Player player, int health, int movement) {
+        this.player=player;
+        maxHp = health;
+        hp = health;
+        maxMp = movement;
+        mp = movement;
+    }
 
     public int getX() {
         return x;
@@ -47,6 +54,13 @@ public abstract class Entity {
         if (dmg>0) {
             hp-=dmg;
             if (hp<0) hp=0;
+        }
+    }
+
+    public void heal(int h) {
+        if (h>0) {
+            hp+=h;
+            if (hp>maxHp) hp=maxHp;
         }
     }
 

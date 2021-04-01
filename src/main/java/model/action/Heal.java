@@ -2,12 +2,12 @@ package model.action;
 import model.Cell;
 import model.entity.Entity;
 
-public class Attack extends Action {
-    public Attack(String name, int min, int max, int dmg, int cost) {
+public class Heal extends Action {
+    public Heal(String name, int min, int max, int heal, int cost) {
         super.name=name;
         super.minRange=min;
         super.maxRange=max;
-        super.amount =dmg;
+        super.amount =heal;
         super.cost=cost;
     }
 
@@ -15,14 +15,14 @@ public class Attack extends Action {
     public boolean doAction(Cell c) {
         Entity e = c.getEntity();
         if (e==null) return false;
-        e.damage(amount);
+        e.heal(amount);
         return true;
     }
 
     @Override
     public String getDescription() {
         StringBuilder bld = new StringBuilder();
-        bld.append("dégats: ").append(amount).append("\n");
+        bld.append("soin: ").append(amount).append("\n");
         bld.append("portée: ");
         if (minRange==maxRange) bld.append(minRange).append("\n");
         else bld.append(minRange).append("-").append(maxRange).append("\n");

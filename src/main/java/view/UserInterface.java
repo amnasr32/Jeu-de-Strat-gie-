@@ -108,7 +108,7 @@ public class UserInterface extends Group {
     }
 
     public void updateEntityDetails(EntityView e) {
-        entityDetails.setText("pv: "+e.getHp()+"/"+e.getMaxHp());
+        entityDetails.setText(e.getName()+"\npv: "+e.getHp()+"/"+e.getMaxHp());
         entityDetails.setTranslateX(width/2-entityDetails.getWidth()/2);
     }
 

@@ -74,6 +74,10 @@ public class Player {
         game.selectAction(this, actionNb);
     }
 
+    public void cancelAction() {
+        game.cancelAction(this);
+    }
+
     // ---------------------------------
     //  fonctions qui modifient la vue :
     // ---------------------------------
@@ -100,7 +104,7 @@ public class Player {
             array[i][0]=actions[i].getName();
             array[i][1]=actions[i].getDescription();
         }
-        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this, e.getHp(), e.getMp(), array);
+        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this,e.toString(), e.getHp(), e.getMp(), array);
     }
 
     protected void focusFirstEntity(int i, boolean isCurrentPlayer) {
@@ -129,7 +133,7 @@ public class Player {
         view.resetAction();
     }
 
-    public void updateActionRangeView(LinkedList<int[]> coordList) {
+    protected void updateActionRangeView(LinkedList<int[]> coordList) {
         int[][] coords = new int[coordList.size()][2];
         for (int i = 0; i < coords.length; i++) {
             coords[i][0]=coordList.get(i)[0];
@@ -138,7 +142,11 @@ public class Player {
         view.updateActionRange(coords);
     }
 
-    public void cancelAction() {
-        game.cancelAction(this);
+    protected void removeEntity(int i) {
+        view.removeEntity(i);
+    }
+
+    protected void endGame(boolean hasWon) {
+        view.endGame(hasWon);
     }
 }
