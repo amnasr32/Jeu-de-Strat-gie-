@@ -18,7 +18,7 @@ public class Hexagon extends Group {
 
     public Hexagon(int i, int j, int h, MainView view) {
         super();
-        this.view=view;
+        this.view=view; 
         x=i;
         y=j;
         height=h;
@@ -29,9 +29,9 @@ public class Hexagon extends Group {
         setTranslateZ(i*-13);
         setTranslateX(f+j*15);
         setTranslateY(h*-1.5);
-        makeGreen(false);
+        color(0);
     }
-
+     // FAIRE UNE FONCTIN QUI VERIFIE QUE L'HEXAGON NE POSSEDE PAS D'ENTITÉ!
     private void initOuterCylinder(int h) {
         outerCylinder = new Cylinder(9, 2+h*3, 6);
         outerCylinder.setVisible(false);
@@ -59,12 +59,22 @@ public class Hexagon extends Group {
         return height;
     }
 
-    public void makeGreen(boolean bool) {
+    // 0: par défaut  1: chemin  2: portée
+    public void color(int i) {
         PhongMaterial material = new PhongMaterial();
-        if (bool) {
-            material.setDiffuseColor(Color.LAWNGREEN);
-        } else {
-            material.setDiffuseColor(Color.LIGHTYELLOW);
+        switch (i) {
+            case 0:
+                material.setDiffuseColor(Color.LIGHTYELLOW);
+                break;
+            case 1:
+                material.setDiffuseColor(Color.LAWNGREEN);
+                break;
+            case 2:
+                material.setDiffuseColor(Color.DEEPSKYBLUE);
+                break;
+            default:
+                material.setDiffuseColor(Color.PINK);
+                break;
         }
         material.setSpecularColor(Color.BLACK);
         cylinder.setMaterial(material);
@@ -79,7 +89,7 @@ public class Hexagon extends Group {
             setOnMouseEntered(event -> {
                 setHighlight(true);
                 view.setPointedXY(x,y);
-                view.makePath(x,y);
+                hoverAction();
             });
             setOnMouseExited(event -> {
                 setHighlight(false);
@@ -88,19 +98,29 @@ public class Hexagon extends Group {
         } else {
             setOnMouseEntered( event -> {});
             setOnMouseExited( event -> {});
-            makeGreen(false);
+            color(0);
             setHighlight(false);
         }
     }
 
-    public void allowMovement(boolean bool) {
+    public void allowClickAction(boolean bool) {
         if (bool) {
             setOnMouseClicked( event -> {
-                view.moveModelEntity();
+                clickAction(); // qq chose qui se passe quand je clique 
             });
         } else {
             setOnMouseClicked( event -> {});
         }
+    }
+
+    private void hoverAction() {
+        if (view.getChosenAction()==-1) view.makePath(x,y);
+    }
+
+    void clickAction() {
+        if (view.getChosenAction()==-1) view.moveModelEntity();
+        else if (view.getChosenAction()==-2) view.getCtrl().addEntityToGame(this.getX(), this.getY(),0); 
+        else view.doAction();
     }
 
 }

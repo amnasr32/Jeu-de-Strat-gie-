@@ -12,7 +12,7 @@ public class BuyEntityInterface extends Group{
     Button back;
     int width;
     int height;
-    int nbOfButtons=0;
+    int nbOfButtons=0; 
 	       
 	  
 	BuyEntityInterface(int width, int height, Controller controller){
@@ -27,7 +27,7 @@ public class BuyEntityInterface extends Group{
 	    
 	    
 	  } 
-        
+         
 
 	private void addButton(Button b) {
         getChildren().add(b);

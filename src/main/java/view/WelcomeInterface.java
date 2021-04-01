@@ -38,7 +38,7 @@ public class WelcomeInterface extends Group {
         getChildren().addAll(textFlow);//on ajoute le texte à la zone crée
 
         play.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
-        	
+        	ctrl.getMainView().SetchosenAction(0);
         	ctrl.view.setMainGroup( ( Group)new BuyEntityInterface(width, height, ctrl));
         
         	Scene buyScene= new Scene(ctrl.getmainGroup(),width,height);
@@ -48,6 +48,7 @@ public class WelcomeInterface extends Group {
         	ctrl.initializePlayer();
             ctrl.loadLevel();
             ctrl.mkGameGrid();
+            ctrl.getMainView().allowGridViewControls(true);
         
 	        	
          
