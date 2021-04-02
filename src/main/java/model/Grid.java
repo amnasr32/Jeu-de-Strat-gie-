@@ -185,7 +185,7 @@ public class Grid {
         return false;
     }
 
-    /* Algorithme A*
+    // Algorithme A*
     // renvoie une tableau d'entiers, chaque entier représente la cellule adjascente
     // qu'il faut prendre pour avancer dans le chemin
     // renvoie null si le chemin n'existe pas, ou s'il demande plus de maxlength mouvements
@@ -233,7 +233,7 @@ public class Grid {
         int xCourant = x1;
         int yCourant = y1;
 
-        while(existeOuvert(open) && xCourant !=x2 && yCourant != y2){
+        while(existeOuvert(open) && (xCourant !=x2 || yCourant != y2)){
 
             // On sélectionne la cellule qui a la plus petite valeur distance+heuristic
             // En cas d'égalité, on prend celle qui a la plus petite valeur heuristique
@@ -256,7 +256,7 @@ public class Grid {
             closed[xCourant][yCourant] = true;
 
             // On calcule les distances pour les cellules voisines à celle sélectionnée
-            if(xCourant !=x2 && yCourant != y2){
+            if(xCourant !=x2 || yCourant != y2){
                 for(byte i = 0; i < 6; i++){
 
                     if(getAdjCellCoordinates(xCourant, yCourant, i) != null){
@@ -283,10 +283,10 @@ public class Grid {
         }
 
         // Affichage de la cellule à laquelle l'algorithme s'est arrêté (pour faire des tests)
-        System.out.println(xCourant + " " + yCourant);
+        // System.out.println(xCourant + " " + yCourant);
 
         // Affichage du tableau des distances + les valeurs heuristiques (pour faire des tests)
-        for(int i = 0; i < distance.length; i++){
+        /*for(int i = 0; i < distance.length; i++){
             for(int j = 0; j < distance[i].length; j++){
                 if(distance[i][j] == Integer.MAX_VALUE){
                     System.out.print("x  ");
@@ -303,12 +303,12 @@ public class Grid {
                 
             }
             System.out.println();
-        }
+        }*/
 
         // On crée une liste contenant toutes les directions menant du point d'arrivée au point de départ
         LinkedList<Byte> path = new LinkedList<Byte>();
 
-        while(xCourant != x1 && yCourant != y1){
+        while(xCourant != x1 || yCourant != y1){
             path.add(origin[xCourant][yCourant]);
             int parentCoordinates[] = getAdjCellCoordinates(xCourant, yCourant, origin[xCourant][yCourant]);
             xCourant = parentCoordinates[0];
@@ -327,7 +327,7 @@ public class Grid {
                  b[i] = retournerDirection(path.get(i));
             }
             return b;
-        //}
+        }
         
         //return null;
 
@@ -349,8 +349,8 @@ public class Grid {
                 }
             }
         }
-        return null;
-    }*/
+        return null;*/
+    }
 
     boolean isFull( boolean processed[][]){
         //teste s'il reste encore des sommets à visiter
@@ -386,7 +386,7 @@ public class Grid {
     }
 
     // Algorithme de Dijkstra
-    public byte[] getPath(int x1, int y1, int x2, int y2, int maxLength) {
+    /*public byte[] getPath(int x1, int y1, int x2, int y2, int maxLength) {
         if (x1<0 || x2<0) return null;
         if (maxLength<=0) return null;
 
@@ -481,7 +481,7 @@ public class Grid {
             }
             return b;
         }
-    }
+    }*/
 
     // Bouge l'entité d'une case, et update ses coordoonées internes
     public void move(Entity e, int direction) {
