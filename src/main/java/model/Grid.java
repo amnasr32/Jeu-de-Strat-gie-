@@ -136,13 +136,47 @@ public class Grid {
         return null;
     }
 
+    //Vérifie si un mouvement depuis le cellule x, y dans la direction i est possible
     private boolean isMovePossible(int x, int y, int orientation) {
+        // Vérifie si les coordonnées sont correctes
+        if(x < 0 || y < 0 || x > height || y > width){
+            return false;
+        }
         Cell c = getAdjCell(x, y, orientation);
+        // Renvoie "false" si il n'y a pas de cellule voisine dans la direction "i"
         if (c==null) return false;
+
+        // Vérifie que la différence de hauteur n'est pas trop grande
         int delta = cells[x][y].getHeight() - c.getHeight();
         return (c.getEntity()==null && delta <= 1 && delta >=-1 );
     }
 
+    //Vérifie si un mouvement depuis le cellule x1, y1 vers la cellule x2, y2 est possible
+    private boolean isMovePossible(int x1, int y1, int x2, int y2) {
+        // Vérifie si les coordonnées sont correctes
+        if(x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0 || x1 > height || y1 > width || x2 > height || y2 > width){
+            return false;
+        }
+
+        // Vérifie si les deux cellules sont les unes à côté des autres (ne fonctionne pas)
+        /*int result[];
+        boolean voisin = false;
+        for(int i = 0; i < 6; i++){
+            result = getAdjCellCoordinates(x1, y1, i);
+            if(result[0] == x2 && result[1] == y2){
+                voisin = true;
+            }
+        }
+        if(!voisin){
+            return false;
+        }*/
+
+        // Vérifie que la différence de hauteur n'est pas trop grande
+        int delta = cells[x1][y1].getHeight() - cells[x2][y2].getHeight();
+        return (cells[x2][y2].getEntity() == null && delta <= 1 && delta >=-1 );
+    }
+
+    // Calcule la distance estimée au point final
     double heuristicDistance(int x1, int y1, int x2, int y2){
         int distX = Math.abs(x1-x2);
         int distY = Math.abs(y1-y2);
@@ -167,6 +201,10 @@ public class Grid {
         return meilleureDirection;
     }
 
+    // Directions "retournées" 
+    // 5   0       2   3
+    //4  x  1 --> 1  x  4
+    // 3   2       0   5
     byte retournerDirection(byte direction){
         int result = direction-3;
         if(result < 0){
@@ -175,6 +213,7 @@ public class Grid {
         return (byte)Math.abs(result);
     }
 
+    // Parcourt le tableau "open" et renvoie "true" si elle trouve une valeur "true" à l'intèrieur
     boolean existeOuvert(boolean open[][]){
         for(int i = 0; i < open.length; i++){
             for(int j = 0; j < open[i].length; j++){
@@ -223,9 +262,7 @@ public class Grid {
         for(int i = 0; i < heuristic.length; i++){
             for(int j = 0; j < heuristic[i].length; j++){
                 heuristic[i][j] = heuristicDistance(i, j, x2, y2);
-                // System.out.print(heuristic[i][j] + " ");
             }
-            // System.out.println();
         }
 
         open[x1][y1] = true;
@@ -249,8 +286,6 @@ public class Grid {
                     }
                 }
             }
-
-            // System.out.println("On a sélectionné la meilleure cellule " + xCourant + " " + yCourant);
 
             open[xCourant][yCourant] = false;
             closed[xCourant][yCourant] = true;
@@ -282,32 +317,15 @@ public class Grid {
             
         }
 
-        // Affichage de la cellule à laquelle l'algorithme s'est arrêté (pour faire des tests)
-        // System.out.println(xCourant + " " + yCourant);
-
-        // Affichage du tableau des distances + les valeurs heuristiques (pour faire des tests)
-        /*for(int i = 0; i < distance.length; i++){
-            for(int j = 0; j < distance[i].length; j++){
-                if(distance[i][j] == Integer.MAX_VALUE){
-                    System.out.print("x  ");
-                }
-                else{
-                    int result = distance[i][j] + (int)heuristic[i][j];
-                    if(result < 10){
-                        System.out.print(result + "  ");
-                    }
-                    else{
-                        System.out.print(result + " ");
-                    }
-                }
-                
-            }
-            System.out.println();
-        }*/
+        // Le cas où on ne peut pas atteindre la cellule d'arrivée
+        if(origin[x2][y2] == -1){
+            return null;
+        }
 
         // On crée une liste contenant toutes les directions menant du point d'arrivée au point de départ
         LinkedList<Byte> path = new LinkedList<Byte>();
 
+        // On parcourt le chemin entre le point d'arrivée et le point de départ en ajoutant les directions dans une liste
         while(xCourant != x1 || yCourant != y1){
             path.add(origin[xCourant][yCourant]);
             int parentCoordinates[] = getAdjCellCoordinates(xCourant, yCourant, origin[xCourant][yCourant]);
@@ -317,39 +335,22 @@ public class Grid {
 
         // Nous avons les directions pour aller du point d'arrivée au point de départ mais on a besoin des directions dans l'autre sens
         // On met les éléments de la liste dans un tableau et on retourne chaque direction 
-        // On ne vérifie pas si le chemin est plus long que la valeur maximale pour le moment pour pouvoir faire des tests
         if(path.size() > maxLength){
             return null;
         }
         else{
             byte[] b = new byte[path.size()];
-            for(int i = 0; i < path.size(); i++){
-                 b[i] = retournerDirection(path.get(i));
+            // On ajoute les directions "retournées" et à l'envers dans un tableau de type byte qu'on renvoie
+            // Directions "retournées" 
+            // 5   0       2   3
+            //4  x  1 --> 1  x  4
+            // 3   2       0   5
+            for(int i = path.size() - 1; i >= 0; i--){
+                b[path.size() - i - 1] = retournerDirection(path.get(i));
             }
             return b;
         }
         
-        //return null;
-
-
-        // Vielle version pour des chemins de longueur 1
-        /*byte[] b = new byte[path.size()];
-        for(int i = 0; i < path.size(); i++){
-            b[i] = path.get(i);
-        }
-
-        byte[] b = new byte[1];
-        for (int i = 0; i < 6; i++) {
-            if (cells[x2][y2]==getAdjCell(x1,y1,i)) {
-                if (isMovePossible(x1,y1,i)) {
-                    //System.out.println(getAdjCellCoordinates(x1,y1,i)[0]);
-                    //System.out.println(getAdjCellCoordinates(x1,y1,i)[1]);
-                    b[0]=(byte)i;
-                    return b;
-                }
-            }
-        }
-        return null;*/
     }
 
     boolean isFull( boolean processed[][]){
@@ -379,8 +380,6 @@ public class Grid {
                 }
             }
         }
-        
-        // System.out.println("Distance minimale minDistance: " + result[0] + ", " + result[1]);
 
         return result;
     }
@@ -442,8 +441,7 @@ public class Grid {
                     if(isMovePossible(celluleCourante[0], celluleCourante[1], i) && !processed[xAdjCell][yAdjCell]){
                         
                         // On vérifie si il existe un raccourci à chaque cellule voisine en passant par la cellule sélectionnée
-                        if((distance[celluleCourante[0]][celluleCourante[1]] + 1 < distance[xAdjCell][yAdjCell] ) ){
-                            //System.out.println("J'actualise le chemin");
+                        if((distance[celluleCourante[0]][celluleCourante[1]] + 1 < distance[xAdjCell][yAdjCell] && isMovePossible(celluleCourante[0], celluleCourante[1], xAdjCell, yAdjCell ))){
                             distance[xAdjCell][yAdjCell] = distance[celluleCourante[0]][celluleCourante[1]] + 1;
                             origin[xAdjCell][yAdjCell] = retournerDirection(i);
                         }
@@ -452,6 +450,11 @@ public class Grid {
                 
             }
 
+        }
+
+        // Le cas où on ne peut pas atteindre la cellule d'arrivée
+        if(origin[x2][y2] == -1){
+            return null;
         }
 
         celluleCourante[0] = x2;
@@ -468,7 +471,6 @@ public class Grid {
             celluleCourante[1] = parentCoordinates[1];
         }
 
-
         // Nous avons les directions pour aller du point d'arrivée au point de départ mais on a besoin des directions dans l'autre sens
         // On met les éléments de la liste dans un tableau et on retourne chaque direction 
         if(path.size() > maxLength){
@@ -476,11 +478,17 @@ public class Grid {
         }
         else{
             byte[] b = new byte[path.size()];
-            for(int i = 0; i < path.size(); i++){
-                b[i] = retournerDirection(path.get(i));
+            // On ajoute les directions "retournées" et à l'envers dans un tableau de type byte qu'on renvoie
+            // Directions "retournées" 
+            // 5   0       2   3
+            //4  x  1 --> 1  x  4
+            // 3   2       0   5
+            for(int i = path.size() - 1; i >= 0; i--){
+                b[path.size() - i - 1] = retournerDirection(path.get(i));
             }
             return b;
         }
+        
     }*/
 
     // Bouge l'entité d'une case, et update ses coordoonées internes
