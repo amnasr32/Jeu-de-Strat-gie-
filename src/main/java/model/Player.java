@@ -80,6 +80,10 @@ public class Player {
         game.cancelAction(this);
     }
 
+    public void addEntityToGame(int x, int y, int entity_type) {
+        game.tryToAddEntityToGame(this, x,y,entity_type);
+    }
+
     // ---------------------------------
     //  fonctions qui modifient la vue :
     // ---------------------------------
@@ -97,10 +101,6 @@ public class Player {
             }
         }
         return heightGrid;
-    }
-    
-    public void addEntityTogame( int x, int y, int playerNb,int entity_type) {
-    	game.TryToaddEntitytoGame(x,y,playerNb,entity_type);
     }
 
     protected void addEntityToView(Entity e) {
@@ -155,6 +155,7 @@ public class Player {
         view.endGame(hasWon);
     }
 
-
-    
+    public void canPressReadyButton(boolean b) {
+        view.canPressReadyButton(b);
+    }
 }

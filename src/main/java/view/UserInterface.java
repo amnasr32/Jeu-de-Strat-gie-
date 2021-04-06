@@ -131,10 +131,12 @@ public class UserInterface extends Group {
 
         	ctrl.getMainView().SetchosenAction(-3);
         	
-        	 if (ctrl.nbEntity()>=4) {
-    	         buy.setVisible(false);
-    	         start.setDisable(false);}
-         	/**Apres avoir choisi une entité**/
+        	/*
+        	if (ctrl.nbEntity()>=4) {
+    	        buy.setVisible(false);
+    	        start.setDisable(false);
+        	} */
+         	/* Apres avoir choisi une entité */
          	selection.ifPresent(str-> {
 
             	ctrl.getMainView().SetchosenAction(-2);
@@ -160,6 +162,10 @@ public class UserInterface extends Group {
 
 
             
+    }
+
+    public void canPressReadyButton(boolean b) {
+        start.setDisable(!b);
     }
 
     private void initEntityDetails() {

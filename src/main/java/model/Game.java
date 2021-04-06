@@ -106,11 +106,12 @@ public class Game implements Serializable {
     //à faire : changer le nom de la fonction
     //on suppose qu'on a que des soldier
     //chaque joueur pose ses entités
-    public void TryToaddEntitytoGame(int x, int y, int playerNb,int entity_type) {
+    public void tryToAddEntityToGame(Player player, int x, int y, int entity_type) {
     	
-    	if(nb>=4) return;
-    	int h=grid.getHeight();
-        int w=grid.getWidth();
+    	if(!canAddEntity(player)) return;
+
+    	//int h=grid.getHeight();
+        //int w=grid.getWidth();
         if (entity_type==0) { //entity_type c'est pour indiquer quel type d'entier à ajouter (par exemple 0 pour soldier)
         	Entity e = new Soldier(players[0]);
         	addEntityToGame(e, x,y); 
@@ -122,9 +123,28 @@ public class Game implements Serializable {
         	addEntityToGame(e1, x,y); 
         	nb++;
         }
+
+        // le joueur n'as le droit de dire qu'il est prêt à jouer que s'il a au moins une entité
+        player.canPressReadyButton( hasAtLeastOneEntityPlaced(player) );
     }
 
-    
+    private boolean hasAtLeastOneEntityPlaced(Player player) {
+        for (Entity e:playableEntities) {
+            if (e.getPlayer()==player) return true;
+        }
+        return false;
+    }
+
+    // vérifie que le joueur a au plus 4 entités en jeu
+    private boolean canAddEntity(Player player) {
+        int i=0;
+        for (Entity e:playableEntities) {
+            if (e.getPlayer()==player) i++;
+        }
+        return i<4;
+    }
+
+
     // renvoie true si le jeu est fini
     // vérifie que seule une équipe ait encore des unités en jeu
     private boolean gameIsOver() {

@@ -234,6 +234,10 @@ public class MainView extends Application {
         //chosenAction=-10;
         //TODO : afficher un écran de fin de partie en fonction de la variable hasWon
     }
+
+    public void canPressReadyButton(boolean b) {
+        ui.canPressReadyButton(b);
+    }
 }
 
 	
