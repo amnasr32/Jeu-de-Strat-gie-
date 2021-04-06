@@ -31,7 +31,6 @@ public class Controller {
 
     public void startGame() { 
         player.start();
-        System.out.println(view.chosenAction);
     }
 
     public void endTurn() {
