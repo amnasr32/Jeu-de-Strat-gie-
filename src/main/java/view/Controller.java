@@ -63,12 +63,6 @@ public class Controller {
     public int nbEntity() {
     	return player.getnbEntity();
     }
-
-    //ajouter une méthode qui permet d'ajouter une entity dans game
-     //vérifier si je peux l'ajouter 
-   /* public void addEntityToView(Entity e) {
-    	player.addEntityToView(e);
-    }*/
     //on récupere le primaryStage de mainView
     public Stage getStage() {
     	return this.view.getPrimaryStage();

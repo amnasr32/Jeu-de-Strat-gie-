@@ -122,7 +122,6 @@ public class Hexagon extends Group {
 
         else if (view.getChosenAction()==-2) {
         	view.getCtrl().addEntityToGame(this.getX(), this.getY(),0);
-        	//System.out.println(view.getCtrl().nbEntity());
         }
 
         else if(view.chosenAction>=0) {  

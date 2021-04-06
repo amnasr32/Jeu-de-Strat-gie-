@@ -6,8 +6,6 @@ import javafx.scene.text.Font;
 
 public class BuyEntityInterface extends Group{
 
-
-	
 	Controller ctrl;
     Button back;
     int width;
@@ -22,11 +20,8 @@ public class BuyEntityInterface extends Group{
 	    ctrl=controller;
 	    back = makeButton("Back");
 	    addButton(back);
-	    
 	    Scene entity=new Scene (ctrl.getmainGroup(),width,height);
-	    
-	    
-	  } 
+   } 
          
 
 	private void addButton(Button b) {

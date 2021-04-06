@@ -52,11 +52,6 @@ public class MainView extends Application {
         primaryStage.setScene(mainScene);
         primaryStage.show();
        
-     
-       
-    }
-    public boolean  testIsOk() {
-     return (ctrl.nbEntity()>=1);
     }
     public Controller getCtrl() {
     	return this.ctrl;
@@ -71,8 +66,6 @@ public class MainView extends Application {
     public Group getmainGroup() {
     	return this.mainGroup;
     }
-    
-    
     //Getter pour le primaryStage du MainView
     
     public Stage getPrimaryStage() {

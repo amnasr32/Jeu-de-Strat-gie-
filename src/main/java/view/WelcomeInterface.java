@@ -49,9 +49,7 @@ public class WelcomeInterface extends Group {
             ctrl.mkGameGrid();
             ctrl.getMainView().allowGridViewControls(true);
         
-	        	
-         
-        });
+	    });
         ctrl.getStage().show();
     }
     

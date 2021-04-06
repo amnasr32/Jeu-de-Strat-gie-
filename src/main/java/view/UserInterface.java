@@ -30,7 +30,6 @@ public class UserInterface extends Group {
     Button attack;
     Button start;
     Button buy;
-    int nb=0;
     Group actions;
     ActionButton[] actionButtons;
     Label entityDetails;
@@ -127,37 +126,21 @@ public class UserInterface extends Group {
          	choice.show();
          	choice.close();        	
 
-            
-
-        	ctrl.getMainView().SetchosenAction(-3);
+            ctrl.getMainView().SetchosenAction(-3);
         	
-        	/*
-        	if (ctrl.nbEntity()>=4) {
-    	        buy.setVisible(false);
-    	        start.setDisable(false);
-        	} */
          	/* Apres avoir choisi une entité */
          	selection.ifPresent(str-> {
-
-            	ctrl.getMainView().SetchosenAction(-2);
-            	
-               	  System.out.println(ctrl.nbEntity());
-               	 
-          	//}
-            	// on set l'action au faite de l'ajout 
-            	//il faut vérifier le nombre d'entités à rajouter et ajouter la condition : apres avoir cliqué sur ok on ne peut rajouter qu'une seule entité
-
-         	});      	
+         		ctrl.getMainView().SetchosenAction(-2);
+            	System.out.println(ctrl.nbEntity());
+               	
+         	    });      	
 
          	});	
            
-	         
-            start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+	        start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 start.setVisible(false);
      			ctrl.startGame();
-
-	        
-        	});	
+	        });	
         
 
 
@@ -214,9 +197,6 @@ public class UserInterface extends Group {
         }
     }
 
-
-
-    
     private void addButton(Button b) {
         getChildren().add(b);
         b.setTranslateX(nbOfButtons*200);

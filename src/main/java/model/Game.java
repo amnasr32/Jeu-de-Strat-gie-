@@ -103,16 +103,12 @@ public class Game implements Serializable {
         }
     }
 
-    //à faire : changer le nom de la fonction
-    //on suppose qu'on a que des soldier
+   
     //chaque joueur pose ses entités
     public void tryToAddEntityToGame(Player player, int x, int y, int entity_type) {
-    	
     	if(!canAddEntity(player)) return;
-
-    	//int h=grid.getHeight();
-        //int w=grid.getWidth();
-        if (entity_type==0) { //entity_type c'est pour indiquer quel type d'entier à ajouter (par exemple 0 pour soldier)
+    	//Penser à faire un switch au lieu de if 
+        if (entity_type==0) { //entity_type c'est pour indiquer quel type d'entier à ajouter (par exemple 0 pour soldier 1 pour Knight)
         	Entity e = new Soldier(players[0]);
         	addEntityToGame(e, x,y); 
         	nb++;
