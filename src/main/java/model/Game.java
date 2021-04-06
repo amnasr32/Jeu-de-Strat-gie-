@@ -24,12 +24,12 @@ public class Game implements Serializable {
     private int entInd; // index de l'entité courante
 
 
-    public Game(Grid grid, Player ... playerlist) {
+    public Game(Grid grid, Player ... playerList) {
         playableEntities = new LinkedList<>();
         this.grid=grid;
 
         players = new LinkedList<>();
-        for (Player p:playerlist) {
+        for (Player p:playerList) {
             addPlayer(p);
         }
     }
@@ -45,9 +45,7 @@ public class Game implements Serializable {
 
     // un bouton dit si le joueur a fini de poser ses entités une fois que les joueurs ont cliqué
     void start() {
-        System.out.println("aaa");
         if (allPlayersAreReady()) {
-            System.out.println("bbb");
             gameState = 1;
             firstRound();
         }

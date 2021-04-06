@@ -19,7 +19,7 @@ public class UserInterface extends Group {
     MainView view;
     Controller ctrl;
     Button endTurn;
-    Button attack;
+    //Button attack;
     Button start;
     Button buy;
     Group actions;
@@ -188,5 +188,16 @@ public class UserInterface extends Group {
         getChildren().add(b);
         b.setTranslateX(nbOfButtons*200);
         nbOfButtons++;
+    }
+
+    // à appeler quand le jeu commence
+    public void hidePreGameButtons() {
+        start.setVisible(false);
+        buy.setVisible(false);
+    }
+
+    // à appeler à la fin du jeu
+    public void hideAllGameButtons() {
+        actions.setVisible(false);
     }
 }

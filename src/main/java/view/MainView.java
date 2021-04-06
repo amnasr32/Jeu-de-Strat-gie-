@@ -145,6 +145,7 @@ public class MainView extends Application {
 
 
     public void focusFirstEntity(int i) {
+        ui.hidePreGameButtons();
         currentEntityView = entityViews.get(i);
         currentEntityView.highlight(true);
     }
@@ -230,7 +231,7 @@ public class MainView extends Application {
         allowGridViewControls(false);
         allowActionOnEntities(false);
         currentEntityView.highlight(false);
-        //chosenAction=-10;
+        ui.hideAllGameButtons();
         //TODO : afficher un écran de fin de partie en fonction de la variable hasWon
     }
 
