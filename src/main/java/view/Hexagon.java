@@ -105,7 +105,7 @@ public class Hexagon extends Group {
     public void allowClickAction(boolean bool) {
         if (bool) {
             setOnMouseClicked( event -> {
-                clickAction(); // qq chose qui se passe quand je clique 
+                clickAction();
             });
         } else {
             setOnMouseClicked( event -> {});

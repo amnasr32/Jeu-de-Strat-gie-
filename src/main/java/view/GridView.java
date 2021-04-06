@@ -78,7 +78,7 @@ public class GridView extends Group {
     public void addEntity(EntityView u, int x, int z) {
         u.setTranslateX(hexagons[x][z].getTranslateX());
         u.setTranslateZ(hexagons[x][z].getTranslateZ());
-        u.setTranslateY(hexagons[x][z].getTranslateY()-6.5);
+        u.setTranslateY(hexagons[x][z].getTranslateY()-6.5-hexagons[x][z].height*1.8);
         getChildren().add(u);
     }
 
@@ -87,7 +87,7 @@ public class GridView extends Group {
         u.updateCoords(direction);
         u.setTranslateX(destination.getTranslateX());
         u.setTranslateZ(destination.getTranslateZ());
-        u.setTranslateY(destination.getTranslateY()-6.5-destination.height*2);
+        u.setTranslateY(destination.getTranslateY()-6.5-destination.height*1.8);
     }
 
     public Hexagon getHexagon(int x, int y) {

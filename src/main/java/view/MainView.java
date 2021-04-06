@@ -1,8 +1,11 @@
 package view;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.paint.Paint;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
@@ -32,8 +35,7 @@ public class MainView extends Application {
 
     int pointedX=-1;
     int pointedY=-1;
-    int chosenAction=-1; 
-//playergameaddentitytogame
+    int chosenAction=-1;
 
     byte[] path=null;
 
@@ -41,6 +43,9 @@ public class MainView extends Application {
     public void start(Stage primaryStage) throws Exception {
     	mainGroup= new Group();
     	this.primaryStage=primaryStage;
+        //Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
+        mainGroup = new Group();
+        mainScene=new Scene(mainGroup,width,height);
         ctrl = new Controller(this);
      
         
@@ -56,14 +61,14 @@ public class MainView extends Application {
     public Controller getCtrl() {
     	return this.ctrl;
     }
-    public void SetchosenAction(int n) { //set l'action 
+    public void setChosenAction(int n) { //set l'action
     	this.chosenAction=n;
     }
     public void setMainGroup(Group g) {
     	this.mainGroup=g;
     }
     //Getter pour le mainGroup 
-    public Group getmainGroup() {
+    public Group getMainGroup() {
     	return this.mainGroup;
     }
     //Getter pour le primaryStage du MainView
@@ -71,6 +76,7 @@ public class MainView extends Application {
     public Stage getPrimaryStage() {
     	return this.primaryStage;
     }
+
     public int getChosenAction() {
         return chosenAction;
     }
@@ -96,10 +102,10 @@ public class MainView extends Application {
         }
     }
 
-    public void cleanPath() { //une condition pour vérifier si currentEntity n'est pas null
-    	if (chosenAction!=-1) return;
-        Hexagon h= gridView.getHexagon(currentEntityView.getX(), currentEntityView.getY());
-        if (path!=null) {
+
+    public void cleanPath() {
+        if (path!=null && chosenAction==-1) {
+            Hexagon h = gridView.getHexagon(currentEntityView.getX(), currentEntityView.getY());
             for (byte dir:path) {
                 h= gridView.getAdjHexagon(h,dir);
                 if(h!=null) h.color(0);
@@ -214,6 +220,7 @@ public class MainView extends Application {
         gridView.setCoords(newCoords);
         gridView.updateSelectedHex();
     }
+
     public void removeEntity(int i) {
         gridView.getChildren().remove(entityViews.get(i));
         entityViews.remove(i);
@@ -231,6 +238,7 @@ public class MainView extends Application {
     public void canPressReadyButton(boolean b) {
         ui.canPressReadyButton(b);
     }
+
 }
 
 	

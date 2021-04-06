@@ -5,7 +5,7 @@ import model.Player;
 
 public class Soldier extends Entity {
 
-	public Soldier(int x, int y, Player player) {
+    public Soldier(int x, int y, Player player) {
         super(player, 10, 4);
         super.x=x;
         super.y=y;

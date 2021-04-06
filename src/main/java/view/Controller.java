@@ -10,6 +10,8 @@ public class Controller {
     Player player;
     MainView view;
 
+    public Controller() {}
+
     public Controller(MainView view) {
         this.view = view;
     }
@@ -68,12 +70,10 @@ public class Controller {
     	return this.view.getPrimaryStage();
     }
     //On récupere le mainGroup dans le quel on va make la grid
-    public Group getmainGroup() {
-    	return this.view.getmainGroup();
+    public Group getMainGroup() {
+    	return this.view.getMainGroup();
     }
     public MainView getMainView() {
     	return this.view;
     }
  }
- 
-

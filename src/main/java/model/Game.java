@@ -10,9 +10,6 @@ import java.util.LinkedList;
 
 public class Game implements Serializable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 7373047453891668295L;
 	private Grid grid;
     private Player[] players;
@@ -27,14 +24,13 @@ public class Game implements Serializable {
     private int entInd; // index de l'entité courante
 
 
-    public Game(Grid grid, Player player1, Player player2) {
-        //TODO : permettre l'initialisation pour un nombre quelconque de joueurs
+    public Game(Grid grid, Player ... playerlist) {
         playableEntities = new LinkedList<>();
         this.grid=grid;
-        players = new Player[2];
-        players[0]=player1;
-        players[1]=player2;
-        entTeam=new int[2];
+
+        players = new Player[playerlist.length];
+        // copie playerList dans players
+        System.arraycopy(playerlist, 0, players, 0, playerlist.length);
     }
 
     protected Grid getGrid() {
@@ -42,9 +38,9 @@ public class Game implements Serializable {
     }
  // un bouton dit si le joueur a fini de posé ses entité    une fois que les joueurs ont cliqué
     void start() {
-       firstRound();      
-       gameState=1;
-    	
+        initPlayableEntities();
+        gameState=1;
+        firstRound();
     }
 
     // premier tour de jeu
@@ -58,15 +54,15 @@ public class Game implements Serializable {
         }
     }
 
- // vérifie qu'un joueur ait le droit de jouer, càd que c'est son tour
+    // vérifie qu'un joueur ait le droit de jouer, càd que c'est son tour
     // et que gamestate == 1
     private boolean canPlay(Player p) {
         return (currentPlayer==p && gameState==1);
     }
 
     // permet de passer au tour de l'entité suivante
-    protected void nextRound(Player pp) {
-        if (currentPlayer!=pp) return; // seul le joueur courant peut effectuer l'action
+    protected void nextRound(Player player) {
+        if (!canPlay(player)) return; // seul le joueur courant peut effectuer l'action
         grid.clearCoordList();
         entInd=(entInd+1)%playableEntities.size();
         currentEntity=playableEntities.get(entInd);
@@ -91,8 +87,8 @@ public class Game implements Serializable {
         addEntityToGame(e3, 4,3);
         addEntityToGame(e4, h-4,w-5);
     }
-    //savoir quelle entity lz joueur essaye d'ajouter
- // permet d'ajouter un entité au model et à la view de tous les joueurs
+
+    // permet d'ajouter un entité au model et à la view de tous les joueurs
     private void addEntityToGame(Entity e, int x, int y) {
         if (grid.getCell(x,y).getEntity()!=null) return; //yeet
         e.updateCoords(x, y);
@@ -104,19 +100,19 @@ public class Game implements Serializable {
     }
 
    
-    //chaque joueur pose ses entités
+    //un joueur essaie de poser une entité
     public void tryToAddEntityToGame(Player player, int x, int y, int entity_type) {
     	if(!canAddEntity(player)) return;
-    	//Penser à faire un switch au lieu de if 
+    	//TODO Penser à faire un switch au lieu de if
         if (entity_type==0) { //entity_type c'est pour indiquer quel type d'entier à ajouter (par exemple 0 pour soldier 1 pour Knight)
         	Entity e = new Soldier(players[0]);
-        	addEntityToGame(e, x,y); 
+        	addEntityToGame(e,x,y);
         	nb++;
 
         }
         else {
-        	Entity e1 = new Knight(players[0]);
-        	addEntityToGame(e1, x,y); 
+            Entity e = new Knight(players[0]);
+        	addEntityToGame(e, x,y);
         	nb++;
         }
 

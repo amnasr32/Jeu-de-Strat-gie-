@@ -1,20 +1,12 @@
 package view;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderImage;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import java.awt.*;
 import java.util.Optional;
 
 
@@ -89,33 +81,32 @@ public class UserInterface extends Group {
     }
 
     UserInterface(int width, int height, Controller controller, MainView view) {
-    	 super();
-         this.width=width;
-         this.height=height;
-         ctrl=controller;
-         this.view=view;
+        super();
+        this.width=width;
+        this.height=height;
+        ctrl=controller;
+        this.view=view;
 
 
-         endTurn = makeButton("Fin du tour",0);
-         attack = makeButton("attaque !");
-         start = makeButton("Commencer ");
-         buy=makeButton("acheter");
-         addButton(buy);
-         addButton(start);
-         start.setVisible(true);
-         start.setDisable(true);
-	    
+        endTurn = makeButton("Fin du tour",0);
+        start = makeButton("Commencer",0);
+        buy=makeButton("acheter",1);
+        addButton(buy);
+        addButton(start);
+        start.setVisible(true);
+        start.setDisable(true);
 
-         actions=new Group();
-         showActionButtons(false);
-         getChildren().add(actions);
-         initEntityDetails();
-        
-         endTurn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-             ctrl.endTurn();
-         });
-        
-         buy.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+
+        actions=new Group();
+        showActionButtons(false);
+        getChildren().add(actions);
+        initEntityDetails();
+
+        endTurn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+         ctrl.endTurn();
+        });
+
+        buy.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
          	String [] entity= {"Sphére   100€","Autre"};
          	ChoiceDialog<String> choice= new ChoiceDialog<>(entity[0], entity);
@@ -126,25 +117,22 @@ public class UserInterface extends Group {
          	choice.show();
          	choice.close();        	
 
-            ctrl.getMainView().SetchosenAction(-3);
+            ctrl.getMainView().setChosenAction(-3);
         	
          	/* Apres avoir choisi une entité */
          	selection.ifPresent(str-> {
-         		ctrl.getMainView().SetchosenAction(-2);
+         		ctrl.getMainView().setChosenAction(-2);
             	System.out.println(ctrl.nbEntity());
                	
          	    });      	
 
          	});	
            
-	        start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                start.setVisible(false);
-     			ctrl.startGame();
-	        });	
-        
+        start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            start.setVisible(false);
+            ctrl.startGame();
+        });
 
-
-            
     }
 
     public void canPressReadyButton(boolean b) {
@@ -159,7 +147,7 @@ public class UserInterface extends Group {
     }
 
     public void updateEntityDetails(EntityView e) {
-        entityDetails.setText("pv: "+e.getHp()+"/"+e.getMaxHp());
+        entityDetails.setText(e.getName()+"\npv: "+e.getHp()+"/"+e.getMaxHp());
         entityDetails.setTranslateX(width/2-entityDetails.getWidth()/2);
     }
 
@@ -192,8 +180,10 @@ public class UserInterface extends Group {
     }
 
     public void resetActionButtons() {
-        for (ActionButton ab: actionButtons) {
-            ab.isSelected=false;
+        if (actionButtons!=null) {
+            for (ActionButton ab : actionButtons) {
+                ab.isSelected = false;
+            }
         }
     }
 
@@ -202,13 +192,4 @@ public class UserInterface extends Group {
         b.setTranslateX(nbOfButtons*200);
         nbOfButtons++;
     }
-
-    private Button makeButton(String name) {
-        Button b = new Button(name);
-        b.setFont(new Font(20));
-        b.setTranslateX(160); // hard codé, à changer
-        b.setTranslateY(height-100); // hard codé, à changer
-        return b;
-    }
-         }
-
+}

@@ -20,7 +20,7 @@ public class BuyEntityInterface extends Group{
 	    ctrl=controller;
 	    back = makeButton("Back");
 	    addButton(back);
-	    Scene entity=new Scene (ctrl.getmainGroup(),width,height);
+	    //Scene entity=new Scene (ctrl.getMainGroup(),width,height); je sais pas à quoi ça sert et ça cause un bug
    } 
          
 
