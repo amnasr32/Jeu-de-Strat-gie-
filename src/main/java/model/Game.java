@@ -35,8 +35,8 @@ public class Game implements Serializable {
 
     void start() {
         initPlayableEntities();
-        firstRound();
         gameState=1;
+        firstRound();
     }
 
     // premier tour de jeu
