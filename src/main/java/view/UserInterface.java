@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import java.awt.*;
 import java.util.Optional;
 
+
 /**
  * L'interface utilisateur est tout les éléments
  * (interactifs ou non) en 2D lors du jeu, comme les
@@ -29,7 +30,7 @@ public class UserInterface extends Group {
     Button attack;
     Button start;
     Button buy;
-
+    int nb=0;
     Group actions;
     ActionButton[] actionButtons;
     Label entityDetails;
@@ -100,54 +101,71 @@ public class UserInterface extends Group {
          attack = makeButton("attaque !");
          start = makeButton("Commencer ");
          buy=makeButton("acheter");
-        /* addButton(start);
-         addButton(endTurn); 
-         addButton(attack);*/
          addButton(buy);
+         addButton(start);
+         start.setVisible(false);
+
          actions=new Group();
          showActionButtons(false);
          getChildren().add(actions);
          initEntityDetails();
-
+        
          endTurn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
              ctrl.endTurn();
          });
-         
+     	
          buy.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+
+            
          	String [] entity= {"Sphére   100€","Autre"};
          	ChoiceDialog<String> choice= new ChoiceDialog<>(entity[0], entity);
          	choice.setTitle("Buy entity");
          	choice.setHeaderText("Select an entity to buy");
          	choice.setContentText("Entity:");
          	Optional<String> selection=  choice.showAndWait();
+         	
          	choice.show();
-     	    Hexagon h =  ctrl.getMainView().gridView.getHexagon(ctrl.getMainView().pointedX, ctrl.getMainView().pointedY);
-        	ctrl.getMainView().SetchosenAction(-2);
-
+         	choice.close();
+            Hexagon h =  ctrl.getMainView().gridView.getHexagon(ctrl.getMainView().pointedX, ctrl.getMainView().pointedY);
+            
+        	ctrl.getMainView().SetchosenAction(-3);
+        	if (ctrl.nbEntity()==3) {
+	         	  System.out.println(ctrl.nbEntity());
+	              buy.setVisible(false);
+	              start.setVisible(true);
+	   	 } 
+        	 
+        	
          	/**Apres avoir choisi une entité**/
          	selection.ifPresent(str-> {
-            	ctrl.getMainView().SetchosenAction(-2); // on set l'action au faite de l'ajout 
+
+            	ctrl.getMainView().SetchosenAction(-2);
+            	
+            	// on set l'action au faite de l'ajout 
             	//il faut vérifier le nombre d'entités à rajouter et ajouter la condition : apres avoir cliqué sur ok on ne peut rajouter qu'une seule entité
 
-         		
-         		
-         		
          		System.out.println("Selection:"+ str);
+
+         		
+              
+         	 
          	  
          	});
-       	    h.allowClickAction(false);
+	         	
 
-         			
-         	});		
-            
-      
-         
-       /*
+         	});	
+	         
+            start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                start.setVisible(false);
+
+     			ctrl.startGame();
+
+	        
+        	});	
         
-		actions=new Group();
-        showActionButtons(false);
-        getChildren().add(actions);
-        initEntityDetails();*/
+
+
+            
     }
 
     private void initEntityDetails() {

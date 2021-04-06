@@ -29,6 +29,7 @@ public class Controller {
 
     public void startGame() { 
         player.start();
+        System.out.println(view.chosenAction);
     }
 
     public void endTurn() {
@@ -55,9 +56,12 @@ public class Controller {
         player.cancelAction();
     }
 
-    public void addEntityToGame( int x, int y, int playerNb) {
-    	player.addEntityTogame( x,  y,  playerNb);
+    public void addEntityToGame( int x, int y, int playerNb,int entity_type) {
+    	player.addEntityTogame( x,  y,  playerNb,entity_type);
     
+    }
+    public int nbEntity() {
+    	return player.getnbEntity();
     }
     //ajouter une méthode qui permet d'ajouter une entity dans game
      //vérifier si je peux l'ajouter 

@@ -52,6 +52,9 @@ public class Player {
     public void start() {
         game.start();
     }
+    public int getnbEntity() {
+    	return game.nb;
+    }
 
     public void endTurn() {
         game.nextRound(this);
@@ -73,6 +76,9 @@ public class Player {
     public void selectAction(int actionNb) {
         game.selectAction(this, actionNb);
     }
+    public void cancelAction() {
+        game.cancelAction(this);
+    }
 
     // ---------------------------------
     //  fonctions qui modifient la vue :
@@ -93,8 +99,8 @@ public class Player {
         return heightGrid;
     }
     
-    public void addEntityTogame( int x, int y, int playerNb) {
-    	game.addEntitytoGame(x,y,playerNb);
+    public void addEntityTogame( int x, int y, int playerNb,int entity_type) {
+    	game.addEntitytoGame(x,y,playerNb,entity_type);
     }
 
     protected void addEntityToView(Entity e) {
@@ -104,7 +110,7 @@ public class Player {
             array[i][0]=actions[i].getName();
             array[i][1]=actions[i].getDescription();
         }
-        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this, e.getHp(), e.getMp(), array);
+        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this,e.toString(), e.getHp(), e.getMp(), array);
     }
 
     protected void focusFirstEntity(int i, boolean isCurrentPlayer) {
@@ -141,8 +147,14 @@ public class Player {
         }
         view.updateActionRange(coords);
     }
-
-    public void cancelAction() {
-        game.cancelAction(this);
+    protected void removeEntity(int i) {
+        view.removeEntity(i);
     }
+
+    protected void endGame(boolean hasWon) {
+        view.endGame(hasWon);
+    }
+
+
+    
 }

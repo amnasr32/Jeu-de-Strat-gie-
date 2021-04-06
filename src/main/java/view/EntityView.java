@@ -26,15 +26,17 @@ public class EntityView extends Group {
     private int mp;
 
     private final String[] actionNames;
-    private final String[] actionDesc; 
+    private final String[] actionDesc;
+    private final String name;
 
-    EntityView(MainView view, int x, int y, boolean isAlly, int hp, int mp, String[][] actions) {
+    EntityView(MainView view, int x, int y, boolean isAlly, String name, int hp, int mp, String[][] actions) {
         super();
         this.view=view;
         this.hp=hp;
         maxHp=hp;
         this.mp=mp;
         maxMp=mp;
+        this.name=name;
 
         initSphere();
         initCylinder(isAlly);
@@ -101,6 +103,10 @@ public class EntityView extends Group {
 
     public String[] getActionDesc() {
         return actionDesc;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void updateCoords(int direction) {

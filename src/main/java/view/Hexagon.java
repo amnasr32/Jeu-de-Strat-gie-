@@ -15,7 +15,6 @@ public class Hexagon extends Group {
     int x, y, height;
 
     MainView view;
-
     public Hexagon(int i, int j, int h, MainView view) {
         super();
         this.view=view; 
@@ -118,9 +117,18 @@ public class Hexagon extends Group {
     }
 
     void clickAction() {
+        if (view.getCtrl().nbEntity()==4) view.SetchosenAction(-3);
+
         if (view.getChosenAction()==-1) view.moveModelEntity();
-        else if (view.getChosenAction()==-2) view.getCtrl().addEntityToGame(this.getX(), this.getY(),0); 
-        else view.doAction();
-    }
+        else if (view.getChosenAction()==-2) {
+        	view.getCtrl().addEntityToGame(this.getX(), this.getY(),0,0); 
+            view.SetchosenAction(-3);// -3
+        }
+
+        else if(view.chosenAction>=0) {  
+        		view.doAction();
+        }
+        }
+    
 
 }

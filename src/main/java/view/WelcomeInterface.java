@@ -40,7 +40,6 @@ public class WelcomeInterface extends Group {
         play.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
         	ctrl.getMainView().SetchosenAction(0);
         	ctrl.view.setMainGroup( ( Group)new BuyEntityInterface(width, height, ctrl));
-        
         	Scene buyScene= new Scene(ctrl.getmainGroup(),width,height);
         	buyScene.setFill((Paint)(Color.SANDYBROWN));
         	ctrl.getStage().setScene(buyScene);

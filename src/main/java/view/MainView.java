@@ -32,7 +32,7 @@ public class MainView extends Application {
 
     int pointedX=-1;
     int pointedY=-1;
-    int chosenAction=-1; //l'initialiser à -2
+    int chosenAction=-1; 
 //playergameaddentitytogame
 
     byte[] path=null;
@@ -136,11 +136,12 @@ public class MainView extends Application {
         mainGroup.getChildren().add(ui);
     }
 
-    public void addEntity(int x, int y, boolean isAlly, int hp, int mp, String[][]actions) {
-        EntityView u = new EntityView(this, x,y,isAlly, hp, mp, actions);
+    public void addEntity(int x, int y, boolean isAlly,String name, int hp, int mp, String[][]actions) {
+        EntityView u = new EntityView(this, x,y,isAlly,name, hp, mp, actions);
         entityViews.add(u);
-        gridView.addEntity(u,x,y); 
+        gridView.addEntity(u,x,y);
     }
+
 
     public void focusFirstEntity(int i) {
         currentEntityView = entityViews.get(i);
@@ -217,7 +218,22 @@ public class MainView extends Application {
         gridView.setCoords(newCoords);
         gridView.updateSelectedHex();
     }
-	
+    public void removeEntity(int i) {
+        gridView.getChildren().remove(entityViews.get(i));
+        entityViews.remove(i);
+    }
+
+    public void endGame(boolean hasWon) {
+        resetAction();
+        allowGridViewControls(false);
+        allowActionOnEntities(false);
+        currentEntityView.highlight(false);
+        //chosenAction=-10;
+        //TODO : afficher un écran de fin de partie en fonction de la variable hasWon
+    }
 }
+
+	
+
 
        
