@@ -103,7 +103,9 @@ public class UserInterface extends Group {
          buy=makeButton("acheter");
          addButton(buy);
          addButton(start);
-         start.setVisible(false);
+         start.setVisible(true);
+         start.setDisable(true);
+	    
 
          actions=new Group();
          showActionButtons(false);
@@ -113,51 +115,42 @@ public class UserInterface extends Group {
          endTurn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
              ctrl.endTurn();
          });
-     	
+        
          buy.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
-            
          	String [] entity= {"Sphére   100€","Autre"};
          	ChoiceDialog<String> choice= new ChoiceDialog<>(entity[0], entity);
          	choice.setTitle("Buy entity");
          	choice.setHeaderText("Select an entity to buy");
          	choice.setContentText("Entity:");
          	Optional<String> selection=  choice.showAndWait();
-         	
          	choice.show();
-         	choice.close();
-            Hexagon h =  ctrl.getMainView().gridView.getHexagon(ctrl.getMainView().pointedX, ctrl.getMainView().pointedY);
+         	choice.close();        	
+
             
+
         	ctrl.getMainView().SetchosenAction(-3);
-        	if (ctrl.nbEntity()==3) {
-	         	  System.out.println(ctrl.nbEntity());
-	              buy.setVisible(false);
-	              start.setVisible(true);
-	   	 } 
-        	 
+        	
         	
          	/**Apres avoir choisi une entité**/
          	selection.ifPresent(str-> {
 
             	ctrl.getMainView().SetchosenAction(-2);
-            	
+            	if (ctrl.nbEntity()>=4) {
+               	  System.out.println(ctrl.nbEntity());
+                    buy.setVisible(false);
+                    start.setDisable(false);
+          	}
             	// on set l'action au faite de l'ajout 
             	//il faut vérifier le nombre d'entités à rajouter et ajouter la condition : apres avoir cliqué sur ok on ne peut rajouter qu'une seule entité
 
-         		System.out.println("Selection:"+ str);
-
-         		
-              
-         	 
-         	  
-         	});
-	         	
+         	});      	
 
          	});	
+         	
 	         
             start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 start.setVisible(false);
-
      			ctrl.startGame();
 
 	        

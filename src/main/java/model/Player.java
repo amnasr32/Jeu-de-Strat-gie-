@@ -100,7 +100,7 @@ public class Player {
     }
     
     public void addEntityTogame( int x, int y, int playerNb,int entity_type) {
-    	game.addEntitytoGame(x,y,playerNb,entity_type);
+    	game.TryToaddEntitytoGame(x,y,playerNb,entity_type);
     }
 
     protected void addEntityToView(Entity e) {

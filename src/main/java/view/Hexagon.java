@@ -117,14 +117,13 @@ public class Hexagon extends Group {
     }
 
     void clickAction() {
-        if (view.getCtrl().nbEntity()==4) view.SetchosenAction(-3);
-
+    	
         if (view.getChosenAction()==-1) view.moveModelEntity();
         else if (view.getChosenAction()==-2) {
         	view.getCtrl().addEntityToGame(this.getX(), this.getY(),0,0); 
-            view.SetchosenAction(-3);// -3
-        }
+        	 System.out.println(view.getCtrl().nbEntity());
 
+        }
         else if(view.chosenAction>=0) {  
         		view.doAction();
         }

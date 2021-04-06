@@ -94,6 +94,7 @@ public class Game implements Serializable {
     //savoir quelle entity lz joueur essaye d'ajouter
  // permet d'ajouter un entité au model et à la view de tous les joueurs
     private void addEntityToGame(Entity e, int x, int y) {
+        if (grid.getCell(x,y).getEntity()!=null) return; //yeet
         e.updateCoords(x, y);
         grid.getCell(x,y).setEntity(e);
         playableEntities.add(e);
@@ -105,16 +106,22 @@ public class Game implements Serializable {
     //à faire : changer le nom de la fonction
     //on suppose qu'on a que des soldier
     //chaque joueur pose ses entités
-    public void addEntitytoGame(int x, int y, int playerNb,int entity_type) {
+    public void TryToaddEntitytoGame(int x, int y, int playerNb,int entity_type) {
+    	
+    	if(nb>=4) return;
     	int h=grid.getHeight();
         int w=grid.getWidth();
         if (entity_type==0) { //entity_type c'est pour indiquer quel type d'entier à ajouter (par exemple 0 pour soldier)
-        Entity e = new Soldier(players[0]);
-        addEntityToGame(e, x,y); 
-        nb++;
+        	Entity e = new Soldier(players[0]);
+        	addEntityToGame(e, x,y); 
+        	nb++;
+
         }
-        Entity e1 = new Knight(players[0]);
-        addEntityToGame(e1, x,y); 
+        else {
+        	Entity e1 = new Knight(players[0]);
+        	addEntityToGame(e1, x,y); 
+        	nb++;
+        }
     }
 
     
