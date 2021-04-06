@@ -18,9 +18,9 @@ public class BuyEntityInterface extends Group{
 		this.width=width;
 	    this.height=height;
 	    ctrl=controller;
-	    back = makeButton("Back");
-	    addButton(back);
-	    //Scene entity=new Scene (ctrl.getMainGroup(),width,height); je sais pas à quoi ça sert et ça cause un bug
+	    //back = makeButton("Back");
+	    //addButton(back);
+	    //Scene entity=new Scene (ctrl.getMainGroup(),width,height);
    } 
          
 
