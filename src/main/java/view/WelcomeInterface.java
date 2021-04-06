@@ -38,7 +38,7 @@ public class WelcomeInterface extends Group {
         getChildren().addAll(textFlow);//on ajoute le texte à la zone crée
 
         play.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
-        	ctrl.getMainView().setChosenAction(0);
+        	ctrl.getMainView().setChosenAction(-3);
         	ctrl.view.setMainGroup( ( Group)new BuyEntityInterface(width, height, ctrl));
         	Scene buyScene= new Scene(ctrl.getMainGroup(),width,height);
         	buyScene.setFill((Paint)(Color.SANDYBROWN));
