@@ -18,7 +18,7 @@ public class MainView extends Application {
 
     private Controller ctrl;
     private Scene mainScene; // tout ce qui est en 2D : les boutons, les menus, etc
-    private SubScene scene3D; // tout ce qui est en 3D est ici //le menuu  classe qui extend goupe 
+    private SubScene scene3D; // tout ce qui est en 3D est ici
     private Group mainGroup;
     private Stage primaryStage;
     private WelcomeInterface welcomeinterface;
@@ -26,7 +26,7 @@ public class MainView extends Application {
     private int height = 720;
     private int width = 1080;
 
-    LinkedList<EntityView> entityViews;
+    LinkedList<EntityView> entityViews=new LinkedList<>();
     private EntityView currentEntityView;
     private int unitInd;
 
@@ -50,8 +50,8 @@ public class MainView extends Application {
      
         
         welcomeinterface = new WelcomeInterface(width, height, ctrl);
-        mainScene=new Scene((Group)welcomeinterface,width,height);
-        mainScene.setFill((Paint)(Color.SANDYBROWN));
+        mainScene=new Scene(welcomeinterface,width,height);
+        mainScene.setFill((Color.SANDYBROWN));
         
         primaryStage.setTitle("jeu de stratégie");
         primaryStage.setScene(mainScene);
@@ -126,7 +126,6 @@ public class MainView extends Application {
 
     public void makeGameScene(byte[][] heightGrid) {
 
-        entityViews =new LinkedList<>();
         gridView = new GridView(heightGrid, this);
         scene3D=new SubScene(gridView, width, height, true, SceneAntialiasing.BALANCED);
         GameCamera camera = new GameCamera();

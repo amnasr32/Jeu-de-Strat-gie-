@@ -11,9 +11,11 @@ import java.util.LinkedList;
  * est responsable de transmettre l'état du jeu à la View
  * */
 public class Player {
-    private MainView view;
-    private Game game;
-    private Level level;
+    private final MainView view;
+    protected Game game;
+
+    // vérifie que le joueur est prêt à commencer une partie
+    private boolean isReady;
 
     public Player() {
         view=null;
@@ -27,6 +29,14 @@ public class Player {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    protected void setReady(boolean b) {
+        isReady=b;
+    }
+
+    boolean isReady() {
+        return isReady;
     }
 
     // ---------------------------------
@@ -44,13 +54,20 @@ public class Player {
         //level.SetGrid(grid);
         //level.createLevel();
         /**ici on affiche la grille qu'on a sérialisé => on deserialise**/
-        PlayerBot pb = new PlayerBot();
-        game = new Game(level.showLevel(), this, pb);
-        pb.setGame(game);
+
+        new Game(level.showLevel(), this);
+
     }
 
-    public void start() {
-        game.start();
+    public void initBotPlayer() {
+        PlayerBot pb = new PlayerBot();
+        game.addPlayer(pb);
+        pb.initEntities();
+    }
+
+    public void toggleReady() {
+        isReady=!isReady;
+        if (isReady) game.start();
     }
     public int getnbEntity() {
     	return game.nb;
@@ -157,7 +174,7 @@ public class Player {
         view.endGame(hasWon);
     }
 
-    public void canPressReadyButton(boolean b) {
+    protected void canPressReadyButton(boolean b) {
         view.canPressReadyButton(b);
     }
 

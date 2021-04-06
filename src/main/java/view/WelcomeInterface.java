@@ -47,6 +47,7 @@ public class WelcomeInterface extends Group {
         	ctrl.initializePlayer();
             ctrl.loadLevel();
             ctrl.mkGameGrid();
+            ctrl.initBotPlayer();
             ctrl.getMainView().allowGridViewControls(true);
         
 	    });

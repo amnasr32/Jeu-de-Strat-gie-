@@ -127,7 +127,7 @@ public class UserInterface extends Group {
            
         start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             start.setVisible(false);
-            ctrl.startGame();
+            ctrl.toggleReady();
         });
 
     }

@@ -12,7 +12,7 @@ public class Game implements Serializable {
 
 	private static final long serialVersionUID = 7373047453891668295L;
 	private Grid grid;
-    private Player[] players;
+    private LinkedList<Player> players;
     private LinkedList<Entity> playableEntities; // liste de toutes les entités en jeu
     private int[] entTeam; // nombre d'entités pour chaque équipe actuellement en jeu
 	int nb=0;
@@ -28,19 +28,29 @@ public class Game implements Serializable {
         playableEntities = new LinkedList<>();
         this.grid=grid;
 
-        players = new Player[playerlist.length];
-        // copie playerList dans players
-        System.arraycopy(playerlist, 0, players, 0, playerlist.length);
+        players = new LinkedList<>();
+        for (Player p:playerlist) {
+            addPlayer(p);
+        }
+    }
+
+    public void addPlayer(Player p) {
+        if (!players.contains(p)) players.add(p);
+        p.setGame(this);
     }
 
     protected Grid getGrid() {
         return grid;
     }
- // un bouton dit si le joueur a fini de posé ses entité    une fois que les joueurs ont cliqué
+
+    // un bouton dit si le joueur a fini de poser ses entités une fois que les joueurs ont cliqué
     void start() {
-        initPlayableEntities();
-        gameState=1;
-        firstRound();
+        System.out.println("aaa");
+        if (allPlayersAreReady()) {
+            System.out.println("bbb");
+            gameState = 1;
+            firstRound();
+        }
     }
 
     // premier tour de jeu
@@ -73,24 +83,9 @@ public class Game implements Serializable {
         }
     }
 
-    // chaque joueur pose ses unités
-    // TODO
-    private void initPlayableEntities() {
-    	int h=grid.getHeight();
-        int w=grid.getWidth();
-        Entity e1 = new Soldier(players[0]);
-        Entity e2 = new Soldier(players[1]);
-        Entity e3 = new Knight(players[0]);
-        Entity e4 = new Knight(players[1]);
-        addEntityToGame(e1, 1,1);
-        addEntityToGame(e2, h-2,w-2);
-        addEntityToGame(e3, 4,3);
-        addEntityToGame(e4, h-4,w-5);
-    }
-
     // permet d'ajouter un entité au model et à la view de tous les joueurs
     private void addEntityToGame(Entity e, int x, int y) {
-        if (grid.getCell(x,y).getEntity()!=null) return; //yeet
+        if (grid.getCell(x,y).getEntity()!=null || e==null) return; //yeet
         e.updateCoords(x, y);
         grid.getCell(x,y).setEntity(e);
         playableEntities.add(e);
@@ -102,19 +97,20 @@ public class Game implements Serializable {
    
     //un joueur essaie de poser une entité
     public void tryToAddEntityToGame(Player player, int x, int y, int entity_type) {
-    	if(!canAddEntity(player)) return;
-    	//TODO Penser à faire un switch au lieu de if
-        if (entity_type==0) { //entity_type c'est pour indiquer quel type d'entier à ajouter (par exemple 0 pour soldier 1 pour Knight)
-        	Entity e = new Soldier(players[0]);
-        	addEntityToGame(e,x,y);
-        	nb++;
-
+    	if(!canAddEntity(player) || gameState!=0) return;
+        Entity e = null;
+        //entity_type c'est pour indiquer quel type d'entité à ajouter (par exemple 0 pour soldier 1 pour Knight)
+        switch (entity_type) {
+            case 0:
+                e = new Soldier(player);
+                break;
+            case 1:
+                e = new Knight(player);
+                break;
+            default:
+                break;
         }
-        else {
-            Entity e = new Knight(players[0]);
-        	addEntityToGame(e, x,y);
-        	nb++;
-        }
+        addEntityToGame(e,x,y);
 
         // le joueur n'as le droit de dire qu'il est prêt à jouer que s'il a au moins une entité
         player.canPressReadyButton( hasAtLeastOneEntityPlaced(player) );
@@ -125,6 +121,13 @@ public class Game implements Serializable {
             if (e.getPlayer()==player) return true;
         }
         return false;
+    }
+
+    private boolean allPlayersAreReady() {
+        for (Player p:players) {
+            if (!p.isReady()) return false;
+        }
+        return true;
     }
 
     // vérifie que le joueur a au plus 4 entités en jeu

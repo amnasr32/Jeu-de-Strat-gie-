@@ -29,8 +29,8 @@ public class Controller {
         view.makeGameScene(heightGrid);
     }
 
-    public void startGame() { 
-        player.start();
+    public void toggleReady() {
+        player.toggleReady();
     }
 
     public void endTurn() {
@@ -75,4 +75,8 @@ public class Controller {
     public MainView getMainView() {
     	return this.view;
     }
- }
+
+    public void initBotPlayer() {
+        player.initBotPlayer();
+    }
+}
