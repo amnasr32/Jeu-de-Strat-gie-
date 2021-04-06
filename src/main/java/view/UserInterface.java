@@ -122,10 +122,7 @@ public class UserInterface extends Group {
          	/* Apres avoir choisi une entité */
          	selection.ifPresent(str-> {
          		ctrl.getMainView().setChosenAction(-2);
-            	System.out.println(ctrl.nbEntity());
-               	
-         	    });      	
-
+         	    });
          	});	
            
         start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
