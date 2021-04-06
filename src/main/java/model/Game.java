@@ -11,11 +11,11 @@ import java.util.LinkedList;
 public class Game implements Serializable {
 
 	private static final long serialVersionUID = 7373047453891668295L;
-	private Grid grid;
-    private LinkedList<Player> players;
-    private LinkedList<Entity> playableEntities; // liste de toutes les entités en jeu
-    private int[] entTeam; // nombre d'entités pour chaque équipe actuellement en jeu
-	int nb=0;
+	private final Grid grid;
+    private final LinkedList<Player> players;
+    private final LinkedList<Entity> playableEntities; // liste de toutes les entités en jeu
+    //private int[] entTeam; // nombre d'entités pour chaque équipe actuellement en jeu
+	//int nb=0;
 
     private Player currentPlayer=null; // le joueur dont c'est le tour
     private Entity currentEntity=null;

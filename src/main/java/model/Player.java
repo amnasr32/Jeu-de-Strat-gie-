@@ -69,9 +69,9 @@ public class Player {
         isReady=!isReady;
         if (isReady) game.start();
     }
-    public int getnbEntity() {
+    /*public int getnbEntity() {
     	return game.nb;
-    }
+    }*/
 
     public void endTurn() {
         game.nextRound(this);

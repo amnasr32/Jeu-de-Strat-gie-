@@ -61,9 +61,9 @@ public class Controller {
     	player.addEntityToGame(x, y, entity_type);
     }
 
-    public int nbEntity() {
+    /*public int nbEntity() {
     	return player.getnbEntity();
-    }
+    }*/
     //on récupere le primaryStage de mainView
     public Stage getStage() {
     	return this.view.getPrimaryStage();
@@ -72,6 +72,7 @@ public class Controller {
     public Group getMainGroup() {
     	return this.view.getMainGroup();
     }
+
     public MainView getMainView() {
     	return this.view;
     }
