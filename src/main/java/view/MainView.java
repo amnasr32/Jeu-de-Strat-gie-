@@ -55,6 +55,9 @@ public class MainView extends Application {
      
        
     }
+    public boolean  testIsOk() {
+     return (ctrl.nbEntity()>=1);
+    }
     public Controller getCtrl() {
     	return this.ctrl;
     }

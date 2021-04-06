@@ -131,23 +131,24 @@ public class UserInterface extends Group {
 
         	ctrl.getMainView().SetchosenAction(-3);
         	
-        	
+        	 if (ctrl.nbEntity()>=4) {
+    	         buy.setVisible(false);
+    	         start.setDisable(false);}
          	/**Apres avoir choisi une entité**/
          	selection.ifPresent(str-> {
 
             	ctrl.getMainView().SetchosenAction(-2);
-            	if (ctrl.nbEntity()>=4) {
+            	
                	  System.out.println(ctrl.nbEntity());
-                    buy.setVisible(false);
-                    start.setDisable(false);
-          	}
+               	 
+          	//}
             	// on set l'action au faite de l'ajout 
             	//il faut vérifier le nombre d'entités à rajouter et ajouter la condition : apres avoir cliqué sur ok on ne peut rajouter qu'une seule entité
 
          	});      	
 
          	});	
-         	
+           
 	         
             start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 start.setVisible(false);
