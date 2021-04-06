@@ -141,8 +141,10 @@ public class UserInterface extends Group {
     }
 
     public void resetActionButtons() {
-        for (ActionButton ab: actionButtons) {
-            ab.isSelected=false;
+        if (actionButtons!=null) {
+            for (ActionButton ab : actionButtons) {
+                ab.isSelected = false;
+            }
         }
     }
 }
