@@ -17,7 +17,7 @@ public class Player {
 
     public Player() {
         view=null;
-        game=null;
+        game=null; 
     }
 
     public Player(MainView view) {
@@ -52,6 +52,9 @@ public class Player {
     public void start() {
         game.start();
     }
+    public int getnbEntity() {
+    	return game.nb;
+    }
 
     public void endTurn() {
         game.nextRound(this);
@@ -76,6 +79,10 @@ public class Player {
 
     public void cancelAction() {
         game.cancelAction(this);
+    }
+
+    public void addEntityToGame(int x, int y, int entity_type) {
+        game.tryToAddEntityToGame(this, x,y,entity_type);
     }
 
     // ---------------------------------
@@ -149,4 +156,9 @@ public class Player {
     protected void endGame(boolean hasWon) {
         view.endGame(hasWon);
     }
+
+    public void canPressReadyButton(boolean b) {
+        view.canPressReadyButton(b);
+    }
+
 }

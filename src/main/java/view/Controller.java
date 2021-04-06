@@ -1,5 +1,7 @@
 package view;
 
+import javafx.scene.Group;
+import javafx.stage.Stage;
 import model.Player;
 
 
@@ -27,7 +29,7 @@ public class Controller {
         view.makeGameScene(heightGrid);
     }
 
-    public void startGame() {
+    public void startGame() { 
         player.start();
     }
 
@@ -54,4 +56,23 @@ public class Controller {
     public void cancelAction() {
         player.cancelAction();
     }
-}
+
+    public void addEntityToGame(int x, int y, int entity_type) {
+    	player.addEntityToGame(x, y, entity_type);
+    }
+
+    public int nbEntity() {
+    	return player.getnbEntity();
+    }
+    //on récupere le primaryStage de mainView
+    public Stage getStage() {
+    	return this.view.getPrimaryStage();
+    }
+    //On récupere le mainGroup dans le quel on va make la grid
+    public Group getMainGroup() {
+    	return this.view.getMainGroup();
+    }
+    public MainView getMainView() {
+    	return this.view;
+    }
+ }

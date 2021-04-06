@@ -28,4 +28,5 @@ public class PlayerBot extends Player {
     protected void endGame(boolean hasWon) {
         if (hasWon) System.out.println("git gud casul");
     }
+
 }

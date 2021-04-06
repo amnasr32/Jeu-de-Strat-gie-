@@ -1,19 +1,14 @@
 package view;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderImage;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import java.awt.*;
+import java.util.Optional;
+
 
 /**
  * L'interface utilisateur est tout les éléments
@@ -24,6 +19,9 @@ public class UserInterface extends Group {
     MainView view;
     Controller ctrl;
     Button endTurn;
+    Button attack;
+    Button start;
+    Button buy;
     Group actions;
     ActionButton[] actionButtons;
     Label entityDetails;
@@ -89,15 +87,53 @@ public class UserInterface extends Group {
         ctrl=controller;
         this.view=view;
 
-        endTurn = makeButton("Fin du tour", 0);
-        endTurn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            ctrl.endTurn();
-        });
+
+        endTurn = makeButton("Fin du tour",0);
+        start = makeButton("Commencer",0);
+        buy=makeButton("acheter",1);
+        addButton(buy);
+        addButton(start);
+        start.setVisible(true);
+        start.setDisable(true);
+
 
         actions=new Group();
         showActionButtons(false);
         getChildren().add(actions);
         initEntityDetails();
+
+        endTurn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+         ctrl.endTurn();
+        });
+
+        buy.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+
+         	String [] entity= {"Sphére   100€","Autre"};
+         	ChoiceDialog<String> choice= new ChoiceDialog<>(entity[0], entity);
+         	choice.setTitle("Buy entity");
+         	choice.setHeaderText("Select an entity to buy");
+         	choice.setContentText("Entity:");
+         	Optional<String> selection=  choice.showAndWait();
+         	choice.show();
+         	choice.close();        	
+
+            ctrl.getMainView().setChosenAction(-3);
+        	
+         	/* Apres avoir choisi une entité */
+         	selection.ifPresent(str-> {
+         		ctrl.getMainView().setChosenAction(-2);
+         	    });
+         	});	
+           
+        start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            start.setVisible(false);
+            ctrl.startGame();
+        });
+
+    }
+
+    public void canPressReadyButton(boolean b) {
+        start.setDisable(!b);
     }
 
     private void initEntityDetails() {
@@ -146,5 +182,11 @@ public class UserInterface extends Group {
                 ab.isSelected = false;
             }
         }
+    }
+
+    private void addButton(Button b) {
+        getChildren().add(b);
+        b.setTranslateX(nbOfButtons*200);
+        nbOfButtons++;
     }
 }

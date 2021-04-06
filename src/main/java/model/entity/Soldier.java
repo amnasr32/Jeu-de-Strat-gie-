@@ -27,4 +27,6 @@ public class Soldier extends Entity {
     public Entity copy() {
         return new Soldier(x,y,player);
     }
+
 }
+

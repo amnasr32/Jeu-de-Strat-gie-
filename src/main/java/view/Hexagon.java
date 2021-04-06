@@ -15,10 +15,9 @@ public class Hexagon extends Group {
     int x, y, height;
 
     MainView view;
-
     public Hexagon(int i, int j, int h, MainView view) {
         super();
-        this.view=view;
+        this.view=view; 
         x=i;
         y=j;
         height=h;
@@ -31,7 +30,7 @@ public class Hexagon extends Group {
         setTranslateY(h*-1.5);
         color(0);
     }
-
+     // FAIRE UNE FONCTIN QUI VERIFIE QUE L'HEXAGON NE POSSEDE PAS D'ENTITÉ!
     private void initOuterCylinder(int h) {
         outerCylinder = new Cylinder(9, 2+h*3, 6);
         outerCylinder.setVisible(false);
@@ -117,9 +116,17 @@ public class Hexagon extends Group {
         if (view.getChosenAction()==-1) view.makePath(x,y);
     }
 
-    private void clickAction() {
+    void clickAction() {
+    	
         if (view.getChosenAction()==-1) view.moveModelEntity();
-        else view.doAction();
+
+        else if (view.getChosenAction()==-2) {
+        	view.getCtrl().addEntityToGame(this.getX(), this.getY(),0);
+        }
+
+        else if(view.chosenAction>=0) {  
+        		view.doAction();
+        }
     }
 
 }

@@ -4,17 +4,24 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
+import javafx.scene.paint.Paint;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.scene.paint.Color;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
 import java.util.LinkedList;
+
 
 public class MainView extends Application {
 
     private Controller ctrl;
     private Scene mainScene; // tout ce qui est en 2D : les boutons, les menus, etc
-    private SubScene scene3D; // tout ce qui est en 3D est ici
+    private SubScene scene3D; // tout ce qui est en 3D est ici //le menuu  classe qui extend goupe 
     private Group mainGroup;
+    private Stage primaryStage;
+    private WelcomeInterface welcomeinterface;
 
     private int height = 720;
     private int width = 1080;
@@ -34,20 +41,40 @@ public class MainView extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+    	mainGroup= new Group();
+    	this.primaryStage=primaryStage;
         //Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
         mainGroup = new Group();
         mainScene=new Scene(mainGroup,width,height);
         ctrl = new Controller(this);
-
-
+     
+        
+        welcomeinterface = new WelcomeInterface(width, height, ctrl);
+        mainScene=new Scene((Group)welcomeinterface,width,height);
+        mainScene.setFill((Paint)(Color.SANDYBROWN));
+        
         primaryStage.setTitle("jeu de stratégie");
         primaryStage.setScene(mainScene);
         primaryStage.show();
-
-        ctrl.initializePlayer();
-        ctrl.loadLevel();
-        ctrl.mkGameGrid();
-        ctrl.startGame();
+       
+    }
+    public Controller getCtrl() {
+    	return this.ctrl;
+    }
+    public void setChosenAction(int n) { //set l'action
+    	this.chosenAction=n;
+    }
+    public void setMainGroup(Group g) {
+    	this.mainGroup=g;
+    }
+    //Getter pour le mainGroup 
+    public Group getMainGroup() {
+    	return this.mainGroup;
+    }
+    //Getter pour le primaryStage du MainView
+    
+    public Stage getPrimaryStage() {
+    	return this.primaryStage;
     }
 
     public int getChosenAction() {
@@ -74,6 +101,7 @@ public class MainView extends Application {
             }
         }
     }
+
 
     public void cleanPath() {
         if (path!=null && chosenAction==-1) {
@@ -116,6 +144,7 @@ public class MainView extends Application {
         gridView.addEntity(u,x,y);
     }
 
+
     public void focusFirstEntity(int i) {
         currentEntityView = entityViews.get(i);
         currentEntityView.highlight(true);
@@ -157,7 +186,7 @@ public class MainView extends Application {
         launch(args);
     }
 
-    public void setAction(int actionNb) {
+    public void setAction(int actionNb) { //permet d'initialiser l'action
         chosenAction=actionNb;
         ctrl.selectAction(actionNb);
         allowActionOnEntities(true);
@@ -205,4 +234,14 @@ public class MainView extends Application {
         //chosenAction=-10;
         //TODO : afficher un écran de fin de partie en fonction de la variable hasWon
     }
+
+    public void canPressReadyButton(boolean b) {
+        ui.canPressReadyButton(b);
+    }
+
 }
+
+	
+
+
+       
