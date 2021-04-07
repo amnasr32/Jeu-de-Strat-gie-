@@ -80,4 +80,8 @@ public class Controller {
     public void initBotPlayer() {
         player.initBotPlayer();
     }
+
+    public void deleteEntity(int x, int y) {
+        player.deleteEntity(x,y);
+    }
 }

@@ -102,6 +102,10 @@ public class Player {
         game.tryToAddEntityToGame(this, x,y,entity_type);
     }
 
+    public void deleteEntity(int x, int y) {
+        game.tryToDeleteEntity(this, x, y);
+    }
+
     // ---------------------------------
     //  fonctions qui modifient la vue :
     // ---------------------------------

@@ -250,6 +250,7 @@ public class Grid implements Serializable {
     }
 
     public boolean isInCoordList(int x, int y) {
+        if (coordList==null) return false;
         for (int[] coord: coordList) {
             if (x==coord[0] && y==coord[1]) return true;
         }

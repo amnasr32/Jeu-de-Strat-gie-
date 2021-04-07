@@ -1,15 +1,9 @@
 package view;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
-import javafx.scene.paint.Paint;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 
 import java.util.LinkedList;
 
@@ -36,6 +30,7 @@ public class MainView extends Application {
     int pointedX=-1;
     int pointedY=-1;
     int chosenAction=-1;
+    int preGameAction =-1;
 
     byte[] path=null;
 
@@ -86,6 +81,15 @@ public class MainView extends Application {
         pointedY = y;
     }
 
+    public void setPreGameAction(int preGameAction) {
+        this.preGameAction = preGameAction;
+        System.out.println(chosenAction);
+    }
+
+    public int getPreGameAction() {
+        return preGameAction;
+    }
+
     public void makePath(int x, int y) {
         ctrl.makePath(x,y);
     }
@@ -113,7 +117,7 @@ public class MainView extends Application {
         }
     }
 
-    public void moveModelEntity() {
+    private void moveModelEntity() {
         cleanPath();
         ctrl.move(path);
         path=null;
@@ -141,6 +145,8 @@ public class MainView extends Application {
         EntityView u = new EntityView(this, x,y,isAlly,name, hp, mp, actions);
         entityViews.add(u);
         gridView.addEntity(u,x,y);
+        u.allowActionOnClick(true);
+        u.showInfoOnHover(true);
     }
 
 
@@ -201,7 +207,13 @@ public class MainView extends Application {
     }
 
     public void doAction() {
-        ctrl.doAction(chosenAction, pointedX, pointedY);
+        if (chosenAction==-2) {
+            addOrDeleteEntity(pointedX, pointedY);
+        } else if (chosenAction==-1) {
+            moveModelEntity();
+        } else if (chosenAction>=0) {
+            ctrl.doAction(chosenAction, pointedX, pointedY);
+        }
     }
 
     public void updateHp(int i, int newHp) {
@@ -239,6 +251,10 @@ public class MainView extends Application {
         ui.canPressReadyButton(b);
     }
 
+    public void addOrDeleteEntity(int x, int y) {
+        if (preGameAction==-1) ctrl.deleteEntity(x,y);
+        else ctrl.addEntityToGame(x,y,preGameAction);
+    }
 }
 
 	

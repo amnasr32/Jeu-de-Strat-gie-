@@ -114,6 +114,13 @@ public class Game implements Serializable {
         player.canPressReadyButton( hasAtLeastOneEntityPlaced(player) );
     }
 
+    public void tryToDeleteEntity(Player player, int x, int y) {
+        Entity e = grid.getCell(x,y).getEntity();
+        if (gameState!=0 || e==null || e.getPlayer()!=player) return;
+        removeEntity(e);
+        player.canPressReadyButton( hasAtLeastOneEntityPlaced(player) );
+    }
+
     private boolean hasAtLeastOneEntityPlaced(Player player) {
         for (Entity e:playableEntities) {
             if (e.getPlayer()==player) return true;
@@ -211,6 +218,11 @@ public class Game implements Serializable {
         if (playableEntities.get(i).getHp()<=0) {
             removeEntity(i);
         }
+    }
+
+    private void removeEntity(Entity e) {
+        int i = playableEntities.indexOf(e);
+        removeEntity(i);
     }
 
     private void removeEntity(int i) {
