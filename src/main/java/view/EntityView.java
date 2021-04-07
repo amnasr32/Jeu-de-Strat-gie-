@@ -2,6 +2,7 @@ package view;
 
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.CullFace;
@@ -11,13 +12,32 @@ import javafx.scene.shape.Sphere;
 // Affichage des unités
 public class EntityView extends Group {
 
+    private MainView view;
+
     private Sphere sphere;
     private Sphere outerSphere;
     private Cylinder cylinder;
     private int x, y;
 
-    EntityView(int x, int y, boolean isAlly) {
+    private final int maxHp;
+    private int hp;
+
+    private final int maxMp;
+    private int mp;
+
+    private final String[] actionNames;
+    private final String[] actionDesc;
+    private final String name;
+
+    EntityView(MainView view, int x, int y, boolean isAlly, String name, int hp, int mp, String[][] actions) {
         super();
+        this.view=view;
+        this.hp=hp;
+        maxHp=hp;
+        this.mp=mp;
+        maxMp=mp;
+        this.name=name;
+
         initSphere();
         initCylinder(isAlly);
         initOuterSphere(isAlly);
@@ -26,6 +46,14 @@ public class EntityView extends Group {
         getChildren().add(outerSphere);
         this.x=x;
         this.y=y;
+
+        int length=actions.length;
+        actionNames=new String[length];
+        actionDesc=new String[length];
+        for (int i = 0; i < length; i++) {
+            actionNames[i]=actions[i][0];
+            actionDesc[i]=actions[i][1];
+        }
     }
 
     public int getX() {
@@ -39,6 +67,46 @@ public class EntityView extends Group {
     void setXY(int x, int y) {
         this.x=x;
         this.y=y;
+    }
+
+    public void setMp(int mp) {
+        this.mp = mp;
+    }
+
+    public void decreaseMp() {
+        mp--;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public int getMp() {
+        return mp;
+    }
+
+    public int getMaxMp() {
+        return maxMp;
+    }
+
+    public String[] getActionNames() {
+        return actionNames;
+    }
+
+    public String[] getActionDesc() {
+        return actionDesc;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void updateCoords(int direction) {
@@ -115,6 +183,37 @@ public class EntityView extends Group {
 
     public void highlight(boolean bool) {
         outerSphere.setVisible(bool);
+    }
+
+    public void showInfoOnHover(boolean bool) {
+        if (bool) {
+            setOnMouseEntered(event -> {
+                view.showEntityDetails(this);
+                view.highlightHexagon(x, y, true);
+                view.setPointedXY(x, y);
+            });
+            setOnMouseExited(event -> {
+                view.hideEntityDetails();
+                view.highlightHexagon(x, y, false);
+            });
+        } else {
+            setOnMouseEntered(event -> {
+                view.showEntityDetails(this);
+            });
+            setOnMouseExited(event -> {
+                view.hideEntityDetails();
+            });
+        }
+    }
+
+    public void allowActionOnClick(boolean bool) {
+        if (bool) {
+            setOnMouseClicked(event -> {
+                view.doAction();
+            });
+        } else {
+            setOnMouseClicked(event -> {});
+        }
     }
 
 }
