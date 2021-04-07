@@ -83,7 +83,6 @@ public class MainView extends Application {
 
     public void setPreGameAction(int preGameAction) {
         this.preGameAction = preGameAction;
-        System.out.println(chosenAction);
     }
 
     public int getPreGameAction() {
