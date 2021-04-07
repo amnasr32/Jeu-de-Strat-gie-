@@ -2,7 +2,6 @@ package model;
 import model.entity.Entity;
 import model.entity.Knight;
 import model.entity.Soldier;
-
 import java.io.Serializable;
 import java.util.LinkedList;
 
