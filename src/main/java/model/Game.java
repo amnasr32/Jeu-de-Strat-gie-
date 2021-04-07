@@ -110,6 +110,7 @@ public class Game implements Serializable {
         }
         addEntityToGame(e,x,y);
 
+        player.setReady(false);
         // le joueur n'as le droit de dire qu'il est prêt à jouer que s'il a au moins une entité
         player.canPressReadyButton( hasAtLeastOneEntityPlaced(player) );
     }
@@ -118,7 +119,8 @@ public class Game implements Serializable {
         Entity e = grid.getCell(x,y).getEntity();
         if (gameState!=0 || e==null || e.getPlayer()!=player) return;
         removeEntity(e);
-        player.canPressReadyButton( hasAtLeastOneEntityPlaced(player) );
+        player.setReady(false);
+        player.canPressReadyButton(hasAtLeastOneEntityPlaced(player));
     }
 
     private boolean hasAtLeastOneEntityPlaced(Player player) {
