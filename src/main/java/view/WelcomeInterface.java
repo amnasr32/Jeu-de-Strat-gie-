@@ -1,20 +1,27 @@
 package view;
 
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import style.GameButton;
 
 
-public class WelcomeInterface extends Group {
+public class WelcomeInterface extends Pane {
+
+    private final String BACKGROUND = "-fx-background-image: url('icons/Welcome-page-BG.png'); " +
+            "-fx-background-position: center; ";
 	
 	Controller ctrl;
-    Button play;
+    GameButton play;
 
     int width;
     int height;
@@ -27,15 +34,11 @@ public class WelcomeInterface extends Group {
         this.height=height;
         ctrl=controller;
 
-        play = makeButton("jouer");
+        play = makeButton("Lancer");
         addButton(play);
-        
-        Text gc = new Text ();
-        gc.setText ("Bienvenue dans notre jeu de stratégie");
-        gc.setFont (new Font ("Verdana", 50));
-        TextFlow textFlow = new TextFlow();
-        textFlow.getChildren().add(gc);//cree une zone de texte vide
-        getChildren().addAll(textFlow);//on ajoute le texte à la zone crée
+        play.setTranslateX(width/2 - 85);
+        createBackground();
+
 
         play.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
         	ctrl.getMainView().setChosenAction(-3);
@@ -55,15 +58,19 @@ public class WelcomeInterface extends Group {
     
     private void addButton(Button b) {
         getChildren().add(b);
-        b.setTranslateX(nbOfButtons*200);
-        nbOfButtons++;
     }
 
-    private Button makeButton(String name) {
-        Button b = new Button(name);
+    private GameButton makeButton(String name) {
+        GameButton b = new GameButton(name);
         b.setFont(new Font(30));
-        b.setTranslateX(300); 
-        b.setTranslateY(height-100); 
+        b.setTranslateY(height-100);
+        b.initStyle();
         return b;
+    }
+
+    private void createBackground(){
+        Image backgroundImage = new Image("icons/Welcome-Page-BG.png", 1080, 720, false, true);
+        BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, null);
+        setBackground(new Background(background));
     }
 }

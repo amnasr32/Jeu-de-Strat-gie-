@@ -1,0 +1,4 @@
+.button {
+    -fx-background-color : transparent;
+    -fx-background-image : url("buttons/button_ready_on.png");
+}

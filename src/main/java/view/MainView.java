@@ -50,10 +50,11 @@ public class MainView extends Application {
      
         
         welcomeinterface = new WelcomeInterface(width, height, ctrl);
-        mainScene=new Scene((Group)welcomeinterface,width,height);
-        mainScene.setFill((Paint)(Color.SANDYBROWN));
+        mainScene=new Scene(welcomeinterface,width,height);
+        //mainScene.setFill((Paint)(Color.SANDYBROWN));
+
         
-        primaryStage.setTitle("jeu de stratégie");
+        primaryStage.setTitle("Jeu de stratégie");
         primaryStage.setScene(mainScene);
         primaryStage.show();
        

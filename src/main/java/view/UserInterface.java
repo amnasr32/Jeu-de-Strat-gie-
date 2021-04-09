@@ -7,7 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+
+import style.GameLabel;
 
 
 /**
@@ -23,8 +27,19 @@ public class UserInterface extends Group {
     Button start;
     Button buy;
     Group actions;
-    ActionButton[] actionButtons;
-    Label entityDetails;
+    List<ActionButton> actionButtons;
+    GameLabel entityDetails;
+
+    private final static String BUTTON_FREE = "-fx-background-color: transparent; " +
+            "-fx-background-image: url('buttons/button_ready_on.png'); -fx-background-size: 170 50;" +
+            "-fx-background-position: center";
+
+    private final static String BUTTON_PRESSED = "-fx-background-color: transparent; " +
+            "-fx-background-image: url('buttons/button_ready_off.png'); -fx-background-size: 170 50;" +
+            "-fx-background-position: center";
+
+    private final int START_BUTTON_X = 100;
+    private final int START_BUTTON_Y = 100;
 
     int width;
     int height;
@@ -33,18 +48,19 @@ public class UserInterface extends Group {
 
     private class ActionButton extends Button {
         int actionNb;
-        Label description;
+        GameLabel description;
         boolean isSelected=false;
         ActionButton(String name, String desc, int actionNb) {
             super(name);
             setFont(new Font(20));
-            setTranslateX(10+(actionNb+1)*300);
+            setTranslateX(START_BUTTON_X + endTurn.getTranslateX() * 2 + actionButtons.size()*200);
             setTranslateY(height-100);
-            description=new Label(desc);
+            description=new GameLabel(desc);
             description.setFont(new Font(20));
             description.setVisible(false);
-            description.setTranslateX(10+(actionNb+1)*300);
-            description.setTranslateY(height-200);
+            description.setTranslateX(START_BUTTON_X + endTurn.getTranslateX()*2 + actionButtons.size()*200);
+            description.setTranslateY(height-220);
+            description.initstyle();
             this.actionNb=actionNb;
             allowMouseListeners();
         }
@@ -54,6 +70,16 @@ public class UserInterface extends Group {
         }
 
         public void allowMouseListeners() {
+            setStyle(BUTTON_FREE);
+            setPrefSize(170,50);
+            setOnMousePressed(e->{
+                setStyle(BUTTON_PRESSED);
+            });
+
+            setOnMouseReleased(e->{
+                setStyle(BUTTON_FREE);
+            });
+
             setOnMouseEntered(event -> {
                 description.setVisible(true);
             });
@@ -90,7 +116,7 @@ public class UserInterface extends Group {
 
         endTurn = makeButton("Fin du tour",0);
         start = makeButton("Commencer",0);
-        buy=makeButton("acheter",1);
+        buy = makeButton("Acheter",1);
         addButton(buy);
         addButton(start);
         start.setVisible(true);
@@ -102,34 +128,40 @@ public class UserInterface extends Group {
         getChildren().add(actions);
         initEntityDetails();
 
+        buttonsMouseListeners();
+
+
+    }
+
+    public void buttonsMouseListeners(){
         endTurn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-         ctrl.endTurn();
+            ctrl.endTurn();
         });
 
         buy.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
-         	String [] entity= {"Sphére   100€","Autre"};
-         	ChoiceDialog<String> choice= new ChoiceDialog<>(entity[0], entity);
-         	choice.setTitle("Buy entity");
-         	choice.setHeaderText("Select an entity to buy");
-         	choice.setContentText("Entity:");
-         	Optional<String> selection=  choice.showAndWait();
-         	choice.show();
-         	choice.close();        	
+            String [] entity= {"Sphere  100€","Autre"};
+            ChoiceDialog<String> choice= new ChoiceDialog<>(entity[0], entity);
+            choice.setTitle("Buy entity");
+            choice.setHeaderText("Select an entity to buy");
+            choice.setContentText("Entity:");
+            Optional<String> selection=  choice.showAndWait();
+            choice.show();
+            choice.close();
 
             ctrl.getMainView().setChosenAction(-3);
-        	
-         	/* Apres avoir choisi une entité */
-         	selection.ifPresent(str-> {
-         		ctrl.getMainView().setChosenAction(-2);
-         	    });
-         	});	
-           
-        start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            start.setVisible(false);
-            ctrl.startGame();
+
+            /* Apres avoir choisi une entité */
+            selection.ifPresent(str-> {
+                ctrl.getMainView().setChosenAction(-2);
+            });
         });
 
+        start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            start.setVisible(false);
+            buy.setVisible(false);
+            ctrl.startGame();
+        });
     }
 
     public void canPressReadyButton(boolean b) {
@@ -137,9 +169,10 @@ public class UserInterface extends Group {
     }
 
     private void initEntityDetails() {
-        entityDetails = new Label();
+        entityDetails = new GameLabel();
         entityDetails.setVisible(false);
         entityDetails.setFont(new Font(20));
+        entityDetails.initstyle2();
         getChildren().add(entityDetails);
     }
 
@@ -152,11 +185,27 @@ public class UserInterface extends Group {
         entityDetails.setVisible(bool);
     }
 
+    public void buttonStyle(Button b){
+
+        b.setStyle(BUTTON_FREE);
+
+        b.setPrefSize(170,50);
+
+        b.setOnMousePressed(e->{
+            b.setStyle(BUTTON_PRESSED);
+        });
+
+        b.setOnMouseReleased(e->{
+            b.setStyle(BUTTON_FREE);
+        });
+    }
+
     private Button makeButton(String name, int i) {
         Button b = new Button(name);
         b.setFont(new Font(20));
         b.setTranslateY(height-100);
-        b.setTranslateX(120+i*100);
+        b.setTranslateX(START_BUTTON_X + i * 100);
+        buttonStyle(b);
         return b;
     }
 
@@ -164,10 +213,10 @@ public class UserInterface extends Group {
         actions.getChildren().clear();
         actions.getChildren().add(endTurn);
         int nbOfActions=e.getActionNames().length;
-        actionButtons=new ActionButton[nbOfActions];
+        actionButtons= new LinkedList<>();
         for (int i = 0; i < nbOfActions; i++) {
             ActionButton b = new ActionButton(e.getActionNames()[i], e.getActionDesc()[i],i);
-            actionButtons[i]=b;
+            actionButtons.add(i,b);
             actions.getChildren().addAll(b,b.getDescription());
         }
     }
@@ -186,7 +235,8 @@ public class UserInterface extends Group {
 
     private void addButton(Button b) {
         getChildren().add(b);
-        b.setTranslateX(nbOfButtons*200);
+        b.setTranslateX(START_BUTTON_X + nbOfButtons*200);
+        buttonStyle(b);
         nbOfButtons++;
     }
 }
