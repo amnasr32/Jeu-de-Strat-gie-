@@ -81,14 +81,15 @@ public class Game implements Serializable {
     }
 
     // permet d'ajouter un entité au model et à la view de tous les joueurs
-    private void addEntityToGame(Entity e, int x, int y) {
-        if (grid.getCell(x,y).getEntity()!=null || e==null) return; //yeet
+    private boolean addEntityToGame(Entity e, int x, int y) {
+        if (grid.getCell(x,y).getEntity()!=null || e==null) return false; //yeet
         e.updateCoords(x, y);
         grid.getCell(x,y).setEntity(e);
         playableEntities.add(e);
         for (Player p : players) {
             p.addEntityToView(e);
         }
+        return true;
     }
 
    
@@ -107,16 +108,18 @@ public class Game implements Serializable {
             default:
                 break;
         }
-        addEntityToGame(e,x,y);
-
-        player.setReady(false);
-        // le joueur n'as le droit de dire qu'il est prêt à jouer que s'il a au moins une entité
-        player.canPressReadyButton( hasAtLeastOneEntityPlaced(player) );
+        if (e!=null && e.getCost()<=player.getMoney()) {
+            if (addEntityToGame(e, x, y)) player.changeAmountOfMoney(-e.getCost());
+            player.setReady(false);
+            // le joueur n'as le droit de dire qu'il est prêt à jouer que s'il a au moins une entité
+            player.canPressReadyButton(hasAtLeastOneEntityPlaced(player));
+        }
     }
 
     public void tryToDeleteEntity(Player player, int x, int y) {
         Entity e = grid.getCell(x,y).getEntity();
         if (gameState!=0 || e==null || e.getPlayer()!=player) return;
+        player.changeAmountOfMoney(e.getCost());
         removeEntity(e);
         player.setReady(false);
         player.canPressReadyButton(hasAtLeastOneEntityPlaced(player));
@@ -136,13 +139,13 @@ public class Game implements Serializable {
         return true;
     }
 
-    // vérifie que le joueur a au plus 4 entités en jeu
+    // vérifie que le joueur a au plus 64 entités en jeu
     private boolean canAddEntity(Player player) {
         int i=0;
         for (Entity e:playableEntities) {
             if (e.getPlayer()==player) i++;
         }
-        return i<4;
+        return i<64;
     }
 
 

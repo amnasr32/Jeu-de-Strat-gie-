@@ -16,6 +16,7 @@ public class Player {
 
     // vérifie que le joueur est prêt à commencer une partie
     private boolean isReady;
+    private int money=10; //TODO hard codé, à changer
 
     public Player() {
         view=null;
@@ -35,8 +36,17 @@ public class Player {
         isReady=b;
     }
 
-    boolean isReady() {
+    protected boolean isReady() {
         return isReady;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    protected void changeAmountOfMoney(int amount) {
+        money += amount;
+        view.updateMoneyView(money);
     }
 
     // ---------------------------------

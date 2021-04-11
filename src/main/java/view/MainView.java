@@ -254,6 +254,10 @@ public class MainView extends Application {
         if (preGameAction==-1) ctrl.deleteEntity(x,y);
         else ctrl.addEntityToGame(x,y,preGameAction);
     }
+
+    public void updateMoneyView(int money) {
+        ui.setMoneyValue(money);
+    }
 }
 
 	

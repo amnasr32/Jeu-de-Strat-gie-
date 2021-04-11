@@ -22,6 +22,7 @@ public class UserInterface extends Group {
     private final Group actions;
     private ActionButton[] actionButtons;
     private Label entityDetails;
+    private Label money;
 
     private int width;
     private int height;
@@ -156,6 +157,11 @@ public class UserInterface extends Group {
             ctrl.toggleReady();
         });
 
+        money = new Label("");
+        money.setFont(new Font(20));
+        getChildren().add(money);
+        money.setVisible(true);
+
     }
 
     public void canPressReadyButton(boolean b) {
@@ -219,6 +225,7 @@ public class UserInterface extends Group {
     // à appeler quand le jeu commence
     public void hidePreGameButtons() {
         getChildren().remove(start);
+        getChildren().remove(money);
         for (Button b:buyButtons) {
             getChildren().remove(b);
         }
@@ -229,5 +236,9 @@ public class UserInterface extends Group {
     // à appeler à la fin du jeu
     public void hideAllGameButtons() {
         actions.setVisible(false);
+    }
+
+    public void setMoneyValue(int money) {
+        this.money.setText(money+" £");
     }
 }

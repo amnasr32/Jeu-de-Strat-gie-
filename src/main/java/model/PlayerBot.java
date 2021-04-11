@@ -36,4 +36,7 @@ public class PlayerBot extends Player {
         game.tryToAddEntityToGame(this, 4, 3, 1);
         setReady(true);
     }
+
+    @Override
+    protected void changeAmountOfMoney(int amount) {}
 }
