@@ -3,8 +3,8 @@ import model.Cell;
 import model.Player;
 import model.entity.Entity;
 
-public class Attack extends Action {
-    public Attack(String name, int min, int max, int dmg, int roundCD, int cooldown) {
+public class ArmorBuff extends Action {
+    public ArmorBuff(String name, int min, int max, int dmg, int roundCD, int cooldown) {
         super.name=name;
         super.minRange=min;
         super.maxRange=max;
@@ -16,8 +16,8 @@ public class Attack extends Action {
     @Override
     public boolean doAction(Cell c) {
         Entity e = c.getEntity();
-        if (e==null || isAlly(e.getPlayer()) || roundCooldown != 0) return false;
-        e.damage(amount);
+        if (e==null || !isAlly(e.getPlayer()) || roundCooldown != 0) return false;
+        e.armorBuff(amount);
         startCooldown(cooldown);
         return true;
     }
@@ -25,7 +25,7 @@ public class Attack extends Action {
     @Override
     public String getDescription() {
         StringBuilder bld = new StringBuilder();
-        bld.append("degats: ").append(amount).append("\n");
+        bld.append("bonus d'armure : ").append(amount).append("\n");
         bld.append("portee: ");
         if (minRange==maxRange) bld.append(minRange).append("\n");
         else bld.append(minRange).append("-").append(maxRange).append("\n");
@@ -49,6 +49,8 @@ public class Attack extends Action {
 
     @Override
     public void reduceCooldown() {
-        roundCooldown-=1;
+        if(roundCooldown>0){
+            roundCooldown-=1;
+        }
     }
 }

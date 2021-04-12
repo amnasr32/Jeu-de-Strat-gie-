@@ -21,8 +21,7 @@ public class BuyEntityInterface extends Group{
 	    //back = makeButton("Back");
 	    //addButton(back);
 	    //Scene entity=new Scene (ctrl.getMainGroup(),width,height);
-   } 
-         
+   }
 
 	private void addButton(Button b) {
         getChildren().add(b);

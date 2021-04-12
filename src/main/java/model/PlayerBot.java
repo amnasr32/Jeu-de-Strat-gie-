@@ -21,7 +21,7 @@ public class PlayerBot extends Player {
     @Override
     protected void moveEntityInView(byte direction) {}
     @Override
-    protected void updateHpView(int i, int newHp) {}
+    protected void updateStatView(int i, int newHp, int newArmor) {}
     @Override
     protected void removeEntity(int i) {}
     @Override

@@ -30,7 +30,7 @@ public class Hexagon extends Group {
         setTranslateY(h*-1.5);
         color(0);
     }
-     // FAIRE UNE FONCTIN QUI VERIFIE QUE L'HEXAGON NE POSSEDE PAS D'ENTITÉ!
+     // FAIRE UNE FONCTION QUI VERIFIE QUE L'HEXAGON NE POSSEDE PAS D'ENTITÉ!
     private void initOuterCylinder(int h) {
         outerCylinder = new Cylinder(9, 2+h*3, 6);
         outerCylinder.setVisible(false);

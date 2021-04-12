@@ -22,6 +22,8 @@ public class EntityView extends Group {
     private final int maxHp;
     private int hp;
 
+    private int armor;
+
     private final int maxMp;
     private int mp;
 
@@ -29,11 +31,12 @@ public class EntityView extends Group {
     private final String[] actionDesc;
     private final String name;
 
-    EntityView(MainView view, int x, int y, boolean isAlly, String name, int hp, int mp, String[][] actions) {
+    EntityView(MainView view, int x, int y, boolean isAlly, String name, int hp, int mp, int armor, String[][] actions) {
         super();
         this.view=view;
         this.hp=hp;
         maxHp=hp;
+        this.armor=armor;
         this.mp=mp;
         maxMp=mp;
         this.name=name;
@@ -81,6 +84,8 @@ public class EntityView extends Group {
         this.hp = hp;
     }
 
+    public void setArmor(int armor) {this. armor = armor;}
+
     public int getHp() {
         return hp;
     }
@@ -88,6 +93,8 @@ public class EntityView extends Group {
     public int getMaxHp() {
         return maxHp;
     }
+
+    public int getArmor() { return armor;}
 
     public int getMp() {
         return mp;

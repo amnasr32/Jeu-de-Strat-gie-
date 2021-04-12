@@ -2,6 +2,7 @@ package model;
 import model.entity.Entity;
 import model.entity.Knight;
 import model.entity.Soldier;
+import model.entity.Wizard;
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -35,6 +36,7 @@ public class Game implements Serializable {
     protected Grid getGrid() {
         return grid;
     }
+    public Player getCurrentPlayer() { return currentPlayer; }
  // un bouton dit si le joueur a fini de posé ses entité    une fois que les joueurs ont cliqué
     void start() {
         initPlayableEntities();
@@ -67,6 +69,7 @@ public class Game implements Serializable {
         currentEntity=playableEntities.get(entInd);
         currentPlayer=currentEntity.getPlayer();
         currentEntity.resetMp();
+        countCooldown();
         for (Player p:players) {
             p.focusNextEntity(entInd, p==currentPlayer);
         }
@@ -81,10 +84,12 @@ public class Game implements Serializable {
         Entity e2 = new Soldier(players[1]);
         Entity e3 = new Knight(players[0]);
         Entity e4 = new Knight(players[1]);
+        Entity e5 = new Wizard(players[0]);
         addEntityToGame(e1, 1,1);
         addEntityToGame(e2, h-2,w-2);
         addEntityToGame(e3, 4,3);
         addEntityToGame(e4, h-4,w-5);
+        addEntityToGame(e5, 5,5);
     }
 
     // permet d'ajouter un entité au model et à la view de tous les joueurs
@@ -174,7 +179,7 @@ public class Game implements Serializable {
             // pour l'instant on update les points de vie de toutes les entités, ce n'est pas idéal
             for (int i = 0; i < playableEntities.size(); i++) {
                 for (Player p : players) {
-                    p.updateHpView(i, playableEntities.get(i).getHp());
+                    p.updateStatView(i, playableEntities.get(i).getHp(), playableEntities.get(i).getArmor());
                 }
                 removeIfDead(i);
             }
@@ -202,6 +207,12 @@ public class Game implements Serializable {
     public void cancelAction(Player player) {
         if (!canPlay(player)) return;
         grid.clearCoordList();
+    }
+
+    public void countCooldown(){
+        for (int i = 0; i < currentEntity.getActions().length; i++) {
+            currentEntity.getAction(i).reduceCooldown();
+        }
     }
 
     // s'occupe de "tuer" l'entité playableEntities[i] si ses pv == 0

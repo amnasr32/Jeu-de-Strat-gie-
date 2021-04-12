@@ -138,8 +138,8 @@ public class MainView extends Application {
         mainGroup.getChildren().add(ui);
     }
 
-    public void addEntity(int x, int y, boolean isAlly,String name, int hp, int mp, String[][]actions) {
-        EntityView u = new EntityView(this, x,y,isAlly,name, hp, mp, actions);
+    public void addEntity(int x, int y, boolean isAlly,String name, int hp, int mp, int armor, String[][]actions) {
+        EntityView u = new EntityView(this, x,y,isAlly,name, hp, mp, armor, actions);
         entityViews.add(u);
         gridView.addEntity(u,x,y);
     }
@@ -204,8 +204,9 @@ public class MainView extends Application {
         ctrl.doAction(chosenAction, pointedX, pointedY);
     }
 
-    public void updateHp(int i, int newHp) {
+    public void updateStat(int i, int newHp, int newArmor) {
         entityViews.get(i).setHp(newHp);
+        entityViews.get(i).setArmor(newArmor);
         ui.updateEntityDetails(entityViews.get(i));
     }
 
