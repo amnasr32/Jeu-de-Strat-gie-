@@ -1,5 +1,6 @@
 package view;
 
+import custom.GameMenu;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,11 +15,11 @@ import custom.GameButton;
 
 public class WelcomeInterface extends Pane {
 
-    private final String BACKGROUND = "-fx-background-image: url('icons/Welcome-page-BG.png'); " +
-            "-fx-background-position: center; ";
-	
-	Controller ctrl;
-    GameButton play;
+    private GameButton option;
+    private GameMenu optionMenu;
+    private GameButton quitter;
+	private Controller ctrl;
+    private GameButton play;
 
     int width;
     int height;
@@ -34,23 +35,13 @@ public class WelcomeInterface extends Pane {
         play = makeButton("Lancer");
         addButton(play);
         play.setTranslateX(width/2 - 85);
+
+        optionMenu = new GameMenu(300,400);
         createBackground();
+        initOptionButton();
+        initButtonListeners();
+        initOptionMenu();
 
-
-        play.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
-        	ctrl.getMainView().setChosenAction(-2);
-        	ctrl.view.setMainGroup( ( Group)new BuyEntityInterface(width, height, ctrl));
-        	Scene buyScene= new Scene(ctrl.getMainGroup(),width,height);
-        	buyScene.setFill((Paint)(Color.SANDYBROWN));
-        	ctrl.getStage().setScene(buyScene);
-        	
-        	ctrl.initializePlayer();
-            ctrl.loadLevel();
-            ctrl.mkGameGrid();
-            ctrl.initBotPlayer();
-            ctrl.getMainView().allowGridViewControls(true);
-        
-	    });
         ctrl.getStage().show();
     }
     
@@ -64,6 +55,47 @@ public class WelcomeInterface extends Pane {
         b.setTranslateY(height-100);
         b.initStyle();
         return b;
+    }
+
+    private void initOptionButton(){
+        option = new GameButton("Options");
+        getChildren().add(option);
+        option.setTranslateY(0);
+        option.setTranslateX(width-170);
+        option.initStyle();
+    }
+
+    private void initOptionMenu(){
+        getChildren().add(optionMenu);
+        optionMenu.fadeOutScene();
+
+
+        quitter = new GameButton("Quitter");
+        quitter.initStyle();
+        quitter.setLayoutX(65);
+        quitter.setLayoutY(300);
+        optionMenu.getPane().getChildren().add(quitter);
+    }
+
+    private void initButtonListeners(){
+        play.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
+            ctrl.getMainView().setChosenAction(-2);
+            ctrl.view.setMainGroup( ( Group)new BuyEntityInterface(width, height, ctrl));
+            Scene buyScene= new Scene(ctrl.getMainGroup(),width,height);
+            buyScene.setFill((Paint)(Color.SANDYBROWN));
+            ctrl.getStage().setScene(buyScene);
+
+            ctrl.initializePlayer();
+            ctrl.loadLevel();
+            ctrl.mkGameGrid();
+            ctrl.initBotPlayer();
+            ctrl.getMainView().allowGridViewControls(true);
+
+        });
+
+        option.setOnMouseClicked(e -> {
+            optionMenu.animation();
+        });
     }
 
     private void createBackground(){

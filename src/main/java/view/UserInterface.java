@@ -24,20 +24,18 @@ import custom.GameLabel;
  * boutons clickables
  */
 public class UserInterface extends Group {
-    MainView view;
-    Controller ctrl;
-    GameButton endTurn;
-    Button attack;
-    GameButton start;
-    GameButton buy;
-    Group actions;
-    List<ActionButton> actionButtons;
-    List<BuyButton> buyButtons;
-    GameLabel entityDetails;
-    GameButton option;
-    GameMenu optionMenu;
-    GameButton quitter;
-    GameLabel money;
+    private MainView view;
+    private Controller ctrl;
+    private GameButton endTurn;
+    private GameButton start;
+    private Group actions;
+    private List<ActionButton> actionButtons;
+    private List<BuyButton> buyButtons;
+    private GameLabel entityDetails;
+    private GameButton option;
+    private GameMenu optionMenu;
+    private GameButton quitter;
+    private GameLabel money;
 
     private final String[] listOfPossibleEntities = {"Soldat", "Chevalier"};
 
@@ -144,8 +142,6 @@ public class UserInterface extends Group {
         initOptionButton();
         endTurn = makeButton("Fin du tour",0);
         start = makeButton("Commencer",0);
-        /*buy = makeButton("Acheter",1);
-        addButton(buy); */
         addButton(start);
         start.setVisible(true);
         start.setDisable(true);
@@ -282,8 +278,6 @@ public class UserInterface extends Group {
         for (Button b:buyButtons) {
             getChildren().remove(b);
         }
-        //start.setVisible(false);
-        //buy.setVisible(false);
     }
 
     // à appeler à la fin du jeu
