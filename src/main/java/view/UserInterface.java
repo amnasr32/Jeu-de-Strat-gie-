@@ -2,12 +2,9 @@ package view;
 
 import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
-
-import java.util.Optional;
 
 
 /**
@@ -16,20 +13,23 @@ import java.util.Optional;
  * boutons clickables
  */
 public class UserInterface extends Group {
-    MainView view;
-    Controller ctrl;
-    Button endTurn;
-    Button attack;
-    Button start;
-    Button buy;
-    Group actions;
-    ActionButton[] actionButtons;
-    Label entityDetails;
+    private final MainView view;
+    private final Controller ctrl;
+    private final Button endTurn;
+    //Button attack;
+    private final Button start;
+    private final BuyButton[] buyButtons;
+    private final Group actions;
+    private ActionButton[] actionButtons;
+    private Label entityDetails;
+    private Label money;
 
-    int width;
-    int height;
+    private int width;
+    private int height;
 
-    int nbOfButtons=0;
+    private int nbOfButtons=0;
+
+    private final String[] listOfPossibleEntities = {"soldat", "chevalier"};
 
     private class ActionButton extends Button {
         int actionNb;
@@ -80,6 +80,21 @@ public class UserInterface extends Group {
 
     }
 
+    private class BuyButton extends Button {
+        private final int entityNb;
+        BuyButton(String s, int i) {
+            super(s);
+            entityNb=i;
+            setFont(new Font(20));
+            setTranslateX(10+(i+2)*200);
+            setTranslateY(height-100);
+            setOnMouseClicked(event -> {
+                view.setPreGameAction(entityNb);
+            });
+        }
+
+    }
+
     UserInterface(int width, int height, Controller controller, MainView view) {
         super();
         this.width=width;
@@ -90,11 +105,20 @@ public class UserInterface extends Group {
 
         endTurn = makeButton("Fin du tour",0);
         start = makeButton("Commencer",0);
-        buy=makeButton("acheter",1);
-        addButton(buy);
+        //buy=makeButton("acheter",1);
+        //addButton(buy);
+
         addButton(start);
         start.setVisible(true);
         start.setDisable(true);
+
+        buyButtons=new BuyButton[listOfPossibleEntities.length+1];
+        buyButtons[0]=new BuyButton("supprimer",-1);
+        getChildren().add(buyButtons[0]);
+        for (int i = 1; i < buyButtons.length; i++) {
+            buyButtons[i]=new BuyButton(listOfPossibleEntities[i-1],i-1);
+            getChildren().add(buyButtons[i]);
+        }
 
 
         actions=new Group();
@@ -106,7 +130,9 @@ public class UserInterface extends Group {
          ctrl.endTurn();
         });
 
+        /*
         buy.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+
 
          	String [] entity= {"Sphére   100€","Autre"};
          	ChoiceDialog<String> choice= new ChoiceDialog<>(entity[0], entity);
@@ -119,16 +145,22 @@ public class UserInterface extends Group {
 
             ctrl.getMainView().setChosenAction(-3);
         	
-         	/* Apres avoir choisi une entité */
+         	// Apres avoir choisi une entité
          	selection.ifPresent(str-> {
          		ctrl.getMainView().setChosenAction(-2);
          	    });
-         	});	
+         	});
+        */
            
         start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            start.setVisible(false);
-            ctrl.startGame();
+            start.setDisable(true);
+            ctrl.toggleReady();
         });
+
+        money = new Label("");
+        money.setFont(new Font(20));
+        getChildren().add(money);
+        money.setVisible(true);
 
     }
 
@@ -188,5 +220,25 @@ public class UserInterface extends Group {
         getChildren().add(b);
         b.setTranslateX(nbOfButtons*200);
         nbOfButtons++;
+    }
+
+    // à appeler quand le jeu commence
+    public void hidePreGameButtons() {
+        getChildren().remove(start);
+        getChildren().remove(money);
+        for (Button b:buyButtons) {
+            getChildren().remove(b);
+        }
+        //start.setVisible(false);
+        //buy.setVisible(false);
+    }
+
+    // à appeler à la fin du jeu
+    public void hideAllGameButtons() {
+        actions.setVisible(false);
+    }
+
+    public void setMoneyValue(int money) {
+        this.money.setText(money+" £");
     }
 }

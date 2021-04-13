@@ -8,7 +8,7 @@ import model.action.Heal;
 public class Knight extends Entity {
 
     public Knight(int x, int y, Player player) {
-        super(player, 12, 6);
+        super(player, 12, 6, 3);
         super.x=x;
         super.y=y;
         super.actions = new Action[2];

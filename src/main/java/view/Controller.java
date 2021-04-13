@@ -27,10 +27,11 @@ public class Controller {
     public void mkGameGrid() {
         byte[][] heightGrid = player.getHeightGrid();
         view.makeGameScene(heightGrid);
+        view.updateMoneyView(player.getMoney());
     }
 
-    public void startGame() { 
-        player.start();
+    public void toggleReady() {
+        player.toggleReady();
     }
 
     public void endTurn() {
@@ -61,9 +62,9 @@ public class Controller {
     	player.addEntityToGame(x, y, entity_type);
     }
 
-    public int nbEntity() {
+    /*public int nbEntity() {
     	return player.getnbEntity();
-    }
+    }*/
     //on récupere le primaryStage de mainView
     public Stage getStage() {
     	return this.view.getPrimaryStage();
@@ -72,7 +73,16 @@ public class Controller {
     public Group getMainGroup() {
     	return this.view.getMainGroup();
     }
+
     public MainView getMainView() {
     	return this.view;
     }
- }
+
+    public void initBotPlayer() {
+        player.initBotPlayer();
+    }
+
+    public void deleteEntity(int x, int y) {
+        player.deleteEntity(x,y);
+    }
+}
