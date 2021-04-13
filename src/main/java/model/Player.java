@@ -28,7 +28,6 @@ public class Player {
     public void setGame(Game game) {
         this.game = game;
     }
-    public Game getGame(){ return game; }
 
     // ---------------------------------
     //  fonctions qui modifient le jeu :
@@ -112,7 +111,7 @@ public class Player {
             array[i][0]=actions[i].getName();
             array[i][1]=actions[i].getDescription();
         }
-        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this,e.toString(), e.getHp(), e.getMp(), e.getArmor() ,array);
+        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this,e.toString(), e.getHp(), e.getMp(), array);
     }
 
     protected void focusFirstEntity(int i, boolean isCurrentPlayer) {
@@ -133,8 +132,8 @@ public class Player {
         view.moveViewEntity(direction);
     }
 
-    protected void updateStatView(int i, int newHp, int newArmor) {
-        view.updateStat(i, newHp, newArmor);
+    protected void updateHpView(int i, int newHp) {
+        view.updateHp(i, newHp);
     }
 
     protected void resetAction() {

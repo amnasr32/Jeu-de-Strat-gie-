@@ -1,54 +1,32 @@
 package model.action;
 import model.Cell;
-import model.Player;
 import model.entity.Entity;
 
 public class Attack extends Action {
-    public Attack(String name, int min, int max, int dmg, int roundCD, int cooldown) {
+    public Attack(String name, int min, int max, int dmg, int cost) {
         super.name=name;
         super.minRange=min;
         super.maxRange=max;
         super.amount =dmg;
-        super.roundCooldown=roundCD;
-        super.cooldown=cooldown;
+        super.cost=cost;
     }
 
     @Override
     public boolean doAction(Cell c) {
         Entity e = c.getEntity();
-        if (e==null || isAlly(e.getPlayer()) || roundCooldown != 0) return false;
+        if (e==null) return false;
         e.damage(amount);
-        startCooldown(cooldown);
         return true;
     }
 
     @Override
     public String getDescription() {
         StringBuilder bld = new StringBuilder();
-        bld.append("degats: ").append(amount).append("\n");
-        bld.append("portee: ");
+        bld.append("dégats: ").append(amount).append("\n");
+        bld.append("portée: ");
         if (minRange==maxRange) bld.append(minRange).append("\n");
         else bld.append(minRange).append("-").append(maxRange).append("\n");
-        bld.append("temps de recuperation : ").append(cooldown).append(" tours \n");
-        bld.append("temps restant avant utilisation : ").append(roundCooldown).append(" tours");
+        bld.append("coût: ").append(cost).append("\n");
         return bld.toString();
-    }
-
-    @Override
-    public Boolean isAlly(Player player){
-        if(player!=player.getGame().getCurrentPlayer()){
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void startCooldown(int cd) {
-        roundCooldown = cd;
-    }
-
-    @Override
-    public void reduceCooldown() {
-        roundCooldown-=1;
     }
 }

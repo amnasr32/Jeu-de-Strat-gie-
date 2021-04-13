@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+
 import model.entity.Entity;
 
 public class Cell implements Serializable {
