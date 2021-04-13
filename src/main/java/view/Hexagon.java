@@ -118,16 +118,8 @@ public class Hexagon extends Group {
     }
 
     void clickAction() {
-    	
-        if (view.getChosenAction()==-1) view.moveModelEntity();
 
-        else if (view.getChosenAction()==-2) {
-        	view.getCtrl().addEntityToGame(this.getX(), this.getY(),0);
-        }
-
-        else if(view.chosenAction>=0) {  
-        		view.doAction();
-        }
+        view.doAction();
     }
 
 }

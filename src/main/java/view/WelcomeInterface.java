@@ -38,7 +38,7 @@ public class WelcomeInterface extends Pane {
 
 
         play.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
-        	ctrl.getMainView().setChosenAction(-3);
+        	ctrl.getMainView().setChosenAction(-2);
         	ctrl.view.setMainGroup( ( Group)new BuyEntityInterface(width, height, ctrl));
         	Scene buyScene= new Scene(ctrl.getMainGroup(),width,height);
         	buyScene.setFill((Paint)(Color.SANDYBROWN));
@@ -47,6 +47,7 @@ public class WelcomeInterface extends Pane {
         	ctrl.initializePlayer();
             ctrl.loadLevel();
             ctrl.mkGameGrid();
+            ctrl.initBotPlayer();
             ctrl.getMainView().allowGridViewControls(true);
         
 	    });
