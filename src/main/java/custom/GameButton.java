@@ -70,7 +70,6 @@ public class GameButton extends Button {
             String FONT = "src/main/resources/style/CinzelDecorative-Bold.ttf";
             setTextFill(Paint.valueOf("#140101"));
             Font f = Font.loadFont(new FileInputStream(FONT), 15);
-            System.out.println(f);
        } catch (FileNotFoundException e){
             System.out.println(e);
         }

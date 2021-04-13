@@ -37,17 +37,6 @@ public class GameMenu extends SubScene {
         setVisible(false);
     }
 
-    public void moveSubScene(){
-        TranslateTransition transition = new TranslateTransition();
-
-        transition.setDuration(Duration.seconds(0.3));
-        transition.setNode(this);
-
-        transition.setToX(-1000);
-
-        transition.play();
-    }
-
     public void fadeOutScene(){
 
         setVisible(false);

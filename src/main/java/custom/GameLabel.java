@@ -58,7 +58,6 @@ public class GameLabel extends Label {
             setLineSpacing(0.7);
         } catch (FileNotFoundException e){
             setFont(Font.font("Verdana", 20));
-            System.out.println("why?");
         }
     }
 
