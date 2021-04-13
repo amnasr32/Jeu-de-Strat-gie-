@@ -1,5 +1,8 @@
 package view;
 
+import custom.GameButton;
+import custom.GameMenu;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
@@ -11,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import style.GameLabel;
+import custom.GameLabel;
 
 
 /**
@@ -22,21 +25,26 @@ import style.GameLabel;
 public class UserInterface extends Group {
     MainView view;
     Controller ctrl;
-    Button endTurn;
+    GameButton endTurn;
     Button attack;
-    Button start;
-    Button buy;
+    GameButton start;
+    GameButton buy;
     Group actions;
     List<ActionButton> actionButtons;
     GameLabel entityDetails;
+    GameButton option;
+    GameMenu optionMenu;
+    GameButton quitter;
 
     private final static String BUTTON_FREE = "-fx-background-color: transparent; " +
-            "-fx-background-image: url('buttons/button_ready_on.png'); -fx-background-size: 170 50;" +
-            "-fx-background-position: center";
+            "-fx-background-image: url('buttons/button_ready_on.png'); -fx-background-size: 170 65;" +
+            "-fx-background-position: center; -fx-font-family: 'Cinzel Decorative';" +
+            "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 14; -fx-padding: 0 0 6 0;";
 
     private final static String BUTTON_PRESSED = "-fx-background-color: transparent; " +
-            "-fx-background-image: url('buttons/button_ready_off.png'); -fx-background-size: 170 50;" +
-            "-fx-background-position: center";
+            "-fx-background-image: url('buttons/button_ready_off.png'); -fx-background-size: 170 65;" +
+            "-fx-background-position: center; -fx-font-family: 'Cinzel Decorative';" +
+            "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 13; -fx-padding: 0 0 6 0;";
 
     private final int START_BUTTON_X = 100;
     private final int START_BUTTON_Y = 100;
@@ -46,13 +54,13 @@ public class UserInterface extends Group {
 
     int nbOfButtons=0;
 
-    private class ActionButton extends Button {
+    private class ActionButton extends GameButton {
         int actionNb;
         GameLabel description;
         boolean isSelected=false;
         ActionButton(String name, String desc, int actionNb) {
             super(name);
-            setFont(new Font(20));
+            setFont(new Font(14));
             setTranslateX(START_BUTTON_X + endTurn.getTranslateX() * 2 + actionButtons.size()*200);
             setTranslateY(height-100);
             description=new GameLabel(desc);
@@ -70,25 +78,26 @@ public class UserInterface extends Group {
         }
 
         public void allowMouseListeners() {
+
+            setPrefSize(170,65);
             setStyle(BUTTON_FREE);
-            setPrefSize(170,50);
-            setOnMousePressed(e->{
-                setStyle(BUTTON_PRESSED);
-            });
-
-            setOnMouseReleased(e->{
-                setStyle(BUTTON_FREE);
-            });
-
             setOnMouseEntered(event -> {
                 description.setVisible(true);
+                setCursor(Cursor.HAND);
+                setStyle(BUTTON_PRESSED);
             });
             setOnMouseExited(event -> {
                 description.setVisible(false);
+                setCursor(Cursor.DEFAULT);
+                setStyle(BUTTON_FREE);
             });
             setOnMouseClicked(event -> {
                 toggleSelected();
             });
+
+            setOnMousePressed(e-> setStyle(BUTTON_PRESSED));
+
+            setOnMouseReleased(e-> setStyle(BUTTON_FREE));
         }
 
         private void toggleSelected() {
@@ -113,7 +122,7 @@ public class UserInterface extends Group {
         ctrl=controller;
         this.view=view;
 
-
+        initOptionButton();
         endTurn = makeButton("Fin du tour",0);
         start = makeButton("Commencer",0);
         buy = makeButton("Acheter",1);
@@ -122,6 +131,7 @@ public class UserInterface extends Group {
         start.setVisible(true);
         start.setDisable(true);
 
+        optionMenu = new GameMenu(300,400);
 
         actions=new Group();
         showActionButtons(false);
@@ -129,6 +139,8 @@ public class UserInterface extends Group {
         initEntityDetails();
 
         buttonsMouseListeners();
+
+        initOptionMenu();
 
 
     }
@@ -162,6 +174,10 @@ public class UserInterface extends Group {
             buy.setVisible(false);
             ctrl.startGame();
         });
+
+        option.setOnMouseClicked(e -> {
+               optionMenu.animation();
+        });
     }
 
     public void canPressReadyButton(boolean b) {
@@ -185,28 +201,33 @@ public class UserInterface extends Group {
         entityDetails.setVisible(bool);
     }
 
-    public void buttonStyle(Button b){
-
-        b.setStyle(BUTTON_FREE);
-
-        b.setPrefSize(170,50);
-
-        b.setOnMousePressed(e->{
-            b.setStyle(BUTTON_PRESSED);
-        });
-
-        b.setOnMouseReleased(e->{
-            b.setStyle(BUTTON_FREE);
-        });
-    }
-
-    private Button makeButton(String name, int i) {
-        Button b = new Button(name);
+    private GameButton makeButton(String name, int i) {
+        GameButton b = new GameButton(name);
         b.setFont(new Font(20));
         b.setTranslateY(height-100);
         b.setTranslateX(START_BUTTON_X + i * 100);
-        buttonStyle(b);
+        b.initStyle();
         return b;
+    }
+
+    private void initOptionButton(){
+        option = new GameButton("Options");
+        getChildren().add(option);
+        option.setTranslateY(0);
+        option.setTranslateX(width-170);
+        option.initStyle();
+    }
+
+    private void initOptionMenu(){
+        getChildren().add(optionMenu);
+        optionMenu.fadeOutScene();
+
+
+        quitter = new GameButton("Quitter");
+        quitter.initStyle();
+        quitter.setLayoutX(65);
+        quitter.setLayoutY(300);
+        optionMenu.getPane().getChildren().add(quitter);
     }
 
     public void updateActionButtons(EntityView e) {
@@ -236,7 +257,6 @@ public class UserInterface extends Group {
     private void addButton(Button b) {
         getChildren().add(b);
         b.setTranslateX(START_BUTTON_X + nbOfButtons*200);
-        buttonStyle(b);
         nbOfButtons++;
     }
 }

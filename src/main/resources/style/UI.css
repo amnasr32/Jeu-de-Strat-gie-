@@ -1,4 +1,13 @@
 .button {
     -fx-background-color : transparent;
     -fx-background-image : url("buttons/button_ready_on.png");
+    -fx-background-size: 170 65;
+    -fx-background-position: center;
+}
+
+.button:hover {
+    -fx-background-color : transparent;
+    -fx-background-image : url("buttons/button_ready_off.png");
+    -fx-background-size: 170 65;
+    -fx-background-position: center;
 }

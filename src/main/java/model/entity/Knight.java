@@ -12,8 +12,8 @@ public class Knight extends Entity {
         super.x=x;
         super.y=y;
         super.actions = new Action[2];
-        actions[0]=new Attack("attaque de mélée", 1,2,8,0);
-        actions[1]=new Heal("auto soin", 0, 0, 2, 1);
+        actions[0]=new Attack("Attaque de\nmêlée", 1,2,8,0);
+        actions[1]=new Heal("Soin", 0, 0, 2, 1);
     }
 
     public Knight(Player player) {

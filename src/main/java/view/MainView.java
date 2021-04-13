@@ -51,7 +51,6 @@ public class MainView extends Application {
         
         welcomeinterface = new WelcomeInterface(width, height, ctrl);
         mainScene=new Scene(welcomeinterface,width,height);
-        //mainScene.setFill((Paint)(Color.SANDYBROWN));
 
         
         primaryStage.setTitle("Jeu de stratégie");

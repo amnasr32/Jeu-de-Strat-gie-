@@ -1,6 +1,5 @@
 package view;
 
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,9 +9,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
-import style.GameButton;
+import custom.GameButton;
 
 
 public class WelcomeInterface extends Pane {
@@ -28,7 +25,7 @@ public class WelcomeInterface extends Pane {
 
     int nbOfButtons=0;
 
-    WelcomeInterface(int width, int height, Controller controller) {
+    WelcomeInterface(int width, int height, Controller controller){
      
         this.width=width;
         this.height=height;
@@ -60,7 +57,7 @@ public class WelcomeInterface extends Pane {
         getChildren().add(b);
     }
 
-    private GameButton makeButton(String name) {
+    private GameButton makeButton(String name){
         GameButton b = new GameButton(name);
         b.setFont(new Font(30));
         b.setTranslateY(height-100);
