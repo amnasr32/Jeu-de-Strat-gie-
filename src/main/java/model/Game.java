@@ -2,7 +2,6 @@ package model;
 import model.entity.Entity;
 import model.entity.Knight;
 import model.entity.Soldier;
-
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -42,7 +41,8 @@ public class Game implements Serializable {
     protected Grid getGrid() {
         return grid;
     }
- // un bouton dit si le joueur a fini de posé ses entité    une fois que les joueurs ont cliqué
+
+    // un bouton dit si le joueur a fini de poser ses entités une fois que les joueurs ont cliqué
     void start() {
         if (allPlayersAreReady()) {
             gameState = 1;

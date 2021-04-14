@@ -5,7 +5,6 @@ import custom.GameMenu;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
@@ -52,10 +51,9 @@ public class UserInterface extends Group {
     private final int START_BUTTON_X = 100;
     private final int START_BUTTON_Y = 100;
 
-    int width;
-    int height;
+    private int nbOfButtons=0;
 
-    int nbOfButtons=0;
+    private final String[] listOfPossibleEntities = {"soldat", "chevalier"};
 
     private class ActionButton extends GameButton {
         int actionNb;

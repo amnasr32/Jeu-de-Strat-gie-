@@ -1,15 +1,9 @@
 package view;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
-import javafx.scene.paint.Paint;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 
 import java.util.LinkedList;
 
@@ -18,7 +12,7 @@ public class MainView extends Application {
 
     private Controller ctrl;
     private Scene mainScene; // tout ce qui est en 2D : les boutons, les menus, etc
-    private SubScene scene3D; // tout ce qui est en 3D est ici //le menuu  classe qui extend goupe 
+    private SubScene scene3D; // tout ce qui est en 3D est ici
     private Group mainGroup;
     private Stage primaryStage;
     private WelcomeInterface welcomeinterface;
@@ -96,6 +90,14 @@ public class MainView extends Application {
         pointedY = y;
     }
 
+    public void setPreGameAction(int preGameAction) {
+        this.preGameAction = preGameAction;
+    }
+
+    public int getPreGameAction() {
+        return preGameAction;
+    }
+
     public void makePath(int x, int y) {
         ctrl.makePath(x,y);
     }
@@ -123,7 +125,7 @@ public class MainView extends Application {
         }
     }
 
-    public void moveModelEntity() {
+    private void moveModelEntity() {
         cleanPath();
         ctrl.move(path);
         path=null;
