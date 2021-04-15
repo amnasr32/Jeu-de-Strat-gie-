@@ -39,8 +39,8 @@ public class WelcomeInterface extends Pane {
         optionMenu = new GameMenu(300,400);
         createBackground();
         initOptionButton();
-        initButtonListeners();
         initOptionMenu();
+        initButtonListeners();
 
         ctrl.getStage().show();
     }
@@ -95,6 +95,10 @@ public class WelcomeInterface extends Pane {
 
         option.setOnMouseClicked(e -> {
             optionMenu.animation();
+        });
+
+        quitter.setOnAction(e -> {
+            ctrl.getMainView().getPrimaryStage().close();
         });
     }
 

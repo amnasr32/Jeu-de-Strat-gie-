@@ -1,5 +1,6 @@
 package view;
 
+import custom.EndGameScreen;
 import custom.GameButton;
 import custom.GameMenu;
 import javafx.scene.Cursor;
@@ -56,6 +57,8 @@ public class UserInterface extends Group {
     int height;
 
     int nbOfButtons=0;
+
+    private EndGameScreen endScreen = new EndGameScreen(width, height);
 
     private class ActionButton extends GameButton {
         int actionNb;
@@ -166,7 +169,21 @@ public class UserInterface extends Group {
         }
 
         moneyLabelInit();
+        initQuitter();
 
+        closeButton();
+
+    }
+
+    public void closeButton(){
+        GameButton quitter = new GameButton("Quitter");
+        quitter.initStyle();
+        quitter.setOnAction(e ->{
+            view.getPrimaryStage().close();
+        });
+        endScreen.getPane().getChildren().add(quitter);
+        quitter.setTranslateX(width/2 - 85);
+        quitter.setTranslateY(height - 200);
     }
 
     public void moneyLabelInit(){
@@ -280,13 +297,22 @@ public class UserInterface extends Group {
         }
     }
 
+    public void initQuitter(){
+        quitter.setOnAction(e ->{
+            view.getPrimaryStage().close();
+        });
+    }
+
     // à appeler à la fin du jeu
     public void hideAllGameButtons() {
         actions.setVisible(false);
     }
 
     public void setMoneyValue(int money) {
-        this.money.setText(money+" £");
+        this.money.setText("Pièces :\n"+money+" £");
     }
 
+    public EndGameScreen getEndScreen() {
+        return endScreen;
+    }
 }

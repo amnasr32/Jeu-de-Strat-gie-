@@ -1,5 +1,7 @@
 package view;
 
+import custom.EndGameScreen;
+import custom.GameButton;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -254,7 +256,14 @@ public class MainView extends Application {
         currentEntityView.highlight(false);
         ui.hideAllGameButtons();
         //TODO : afficher un écran de fin de partie en fonction de la variable hasWon
+        if (hasWon) {
+            ui.getEndScreen().initVictory();
+        } else {
+            ui.getEndScreen().initDefaite();
+        }
     }
+
+
 
     public void addOrDeleteEntity(int x, int y) {
         if (preGameAction==-1) ctrl.deleteEntity(x,y);
