@@ -10,8 +10,8 @@ public class Soldier extends Entity {
         super.x=x;
         super.y=y;
         super.actions = new Action[2];
-        actions[0]=new Attack("attaque de mélée", 1,1,4,0,1);
-        actions[1]=new Attack("attaque à distance", 2,6,6,0,2);
+        actions[0]=new Attack("attaque de mélée", "physique",1,1,4,0,1);
+        actions[1]=new Attack("attaque à distance", "physique",2,6,6,0,2);
     }
 
     public Soldier(Player player) {

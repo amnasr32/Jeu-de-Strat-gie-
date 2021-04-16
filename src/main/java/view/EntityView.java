@@ -29,6 +29,7 @@ public class EntityView extends Group {
 
     private final String[] actionNames;
     private final String[] actionDesc;
+    private String[] actionCd;
     private final String name;
 
     EntityView(MainView view, int x, int y, boolean isAlly, String name, int hp, int mp, int armor, String[][] actions) {
@@ -53,9 +54,11 @@ public class EntityView extends Group {
         int length=actions.length;
         actionNames=new String[length];
         actionDesc=new String[length];
+        actionCd=new String[length];
         for (int i = 0; i < length; i++) {
             actionNames[i]=actions[i][0];
             actionDesc[i]=actions[i][1];
+            actionCd[i]=actions[i][2];
         }
     }
 
@@ -84,7 +87,7 @@ public class EntityView extends Group {
         this.hp = hp;
     }
 
-    public void setArmor(int armor) {this. armor = armor;}
+    public void setArmor(int armor) {this. armor = armor; }
 
     public int getHp() {
         return hp;
@@ -111,6 +114,8 @@ public class EntityView extends Group {
     public String[] getActionDesc() {
         return actionDesc;
     }
+
+    public String[] getActionCd() { return actionCd; }
 
     public String getName() {
         return name;

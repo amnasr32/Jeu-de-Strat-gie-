@@ -129,8 +129,8 @@ public abstract class Entity {
     }
 
     // renvoie false si l'action échoue
-    public boolean doAction(int i, Cell c) {
-        return actions[i].doAction(c);
+    public boolean doAction(Player p, int i, Cell c) {
+        return actions[i].doAction(p, c);
     }
 
 }

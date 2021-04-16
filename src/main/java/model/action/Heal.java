@@ -4,8 +4,9 @@ import model.Player;
 import model.entity.Entity;
 
 public class Heal extends Action {
-    public Heal(String name, int min, int max, int heal, int roundCD, int cooldown) {
+    public Heal(String name, String type, int min, int max, int heal, int roundCD, int cooldown) {
         super.name=name;
+        super.type=type;
         super.minRange=min;
         super.maxRange=max;
         super.amount=heal;
@@ -14,9 +15,9 @@ public class Heal extends Action {
     }
 
     @Override
-    public boolean doAction(Cell c) {
+    public boolean doAction(Player p, Cell c) {
         Entity e = c.getEntity();
-        if (e==null || !isAlly(e.getPlayer()) || roundCooldown != 0) return false;
+        if (e==null || e.getPlayer()!=p || roundCooldown != 0) return false;
         e.heal(amount);
         startCooldown(cooldown);
         return true;
@@ -26,20 +27,12 @@ public class Heal extends Action {
     public String getDescription() {
         StringBuilder bld = new StringBuilder();
         bld.append("soin: ").append(amount).append("\n");
-        bld.append("portee: ");
+        bld.append("portée: ");
         if (minRange==maxRange) bld.append(minRange).append("\n");
         else bld.append(minRange).append("-").append(maxRange).append("\n");
-        bld.append("temps de recuperation : ").append(cooldown).append(" tours \n");
-        bld.append("temps restant avant utilisation : ").append(roundCooldown).append(" tours");
+        bld.append("temps de récupération : ").append(cooldown).append(" tours \n");
+        bld.append("temps restant avant utilisation :");
         return bld.toString();
-    }
-
-    @Override
-    public Boolean isAlly(Player player){
-        if(player!=player.getGame().getCurrentPlayer()){
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -49,6 +42,8 @@ public class Heal extends Action {
 
     @Override
     public void reduceCooldown() {
-        roundCooldown-=1;
+        if(roundCooldown>0){
+            roundCooldown-=1;
+        }
     }
 }

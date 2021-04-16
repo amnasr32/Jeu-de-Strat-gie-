@@ -33,23 +33,25 @@ public class UserInterface extends Group {
 
     private class ActionButton extends Button {
         int actionNb;
+        String cd;
         Label description;
         boolean isSelected=false;
-        ActionButton(String name, String desc, int actionNb) {
+        ActionButton(String name, String desc, String cd, int actionNb) {
             super(name);
             setFont(new Font(20));
             setTranslateX(10+(actionNb+1)*300);
             setTranslateY(height-100);
-            description=new Label(desc);
+            description=new Label(desc+" "+cd+" tours");
             description.setFont(new Font(20));
             description.setVisible(false);
             description.setTranslateX(10+(actionNb+1)*300);
             description.setTranslateY(height-200);
             this.actionNb=actionNb;
+            this.cd=cd;
             allowMouseListeners();
         }
 
-        public Label getDescription() {
+        public Label getDescription(String cd) {
             return description;
         }
 
@@ -86,7 +88,6 @@ public class UserInterface extends Group {
         this.height=height;
         ctrl=controller;
         this.view=view;
-
 
         endTurn = makeButton("Fin du tour",0);
         start = makeButton("Commencer",0);
@@ -166,9 +167,9 @@ public class UserInterface extends Group {
         int nbOfActions=e.getActionNames().length;
         actionButtons=new ActionButton[nbOfActions];
         for (int i = 0; i < nbOfActions; i++) {
-            ActionButton b = new ActionButton(e.getActionNames()[i], e.getActionDesc()[i],i);
+            ActionButton b = new ActionButton(e.getActionNames()[i], e.getActionDesc()[i], e.getActionCd()[i], i);
             actionButtons[i]=b;
-            actions.getChildren().addAll(b,b.getDescription());
+            actions.getChildren().addAll(b,b.getDescription(e.getActionCd()[i]));
         }
     }
 
