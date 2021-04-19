@@ -20,7 +20,7 @@ public class MainView extends Application {
     private int height = 720;
     private int width = 1080;
 
-    LinkedList<EntityView> entityViews=new LinkedList<>();
+    LinkedList<EntityView> entityViews= new LinkedList<>();
     private EntityView currentEntityView;
     private int unitInd;
 
@@ -30,7 +30,7 @@ public class MainView extends Application {
     int pointedX=-1;
     int pointedY=-1;
     int chosenAction=-1;
-    int preGameAction =-1;
+    int preGameAction = -1;
 
     byte[] path=null;
 
@@ -46,13 +46,16 @@ public class MainView extends Application {
         
         welcomeinterface = new WelcomeInterface(width, height, ctrl);
         mainScene=new Scene(welcomeinterface,width,height);
-        mainScene.setFill((Color.SANDYBROWN));
+
         
-        primaryStage.setTitle("jeu de stratégie");
+        primaryStage.setTitle("Jeu de stratégie");
         primaryStage.setScene(mainScene);
         primaryStage.show();
        
     }
+
+    
+
     public Controller getCtrl() {
     	return this.ctrl;
     }
@@ -138,6 +141,7 @@ public class MainView extends Application {
 
         mainGroup.getChildren().add(scene3D);
         mainGroup.getChildren().add(ui);
+
     }
 
     public void addEntity(int x, int y, boolean isAlly,String name, int hp, int mp, String[][]actions) {
@@ -149,11 +153,13 @@ public class MainView extends Application {
     }
 
 
+
     public void focusFirstEntity(int i) {
         ui.hidePreGameButtons();
         currentEntityView = entityViews.get(i);
         currentEntityView.highlight(true);
     }
+
 
     public void focusNextEntity(int i) {
         currentEntityView.highlight(false);
@@ -246,18 +252,21 @@ public class MainView extends Application {
         //TODO : afficher un écran de fin de partie en fonction de la variable hasWon
     }
 
-    public void canPressReadyButton(boolean b) {
-        ui.canPressReadyButton(b);
-    }
-
     public void addOrDeleteEntity(int x, int y) {
         if (preGameAction==-1) ctrl.deleteEntity(x,y);
         else ctrl.addEntityToGame(x,y,preGameAction);
     }
 
+
+    public void canPressReadyButton(boolean b) {
+        ui.canPressReadyButton(b);
+    }
+
     public void updateMoneyView(int money) {
         ui.setMoneyValue(money);
     }
+
+
 }
 
 	

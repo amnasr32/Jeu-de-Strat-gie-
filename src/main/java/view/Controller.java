@@ -59,7 +59,7 @@ public class Controller {
     }
 
     public void addEntityToGame(int x, int y, int entity_type) {
-    	player.addEntityToGame(x, y, entity_type);
+        player.addEntityToGame(x, y, entity_type);
     }
 
     /*public int nbEntity() {
@@ -67,15 +67,15 @@ public class Controller {
     }*/
     //on récupere le primaryStage de mainView
     public Stage getStage() {
-    	return this.view.getPrimaryStage();
+        return this.view.getPrimaryStage();
     }
     //On récupere le mainGroup dans le quel on va make la grid
     public Group getMainGroup() {
-    	return this.view.getMainGroup();
+        return this.view.getMainGroup();
     }
 
     public MainView getMainView() {
-    	return this.view;
+        return this.view;
     }
 
     public void initBotPlayer() {

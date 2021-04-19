@@ -20,7 +20,7 @@ public class Player {
 
     public Player() {
         view=null;
-        game=null; 
+        game=null;
     }
 
     public Player(MainView view) {
@@ -46,6 +46,7 @@ public class Player {
 
     protected void changeAmountOfMoney(int amount) {
         money += amount;
+        assert view != null;
         view.updateMoneyView(money);
     }
 

@@ -8,9 +8,9 @@ import java.util.LinkedList;
 
 public class Grid implements Serializable {
 
-	private static final long serialVersionUID = -9029502583635790499L;
+    private static final long serialVersionUID = -9029502583635790499L;
 
-	private final Cell[][] cells;
+    private final Cell[][] cells;
 
     private final int height;
     private final int width;
@@ -25,7 +25,7 @@ public class Grid implements Serializable {
         cells=new Cell[h][w];
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
-                cells[i][j]=new Cell(); 
+                cells[i][j]=new Cell();
             }
         }
         coordList = new LinkedList<>();
@@ -287,8 +287,8 @@ public class Grid implements Serializable {
 
         for(byte i = 0; i < 6; i++){
             int [] adjCellCoordinates = getAdjCellCoordinates(x1, x2, i);
-            if(heuristicDistance(adjCellCoordinates[0], adjCellCoordinates[1], x2, y2) < distanceMinimale && 
-            isMovePossible(adjCellCoordinates[0], adjCellCoordinates[1], i)){
+            if(heuristicDistance(adjCellCoordinates[0], adjCellCoordinates[1], x2, y2) < distanceMinimale &&
+                    isMovePossible(adjCellCoordinates[0], adjCellCoordinates[1], i)){
                 meilleureDirection = i;
                 distanceMinimale = heuristicDistance(adjCellCoordinates[0], adjCellCoordinates[1], x2, y2);
             }
@@ -296,7 +296,7 @@ public class Grid implements Serializable {
         return meilleureDirection;
     }
 
-    // Directions "retournées" 
+    // Directions "retournées"
     // 5   0       2   3
     //4  x  1 --> 1  x  4
     // 3   2       0   5
@@ -328,13 +328,13 @@ public class Grid implements Serializable {
         if (maxLength<=0) return null;
 
         //distance estimée au point final
-        double heuristic[][] = new double[this.height][this.width]; 
+        double heuristic[][] = new double[this.height][this.width];
         //distance au point d'origine
-        int distance[][] = new int[this.height][this.width]; 
+        int distance[][] = new int[this.height][this.width];
         // direction qu'il faut prendre pour arriver à la cellule de laquelle on vient
-        byte origin[][] = new byte[this.height][this.width]; 
+        byte origin[][] = new byte[this.height][this.width];
         // cellules qu'on a pas encore empruntées mais pour lesquelles on a déjà colculé les valeurs
-        boolean open[][] = new boolean [this.height][this.width]; 
+        boolean open[][] = new boolean [this.height][this.width];
         // cellules par lesquelles on est déjà passés
         boolean closed[][] = new boolean [this.height][this.width];
 
@@ -394,7 +394,7 @@ public class Grid implements Serializable {
                         int yAdjCell = getAdjCellCoordinates(xCourant, yCourant, i)[1];
 
                         if(isMovePossible(xCourant, yCourant, i) && !closed[xAdjCell][yAdjCell]){
-                            
+
                             // On vérifie si il existe un raccourci à chaque cellule voisine en passant par la cellule sélectionnée
                             if((distance[xCourant][yCourant] + 1 < distance[xAdjCell][yAdjCell] ) || !open[xAdjCell][yAdjCell]){
                                 distance[xAdjCell][yAdjCell] = distance[xCourant][yCourant] + 1;
@@ -405,11 +405,11 @@ public class Grid implements Serializable {
                             }
                         }
                     }
-                    
+
                 }
             }
-            
-            
+
+
         }
 
         // Le cas où on ne peut pas atteindre la cellule d'arrivée
@@ -429,14 +429,14 @@ public class Grid implements Serializable {
         }
 
         // Nous avons les directions pour aller du point d'arrivée au point de départ mais on a besoin des directions dans l'autre sens
-        // On met les éléments de la liste dans un tableau et on retourne chaque direction 
+        // On met les éléments de la liste dans un tableau et on retourne chaque direction
         if(path.size() > maxLength){
             return null;
         }
         else{
             byte[] b = new byte[path.size()];
             // On ajoute les directions "retournées" et à l'envers dans un tableau de type byte qu'on renvoie
-            // Directions "retournées" 
+            // Directions "retournées"
             // 5   0       2   3
             //4  x  1 --> 1  x  4
             // 3   2       0   5
@@ -445,7 +445,7 @@ public class Grid implements Serializable {
             }
             return b;
         }
-        
+
     }
 
     boolean isFull( boolean processed[][]){
@@ -485,11 +485,11 @@ public class Grid implements Serializable {
         if (maxLength<=0) return null;
 
         //distance au point d'origine
-        int distance[][] = new int[this.height][this.width]; 
+        int distance[][] = new int[this.height][this.width];
         // direction qu'il faut prendre pour arriver à la cellule de laquelle on vient
-        byte origin[][] = new byte[this.height][this.width]; 
+        byte origin[][] = new byte[this.height][this.width];
         // cellules pour lesquelles on a colculé les valeurs
-        boolean processed[][] = new boolean[this.height][this.width]; 
+        boolean processed[][] = new boolean[this.height][this.width];
 
         // Initialisation du tableau indiquant la direction de laquelle on est venus pour arriver à chaque cellule
         for(int i = 0; i < distance.length; i++){
@@ -534,7 +534,7 @@ public class Grid implements Serializable {
                     int yAdjCell = getAdjCellCoordinates(celluleCourante[0], celluleCourante[1], i)[1];
 
                     if(isMovePossible(celluleCourante[0], celluleCourante[1], i) && !processed[xAdjCell][yAdjCell]){
-                        
+
                         // On vérifie si il existe un raccourci à chaque cellule voisine en passant par la cellule sélectionnée
                         if((distance[celluleCourante[0]][celluleCourante[1]] + 1 < distance[xAdjCell][yAdjCell] && isMovePossible(celluleCourante[0], celluleCourante[1], xAdjCell, yAdjCell ))){
                             distance[xAdjCell][yAdjCell] = distance[celluleCourante[0]][celluleCourante[1]] + 1;
@@ -542,7 +542,7 @@ public class Grid implements Serializable {
                         }
                     }
                 }
-                
+
             }
 
         }
@@ -567,14 +567,14 @@ public class Grid implements Serializable {
         }
 
         // Nous avons les directions pour aller du point d'arrivée au point de départ mais on a besoin des directions dans l'autre sens
-        // On met les éléments de la liste dans un tableau et on retourne chaque direction 
+        // On met les éléments de la liste dans un tableau et on retourne chaque direction
         if(path.size() > maxLength){
             return null;
         }
         else{
             byte[] b = new byte[path.size()];
             // On ajoute les directions "retournées" et à l'envers dans un tableau de type byte qu'on renvoie
-            // Directions "retournées" 
+            // Directions "retournées"
             // 5   0       2   3
             //4  x  1 --> 1  x  4
             // 3   2       0   5
@@ -583,7 +583,7 @@ public class Grid implements Serializable {
             }
             return b;
         }
-        
+
     }*/
 
     // Bouge l'entité d'une case, et update ses coordoonées internes

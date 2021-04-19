@@ -12,9 +12,9 @@ public class Game implements Serializable {
 	private static final long serialVersionUID = 7373047453891668295L;
 	private final Grid grid;
     private final LinkedList<Player> players;
-    private final LinkedList<Entity> playableEntities; // liste de toutes les entités en jeu
-    //private int[] entTeam; // nombre d'entités pour chaque équipe actuellement en jeu
-	//int nb=0;
+    private LinkedList<Entity> playableEntities; // liste de toutes les entités en jeu
+    private int[] entTeam; // nombre d'entités pour chaque équipe actuellement en jeu
+	int nb=0;
 
     private Player currentPlayer=null; // le joueur dont c'est le tour
     private Entity currentEntity=null;
@@ -28,7 +28,7 @@ public class Game implements Serializable {
         this.grid=grid;
 
         players = new LinkedList<>();
-        for (Player p:playerList) {
+        for (Player p : playerList){
             addPlayer(p);
         }
     }
@@ -48,6 +48,7 @@ public class Game implements Serializable {
             gameState = 1;
             firstRound();
         }
+
     }
 
     // premier tour de jeu
@@ -80,6 +81,7 @@ public class Game implements Serializable {
         }
     }
 
+
     // permet d'ajouter un entité au model et à la view de tous les joueurs
     private boolean addEntityToGame(Entity e, int x, int y) {
         if (grid.getCell(x,y).getEntity()!=null || e==null) return false; //yeet
@@ -95,7 +97,7 @@ public class Game implements Serializable {
    
     //un joueur essaie de poser une entité
     public void tryToAddEntityToGame(Player player, int x, int y, int entity_type) {
-    	if(!canAddEntity(player) || gameState!=0) return;
+        if(!canAddEntity(player) || gameState!=0) return;
         Entity e = null;
         //entity_type c'est pour indiquer quel type d'entité à ajouter (par exemple 0 pour soldier 1 pour Knight)
         switch (entity_type) {
@@ -125,6 +127,7 @@ public class Game implements Serializable {
         player.canPressReadyButton(hasAtLeastOneEntityPlaced(player));
     }
 
+
     private boolean hasAtLeastOneEntityPlaced(Player player) {
         for (Entity e:playableEntities) {
             if (e.getPlayer()==player) return true;
@@ -139,7 +142,8 @@ public class Game implements Serializable {
         return true;
     }
 
-    // vérifie que le joueur a au plus 64 entités en jeu
+
+    // vérifie que le joueur a au plus 4 entités en jeu
     private boolean canAddEntity(Player player) {
         int i=0;
         for (Entity e:playableEntities) {
@@ -228,6 +232,7 @@ public class Game implements Serializable {
         int i = playableEntities.indexOf(e);
         removeEntity(i);
     }
+
 
     private void removeEntity(int i) {
         grid.getCell(playableEntities.get(i).getX(),playableEntities.get(i).getY()).setEntity(null);

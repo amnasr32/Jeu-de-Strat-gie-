@@ -22,11 +22,11 @@ public class Attack extends Action {
     @Override
     public String getDescription() {
         StringBuilder bld = new StringBuilder();
-        bld.append("dégats: ").append(amount).append("\n");
-        bld.append("portée: ");
+        bld.append("Dégats: ").append(amount).append("\n");
+        bld.append("Portée: ");
         if (minRange==maxRange) bld.append(minRange).append("\n");
         else bld.append(minRange).append("-").append(maxRange).append("\n");
-        bld.append("coût: ").append(cost).append("\n");
+        bld.append("Coût: ").append(cost).append("\n");
         return bld.toString();
     }
 }
