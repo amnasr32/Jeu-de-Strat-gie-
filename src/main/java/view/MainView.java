@@ -54,13 +54,7 @@ public class MainView extends Application {
        
     }
 
-    public void setPreGameAction(int preGameAction) {
-        this.preGameAction = preGameAction;
-    }
-
-    public int getPreGameAction() {
-        return preGameAction;
-    }
+    
 
     public Controller getCtrl() {
     	return this.ctrl;

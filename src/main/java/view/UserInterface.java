@@ -35,8 +35,9 @@ public class UserInterface extends Group {
     private GameMenu optionMenu;
     private GameButton quitter;
     private GameLabel money;
-
-    private final String[] listOfPossibleEntities = {"Soldat", "Chevalier"};
+    private int height = 720;
+    private int width = 1080;
+    //private final String[] listOfPossibleEntities = {"Soldat", "Chevalier"};
 
     private final static String BUTTON_FREE = "-fx-background-color: transparent; " +
             "-fx-background-image: url('buttons/button_ready_on.png'); -fx-background-size: 170 65;" +
