@@ -8,7 +8,7 @@ import model.action.Attack;
 public class Wizard extends Entity {
 
     public Wizard(int x, int y, Player player) {
-        super(player, 6, 6, 0);
+        super(player, 6, 6, 0, 4);
         super.x=x;
         super.y=y;
         super.actions = new Action[2];

@@ -15,13 +15,16 @@ public abstract class Entity {
     protected Action[] actions;
     protected Player player;
 
-    public Entity(Player player, int health, int movement, int armor) {
+    protected int cost;
+
+    public Entity(Player player, int health, int movement, int armor, int cost) {
         this.player=player;
         maxHp = health;
         hp = health;
         maxMp = movement;
         mp = movement;
         this.armor = armor;
+        this.cost = cost;
     }
 
     public int getX() {
@@ -133,4 +136,7 @@ public abstract class Entity {
         return actions[i].doAction(p, c);
     }
 
+    public int getCost() {
+        return cost;
+    }
 }
