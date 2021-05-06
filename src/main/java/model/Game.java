@@ -2,7 +2,6 @@ package model;
 import model.entity.Entity;
 import model.entity.Knight;
 import model.entity.Soldier;
-import model.entity.Wizard;
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -11,8 +10,8 @@ import java.util.LinkedList;
 public class Game implements Serializable {
 
 	private static final long serialVersionUID = 7373047453891668295L;
-	private Grid grid;
-    private Player[] players;
+	private final Grid grid;
+    private final LinkedList<Player> players;
     private LinkedList<Entity> playableEntities; // liste de toutes les entités en jeu
     private int[] entTeam; // nombre d'entités pour chaque équipe actuellement en jeu
 	int nb=0;
@@ -24,24 +23,32 @@ public class Game implements Serializable {
     private int entInd; // index de l'entité courante
 
 
-    public Game(Grid grid, Player ... playerlist) {
+    public Game(Grid grid, Player ... playerList) {
         playableEntities = new LinkedList<>();
         this.grid=grid;
 
-        players = new Player[playerlist.length];
-        // copie playerList dans players
-        System.arraycopy(playerlist, 0, players, 0, playerlist.length);
+        players = new LinkedList<>();
+        for (Player p : playerList){
+            addPlayer(p);
+        }
+    }
+
+    public void addPlayer(Player p) {
+        if (!players.contains(p)) players.add(p);
+        p.setGame(this);
     }
 
     protected Grid getGrid() {
         return grid;
     }
-    public Player getCurrentPlayer() { return currentPlayer; }
- // un bouton dit si le joueur a fini de posé ses entité    une fois que les joueurs ont cliqué
+
+    // un bouton dit si le joueur a fini de poser ses entités une fois que les joueurs ont cliqué
     void start() {
-        initPlayableEntities();
-        gameState=1;
-        firstRound();
+        if (allPlayersAreReady()) {
+            gameState = 1;
+            firstRound();
+        }
+
     }
 
     // premier tour de jeu
@@ -69,60 +76,57 @@ public class Game implements Serializable {
         currentEntity=playableEntities.get(entInd);
         currentPlayer=currentEntity.getPlayer();
         currentEntity.resetMp();
-        countCooldown();
         for (Player p:players) {
             p.focusNextEntity(entInd, p==currentPlayer);
         }
     }
 
-    // chaque joueur pose ses unités
-    // TODO
-    private void initPlayableEntities() {
-    	int h=grid.getHeight();
-        int w=grid.getWidth();
-        Entity e1 = new Soldier(players[0]);
-        Entity e2 = new Soldier(players[1]);
-        Entity e3 = new Knight(players[0]);
-        Entity e4 = new Knight(players[1]);
-        Entity e5 = new Wizard(players[0]);
-        addEntityToGame(e1, 1,1);
-        addEntityToGame(e2, h-2,w-2);
-        addEntityToGame(e3, 4,3);
-        addEntityToGame(e4, h-4,w-5);
-        addEntityToGame(e5, 5,5);
-    }
 
     // permet d'ajouter un entité au model et à la view de tous les joueurs
-    private void addEntityToGame(Entity e, int x, int y) {
-        if (grid.getCell(x,y).getEntity()!=null) return; //yeet
+    private boolean addEntityToGame(Entity e, int x, int y) {
+        if (grid.getCell(x,y).getEntity()!=null || e==null) return false; //yeet
         e.updateCoords(x, y);
         grid.getCell(x,y).setEntity(e);
         playableEntities.add(e);
         for (Player p : players) {
             p.addEntityToView(e);
         }
+        return true;
     }
 
    
     //un joueur essaie de poser une entité
     public void tryToAddEntityToGame(Player player, int x, int y, int entity_type) {
-    	if(!canAddEntity(player)) return;
-    	//TODO Penser à faire un switch au lieu de if
-        if (entity_type==0) { //entity_type c'est pour indiquer quel type d'entier à ajouter (par exemple 0 pour soldier 1 pour Knight)
-        	Entity e = new Soldier(players[0]);
-        	addEntityToGame(e,x,y);
-        	nb++;
-
+        if(!canAddEntity(player) || gameState!=0) return;
+        Entity e = null;
+        //entity_type c'est pour indiquer quel type d'entité à ajouter (par exemple 0 pour soldier 1 pour Knight)
+        switch (entity_type) {
+            case 0:
+                e = new Soldier(player);
+                break;
+            case 1:
+                e = new Knight(player);
+                break;
+            default:
+                break;
         }
-        else {
-            Entity e = new Knight(players[0]);
-        	addEntityToGame(e, x,y);
-        	nb++;
+        if (e!=null && e.getCost()<=player.getMoney()) {
+            if (addEntityToGame(e, x, y)) player.changeAmountOfMoney(-e.getCost());
+            player.setReady(false);
+            // le joueur n'as le droit de dire qu'il est prêt à jouer que s'il a au moins une entité
+            player.canPressReadyButton(hasAtLeastOneEntityPlaced(player));
         }
-
-        // le joueur n'as le droit de dire qu'il est prêt à jouer que s'il a au moins une entité
-        player.canPressReadyButton( hasAtLeastOneEntityPlaced(player) );
     }
+
+    public void tryToDeleteEntity(Player player, int x, int y) {
+        Entity e = grid.getCell(x,y).getEntity();
+        if (gameState!=0 || e==null || e.getPlayer()!=player) return;
+        player.changeAmountOfMoney(e.getCost());
+        removeEntity(e);
+        player.setReady(false);
+        player.canPressReadyButton(hasAtLeastOneEntityPlaced(player));
+    }
+
 
     private boolean hasAtLeastOneEntityPlaced(Player player) {
         for (Entity e:playableEntities) {
@@ -131,13 +135,21 @@ public class Game implements Serializable {
         return false;
     }
 
+    private boolean allPlayersAreReady() {
+        for (Player p:players) {
+            if (!p.isReady()) return false;
+        }
+        return true;
+    }
+
+
     // vérifie que le joueur a au plus 4 entités en jeu
     private boolean canAddEntity(Player player) {
         int i=0;
         for (Entity e:playableEntities) {
             if (e.getPlayer()==player) i++;
         }
-        return i<4;
+        return i<64;
     }
 
 
@@ -179,7 +191,7 @@ public class Game implements Serializable {
             // pour l'instant on update les points de vie de toutes les entités, ce n'est pas idéal
             for (int i = 0; i < playableEntities.size(); i++) {
                 for (Player p : players) {
-                    p.updateStatView(i, playableEntities.get(i).getHp(), playableEntities.get(i).getArmor());
+                    p.updateHpView(i, playableEntities.get(i).getHp());
                 }
                 removeIfDead(i);
             }
@@ -208,18 +220,18 @@ public class Game implements Serializable {
         grid.clearCoordList();
     }
 
-    public void countCooldown(){
-        for (int i = 0; i < currentEntity.getActions().length; i++) {
-            currentEntity.getAction(i).reduceCooldown();
-        }
-    }
-
     // s'occupe de "tuer" l'entité playableEntities[i] si ses pv == 0
     private void removeIfDead(int i) {
         if (playableEntities.get(i).getHp()<=0) {
             removeEntity(i);
         }
     }
+
+    private void removeEntity(Entity e) {
+        int i = playableEntities.indexOf(e);
+        removeEntity(i);
+    }
+
 
     private void removeEntity(int i) {
         grid.getCell(playableEntities.get(i).getX(),playableEntities.get(i).getY()).setEntity(null);

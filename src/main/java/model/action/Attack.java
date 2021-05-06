@@ -1,6 +1,5 @@
 package model.action;
-import model.Cell;
-import model.Player;
+import model.*;
 import model.entity.Entity;
 
 public class Attack extends Action {
@@ -12,6 +11,7 @@ public class Attack extends Action {
         super.amount =dmg;
         super.roundCooldown=roundCD;
         super.cooldown=cooldown;
+        //super.cost=cost;
     }
 
     @Override

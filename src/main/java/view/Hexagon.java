@@ -1,6 +1,6 @@
 package view;
 
-import javafx.scene.AmbientLight;
+import custom.GameTile;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -10,8 +10,9 @@ import javafx.scene.shape.Cylinder;
 
 public class Hexagon extends Group {
 
-    Cylinder cylinder;
+    GameTile cylinder;
     Cylinder outerCylinder;
+    private final Image tileFill = new Image("tiles/dirt.png");
     int x, y, height;
 
     MainView view;
@@ -21,7 +22,7 @@ public class Hexagon extends Group {
         x=i;
         y=j;
         height=h;
-        cylinder = new Cylinder(8, 1+h*3, 6);
+        cylinder = new GameTile(8, 1+h*3, 6);
         initOuterCylinder(h);
         getChildren().add(cylinder);
         float f = (i%2==0) ? 0 : 7.5f;
@@ -30,7 +31,7 @@ public class Hexagon extends Group {
         setTranslateY(h*-1.5);
         color(0);
     }
-     // FAIRE UNE FONCTION QUI VERIFIE QUE L'HEXAGON NE POSSEDE PAS D'ENTITÉ!
+     // FAIRE UNE FONCTIN QUI VERIFIE QUE L'HEXAGON NE POSSEDE PAS D'ENTITÉ!
     private void initOuterCylinder(int h) {
         outerCylinder = new Cylinder(9, 2+h*3, 6);
         outerCylinder.setVisible(false);
@@ -63,13 +64,13 @@ public class Hexagon extends Group {
         PhongMaterial material = new PhongMaterial();
         switch (i) {
             case 0:
-                material.setDiffuseColor(Color.LIGHTYELLOW);
+                material.setDiffuseMap(tileFill);
                 break;
             case 1:
                 material.setDiffuseColor(Color.LAWNGREEN);
                 break;
             case 2:
-                material.setDiffuseColor(Color.DEEPSKYBLUE);
+                material.setDiffuseColor(Color.ORANGE);
                 break;
             default:
                 material.setDiffuseColor(Color.PINK);
@@ -97,7 +98,7 @@ public class Hexagon extends Group {
         } else {
             setOnMouseEntered( event -> {});
             setOnMouseExited( event -> {});
-            color(0);
+            //color(0);
             setHighlight(false);
         }
     }
@@ -117,16 +118,8 @@ public class Hexagon extends Group {
     }
 
     void clickAction() {
-    	
-        if (view.getChosenAction()==-1) view.moveModelEntity();
 
-        else if (view.getChosenAction()==-2) {
-        	view.getCtrl().addEntityToGame(this.getX(), this.getY(),0);
-        }
-
-        else if(view.chosenAction>=0) {  
-        		view.doAction();
-        }
+        view.doAction();
     }
 
 }

@@ -54,7 +54,7 @@ public abstract class Entity {
         return player;
     }
 
-    public void damage(int dmg) {
+    public void damage(int dmg) { //TODO change that
         if (dmg>0) {
             hp=hp-(dmg-armor);
             if (hp<0) hp=0;

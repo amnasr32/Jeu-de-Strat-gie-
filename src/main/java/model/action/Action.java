@@ -1,7 +1,6 @@
 package model.action;
-import model.Cell;
+import model.*;
 import model.entity.Entity;
-import model.Player;
 
 public abstract class Action {
     protected String name;
@@ -11,6 +10,8 @@ public abstract class Action {
     protected int amount; // quantité de dégats, soins, etc
     protected int roundCooldown; // tours de récupération au tour 1 puis en temps réel
     protected int cooldown; // nombre de tours de récupération
+    //protected int cost; // coût en point d'action
+
 
     // doit renvoyer false si l'action échoue
     public abstract boolean doAction(Player p, Cell c);

@@ -66,8 +66,8 @@ public class GridView extends Group {
     private void initGround() {
         Box ground = new Box(30000, 2, 30000);
         PhongMaterial material = new PhongMaterial();
-        material.setSpecularColor(Color.BLACK);
-        material.setDiffuseColor(Color.SANDYBROWN);
+        material.setSpecularColor(Color.rgb(0,22,63));
+        material.setDiffuseColor(Color.rgb(20,11,14));
         ground.setMaterial(material);
         ground.setTranslateY(8);
         getChildren().add(ground);

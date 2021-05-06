@@ -11,13 +11,16 @@ import java.util.LinkedList;
  * est responsable de transmettre l'état du jeu à la View
  * */
 public class Player {
-    private MainView view;
-    private Game game;
-    private Level level;
+    private final MainView view;
+    protected Game game;
+
+    // vérifie que le joueur est prêt à commencer une partie
+    private boolean isReady;
+    private int money=10; //TODO hard codé, à changer
 
     public Player() {
         view=null;
-        game=null; 
+        game=null;
     }
 
     public Player(MainView view) {
@@ -28,7 +31,24 @@ public class Player {
     public void setGame(Game game) {
         this.game = game;
     }
-    public Game getGame(){ return game; }
+
+    protected void setReady(boolean b) {
+        isReady=b;
+    }
+
+    protected boolean isReady() {
+        return isReady;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    protected void changeAmountOfMoney(int amount) {
+        money += amount;
+        assert view != null;
+        view.updateMoneyView(money);
+    }
 
     // ---------------------------------
     //  fonctions qui modifient le jeu :
@@ -45,17 +65,24 @@ public class Player {
         //level.SetGrid(grid);
         //level.createLevel();
         /**ici on affiche la grille qu'on a sérialisé => on deserialise**/
-        PlayerBot pb = new PlayerBot();
-        game = new Game(level.showLevel(), this, pb);
-        pb.setGame(game);
+
+        new Game(level.showLevel(), this);
+
     }
 
-    public void start() {
-        game.start();
+    public void initBotPlayer() {
+        PlayerBot pb = new PlayerBot();
+        game.addPlayer(pb);
+        pb.initEntities();
     }
-    public int getnbEntity() {
+
+    public void toggleReady() {
+        isReady=!isReady;
+        if (isReady) game.start();
+    }
+    /*public int getnbEntity() {
     	return game.nb;
-    }
+    }*/
 
     public void endTurn() {
         game.nextRound(this);
@@ -84,6 +111,10 @@ public class Player {
 
     public void addEntityToGame(int x, int y, int entity_type) {
         game.tryToAddEntityToGame(this, x,y,entity_type);
+    }
+
+    public void deleteEntity(int x, int y) {
+        game.tryToDeleteEntity(this, x, y);
     }
 
     // ---------------------------------
@@ -134,8 +165,8 @@ public class Player {
         view.moveViewEntity(direction);
     }
 
-    protected void updateStatView(int i, int newHp, int newArmor) {
-        view.updateStat(i, newHp, newArmor);
+    protected void updateHpView(int i, int newHp) {
+        view.updateHp(i, newHp);
     }
 
     protected void resetAction() {
@@ -159,7 +190,7 @@ public class Player {
         view.endGame(hasWon);
     }
 
-    public void canPressReadyButton(boolean b) {
+    protected void canPressReadyButton(boolean b) {
         view.canPressReadyButton(b);
     }
 
