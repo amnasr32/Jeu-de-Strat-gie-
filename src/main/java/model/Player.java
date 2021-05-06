@@ -138,12 +138,13 @@ public class Player {
 
     protected void addEntityToView(Entity e) {
         Action[] actions = e.getActions();
-        String[][] array = new String[actions.length][2];
+        String[][] array = new String[actions.length][3];
         for (int i = 0; i < actions.length; i++) {
             array[i][0]=actions[i].getName();
             array[i][1]=actions[i].getDescription();
+            array[i][2]=String.valueOf(actions[i].getRoundCooldown());
         }
-        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this,e.toString(), e.getHp(), e.getMp(), array);
+        view.addEntity(e.getX(), e.getY(), e.getPlayer()==this,e.toString(), e.getHp(), e.getMp(), e.getArmor() ,array);
     }
 
     protected void focusFirstEntity(int i, boolean isCurrentPlayer) {

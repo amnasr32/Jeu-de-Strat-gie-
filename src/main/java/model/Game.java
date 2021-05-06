@@ -2,6 +2,8 @@ package model;
 import model.entity.Entity;
 import model.entity.Knight;
 import model.entity.Soldier;
+import model.entity.Wizard;
+
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -107,6 +109,9 @@ public class Game implements Serializable {
             case 1:
                 e = new Knight(player);
                 break;
+            case 2:
+                e = new Wizard(player);
+                break;
             default:
                 break;
         }
@@ -187,7 +192,7 @@ public class Game implements Serializable {
     public void doAction(Player player, int action, int x, int y) {
         if (!canPlay(player)) return;
         Cell c = grid.getCell(x,y);
-        if (grid.isInCoordList(x,y) && currentEntity.doAction(action,c)) {
+        if (grid.isInCoordList(x,y) && currentEntity.doAction(player, action, c)) {
             // pour l'instant on update les points de vie de toutes les entités, ce n'est pas idéal
             for (int i = 0; i < playableEntities.size(); i++) {
                 for (Player p : players) {
@@ -195,7 +200,6 @@ public class Game implements Serializable {
                 }
                 removeIfDead(i);
             }
-
         }
         grid.clearCoordList();
         player.resetAction();

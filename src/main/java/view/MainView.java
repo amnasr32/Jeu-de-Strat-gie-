@@ -144,8 +144,8 @@ public class MainView extends Application {
 
     }
 
-    public void addEntity(int x, int y, boolean isAlly,String name, int hp, int mp, String[][]actions) {
-        EntityView u = new EntityView(this, x,y,isAlly,name, hp, mp, actions);
+    public void addEntity(int x, int y, boolean isAlly, String name, int hp, int mp, int armor, String[][] actions) {
+        EntityView u = new EntityView(this, x,y,isAlly,name, hp, mp, armor, actions);
         entityViews.add(u);
         gridView.addEntity(u,x,y);
         u.allowActionOnClick(true);

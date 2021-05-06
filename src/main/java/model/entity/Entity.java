@@ -8,21 +8,23 @@ public abstract class Entity {
     protected int x;  //position x
     protected int y;  //position y
     protected int hp; //points de vie
+    protected int armor;
     protected int maxHp; //points de vie max
     protected int mp; //points de mouvements
     protected int maxMp;//points de mouvements max
     protected Action[] actions;
     protected Player player;
 
-    protected int cost; // coût de l'entité à l'achat
+    protected int cost;
 
-    public Entity(Player player, int health, int movement, int cost) {
+    public Entity(Player player, int health, int movement, int armor, int cost) {
         this.player=player;
         maxHp = health;
         hp = health;
         maxMp = movement;
         mp = movement;
-        this.cost=cost;
+        this.armor = armor;
+        this.cost = cost;
     }
 
     public int getX() {
@@ -36,6 +38,8 @@ public abstract class Entity {
     public int getHp() {
         return hp;
     }
+
+    public int getArmor() { return armor; }
 
     public int getMp() {
         return mp;
@@ -53,13 +57,16 @@ public abstract class Entity {
         return player;
     }
 
-    public int getCost() {
-        return cost;
+    public void damage(int dmg) { //TODO change that
+        if (dmg>0) {
+            hp=hp-(dmg-armor);
+            if (hp<0) hp=0;
+        }
     }
 
-    public void damage(int dmg) {
-        if (dmg>0) {
-            hp-=dmg;
+    public void magicDamage(int mdmg){
+        if (mdmg>0) {
+            hp-=mdmg;
             if (hp<0) hp=0;
         }
     }
@@ -69,6 +76,10 @@ public abstract class Entity {
             hp+=h;
             if (hp>maxHp) hp=maxHp;
         }
+    }
+
+    public void armorBuff(int a){
+        armor+=a;
     }
 
     //sert à savoir si une entité quelconque appartient au même joueur que l'entité source
@@ -121,8 +132,11 @@ public abstract class Entity {
     }
 
     // renvoie false si l'action échoue
-    public boolean doAction(int i, Cell c) {
-        return actions[i].doAction(c);
+    public boolean doAction(Player p, int i, Cell c) {
+        return actions[i].doAction(p, c);
     }
 
+    public int getCost() {
+        return cost;
+    }
 }
