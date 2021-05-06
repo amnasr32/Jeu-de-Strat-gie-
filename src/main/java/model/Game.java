@@ -2,6 +2,8 @@ package model;
 import model.entity.Entity;
 import model.entity.Knight;
 import model.entity.Soldier;
+import model.entity.Wizard;
+
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -106,6 +108,9 @@ public class Game implements Serializable {
                 break;
             case 1:
                 e = new Knight(player);
+                break;
+            case 2:
+                e = new Wizard(player);
                 break;
             default:
                 break;
