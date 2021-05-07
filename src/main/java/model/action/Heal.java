@@ -35,15 +35,4 @@ public class Heal extends Action {
         return bld.toString();
     }
 
-    @Override
-    public void startCooldown(int cd) {
-        roundCooldown = cd;
-    }
-
-    @Override
-    public void reduceCooldown() {
-        if(roundCooldown>0){
-            roundCooldown-=1;
-        }
-    }
 }

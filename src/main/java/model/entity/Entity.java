@@ -57,9 +57,10 @@ public abstract class Entity {
         return player;
     }
 
-    public void damage(int dmg) { //TODO change that
+    public void damage(int dmg) {
+        dmg = dmg-armor;
         if (dmg>0) {
-            hp=hp-(dmg-armor);
+            hp=hp-dmg;
             if (hp<0) hp=0;
         }
     }
@@ -138,5 +139,11 @@ public abstract class Entity {
 
     public int getCost() {
         return cost;
+    }
+
+    public void decreaseAllCooldowns() {
+        for (Action a:actions) {
+            a.reduceCooldown();
+        }
     }
 }
