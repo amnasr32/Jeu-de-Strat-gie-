@@ -18,9 +18,15 @@ public abstract class Action {
 
     public abstract String getDescription();
 
-    public abstract void startCooldown(int cooldown);
+    public void startCooldown(int cd) {
+        roundCooldown = cd;
+    }
 
-    public abstract void reduceCooldown();
+    public void reduceCooldown() {
+        if(roundCooldown>0){
+            roundCooldown-=1;
+        }
+    }
 
     public String getName() {
         return name;

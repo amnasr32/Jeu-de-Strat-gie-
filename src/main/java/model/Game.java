@@ -78,6 +78,7 @@ public class Game implements Serializable {
         currentEntity=playableEntities.get(entInd);
         currentPlayer=currentEntity.getPlayer();
         currentEntity.resetMp();
+        currentEntity.decreaseAllCooldowns();
         for (Player p:players) {
             p.focusNextEntity(entInd, p==currentPlayer);
         }
