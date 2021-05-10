@@ -7,7 +7,6 @@ import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 
-
 public class MainView extends Application {
 
     private Controller ctrl;
@@ -42,8 +41,7 @@ public class MainView extends Application {
         mainGroup = new Group();
         mainScene=new Scene(mainGroup,width,height);
         ctrl = new Controller(this);
-     
-        
+
         welcomeinterface = new WelcomeInterface(width, height, ctrl);
         mainScene=new Scene(welcomeinterface,width,height);
 
@@ -221,8 +219,11 @@ public class MainView extends Application {
         }
     }
 
-    public void updateHp(int i, int newHp) {
+    public void updateStat(int i, int newHp, int newArmor, int newPoisonStatut, int newRootStatut) {
         entityViews.get(i).setHp(newHp);
+        entityViews.get(i).setArmor(newArmor);
+        entityViews.get(i).setPoisonStatut(newPoisonStatut);
+        entityViews.get(i).setRootStatut(newRootStatut);
         ui.updateEntityDetails(entityViews.get(i));
     }
 

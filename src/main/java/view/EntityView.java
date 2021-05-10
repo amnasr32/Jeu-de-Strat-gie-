@@ -24,6 +24,9 @@ public class EntityView extends Group {
 
     private int armor;
 
+    private int poisonStatut;
+    private int rootStatut;
+
     private final int maxMp;
     private int mp;
 
@@ -41,6 +44,8 @@ public class EntityView extends Group {
         this.mp=mp;
         maxMp=mp;
         this.name=name;
+        poisonStatut=0;
+        rootStatut=0;
 
         initSphere();
         initCylinder(isAlly);
@@ -89,6 +94,14 @@ public class EntityView extends Group {
 
     public void setArmor(int armor) {this. armor = armor; }
 
+    public void setPoisonStatut(int poisonStatut){
+        this.poisonStatut=poisonStatut;
+    }
+
+    public void setRootStatut(int rootStatut){
+        this.rootStatut=rootStatut;
+    }
+
     public int getHp() {
         return hp;
     }
@@ -98,6 +111,10 @@ public class EntityView extends Group {
     }
 
     public int getArmor() { return armor;}
+
+    public int getPoisonStatut() { return poisonStatut;}
+
+    public int getRootStatut() { return rootStatut;}
 
     public int getMp() {
         return mp;

@@ -20,6 +20,7 @@ public class Heal extends Action {
         Entity e = c.getEntity();
         if (e==null || e.getPlayer()!=p || roundCooldown != 0) return false;
         e.heal(amount);
+        startCooldown(cooldown);
         return true;
     }
 

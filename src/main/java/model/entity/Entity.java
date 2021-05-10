@@ -12,6 +12,8 @@ public abstract class Entity {
     protected int maxHp; //points de vie max
     protected int mp; //points de mouvements
     protected int maxMp;//points de mouvements max
+    protected int root;
+    protected int poison;
     protected Action[] actions;
     protected Player player;
 
@@ -25,6 +27,8 @@ public abstract class Entity {
         mp = movement;
         this.armor = armor;
         this.cost = cost;
+        this.root=0;
+        this.poison=0;
     }
 
     public int getX() {
@@ -41,8 +45,20 @@ public abstract class Entity {
 
     public int getArmor() { return armor; }
 
+    public int getRoot() {
+        return root;
+    }
+
+    public int getPoison() {
+        return poison;
+    }
+
     public int getMp() {
         return mp;
+    }
+
+    public void setMp(int a) {
+        mp=a;
     }
 
     public Action getAction(int i) {
@@ -81,6 +97,23 @@ public abstract class Entity {
 
     public void armorBuff(int a){
         armor+=a;
+    }
+
+    public void rooting(int a){
+        root=a;
+    }
+
+    public void poisoning(int a){
+        poison=a;
+    }
+
+    public void cleans() {
+        if(poison>0){
+            poison=0;
+        }
+        if(root>0){
+            root=0;
+        }
     }
 
     //sert à savoir si une entité quelconque appartient au même joueur que l'entité source
@@ -144,6 +177,12 @@ public abstract class Entity {
     public void decreaseAllCooldowns() {
         for (Action a:actions) {
             a.reduceCooldown();
+        }
+        if (root>0){
+            root-=1;
+        }
+        if (poison>0){
+            poison-=1;
         }
     }
 }

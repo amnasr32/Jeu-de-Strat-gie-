@@ -1,8 +1,5 @@
 package model;
-import model.entity.Entity;
-import model.entity.Knight;
-import model.entity.Soldier;
-import model.entity.Wizard;
+import model.entity.*;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -77,7 +74,21 @@ public class Game implements Serializable {
         entInd=(entInd+1)%playableEntities.size();
         currentEntity=playableEntities.get(entInd);
         currentPlayer=currentEntity.getPlayer();
-        currentEntity.resetMp();
+        if(currentEntity.getRoot()>0){
+            currentEntity.setMp(0);
+        }
+        else{
+            currentEntity.resetMp();
+        }
+        if(currentEntity.getPoison()>0){
+            currentEntity.magicDamage(1);
+            for (int i = 0; i < playableEntities.size(); i++) {
+                for (Player p : players) {
+                    p.updateStatView(i, playableEntities.get(i).getHp(), playableEntities.get(i).getArmor(), playableEntities.get(i).getPoison(), playableEntities.get(i).getRoot());
+                }
+                removeIfDead(i);
+            }
+        }
         currentEntity.decreaseAllCooldowns();
         for (Player p:players) {
             p.focusNextEntity(entInd, p==currentPlayer);
@@ -112,6 +123,12 @@ public class Game implements Serializable {
                 break;
             case 2:
                 e = new Wizard(player);
+                break;
+            case 3:
+                e = new Druid(player);
+                break;
+            case 4:
+                e = new Clerk(player);
                 break;
             default:
                 break;
@@ -197,7 +214,7 @@ public class Game implements Serializable {
             // pour l'instant on update les points de vie de toutes les entités, ce n'est pas idéal
             for (int i = 0; i < playableEntities.size(); i++) {
                 for (Player p : players) {
-                    p.updateHpView(i, playableEntities.get(i).getHp());
+                    p.updateStatView(i, playableEntities.get(i).getHp(), playableEntities.get(i).getArmor(), playableEntities.get(i).getPoison(), playableEntities.get(i).getRoot());
                 }
                 removeIfDead(i);
             }
