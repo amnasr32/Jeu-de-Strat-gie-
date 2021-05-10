@@ -54,7 +54,7 @@ public class UserInterface extends Group {
 
     private int nbOfButtons=0;
 
-    private final String[] listOfPossibleEntities = {"soldat", "chevalier", "sorcier"};
+    private final String[] listOfPossibleEntities = {"soldat", "chevalier", "sorcier", "druide", "clerc"};
 
     private class ActionButton extends GameButton {
         int actionNb;
@@ -207,7 +207,13 @@ public class UserInterface extends Group {
     }
 
     public void updateEntityDetails(EntityView e) {
-        entityDetails.setText(e.getName()+"\npv: "+e.getHp()+"/"+e.getMaxHp());
+        entityDetails.setText(e.getName()+"\npv: "+e.getHp()+"/"+e.getMaxHp()+"\narmure: "+e.getArmor());
+        if(e.getPoisonStatut()>0){
+            entityDetails.setText(entityDetails.getText()+"\npoison: "+e.getPoisonStatut());
+        }
+        if(e.getRootStatut()>0){
+            entityDetails.setText(entityDetails.getText()+"\nparalysée: "+e.getRootStatut());
+        }
         entityDetails.setTranslateX(width/2-entityDetails.getWidth()/2);
     }
 

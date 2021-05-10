@@ -165,8 +165,8 @@ public class Player {
         view.moveViewEntity(direction);
     }
 
-    protected void updateHpView(int i, int newHp) {
-        view.updateHp(i, newHp);
+    protected void updateStatView(int i, int newHp, int newArmor, int newPoisonStatut, int newRootStatut) {
+        view.updateStat(i, newHp, newArmor, newPoisonStatut, newRootStatut);
     }
 
     protected void resetAction() {
