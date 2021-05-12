@@ -5,6 +5,8 @@ import model.Player;
 
 public class Soldier extends Entity {
 
+    private String ICON = "icons/portraits/Soldier.png";
+
     public Soldier(int x, int y, Player player) {
         super(player, 10, 4, 2, 2);
         super.x=x;
@@ -27,6 +29,10 @@ public class Soldier extends Entity {
     @Override
     public Entity copy() {
         return new Soldier(x,y,player);
+    }
+
+    public String getICON() {
+        return ICON;
     }
 
 }

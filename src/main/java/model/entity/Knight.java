@@ -7,6 +7,8 @@ import model.action.Heal;
 
 public class Knight extends Entity {
 
+    private final String ICON = "icons/portraits/Knight.png";
+
     public Knight(int x, int y, Player player) {
         super(player, 12, 6, 3, 3);
         super.x=x;
@@ -28,6 +30,10 @@ public class Knight extends Entity {
     @Override
     public Entity copy() {
         return new Knight(x,y,player);
+    }
+
+    public String getICON() {
+        return ICON;
     }
 }
 

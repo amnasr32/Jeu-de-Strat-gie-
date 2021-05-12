@@ -7,6 +7,8 @@ import model.action.Attack;
 
 public class Wizard extends Entity {
 
+    private String ICON = "icons/portraits/Wizard.png";
+
     public Wizard(int x, int y, Player player) {
         super(player, 6, 6, 0, 4);
         super.x=x;
@@ -30,4 +32,7 @@ public class Wizard extends Entity {
         return new Soldier(x,y,player);
     }
 
+    public String getICON() {
+        return ICON;
+    }
 }

@@ -5,6 +5,8 @@ import model.action.*;
 
 public class Clerk extends Entity {
 
+    private String ICON = "icons/portraits/Cleric.png";
+
     public Clerk(int x, int y, Player player) {
         super(player, 6, 4, 3, 2);
         super.x=x;
@@ -27,5 +29,9 @@ public class Clerk extends Entity {
     @Override
     public Entity copy() {
         return new Clerk(x,y,player);
+    }
+
+    public String getICON() {
+        return ICON;
     }
 }
