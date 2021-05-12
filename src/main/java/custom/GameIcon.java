@@ -10,12 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class GameIcon extends Button {
     private final String name;
@@ -24,7 +20,6 @@ public class GameIcon extends Button {
     private String ICON_PRESSED;
 
     private final String LABEL_BG = "boxes/barmid_ready.png";
-    private final String FONT_PATH = "style/CinzelDecorative-Bold.ttf";
     private final String LABEL_STYLE = "-fx-font-family: 'Cinzel Decorative';" +
     "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 10;";
 
