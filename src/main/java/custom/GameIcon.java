@@ -1,20 +1,19 @@
 package custom;
 
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -25,6 +24,9 @@ public class GameIcon extends Button {
     private String ICON_PRESSED;
 
     private final String LABEL_BG = "boxes/barmid_ready.png";
+    private final String FONT_PATH = "style/CinzelDecorative-Bold.ttf";
+    private final String LABEL_STYLE = "-fx-font-family: 'Cinzel Decorative';" +
+    "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 10;";
 
     private Label label;
 
@@ -32,10 +34,10 @@ public class GameIcon extends Button {
         this.name = name;
         setPrefSize(100,100);
         setIcon();
-        initButtonFont();
         setEffect(buttonEffect());
         label = setLabelText(name);
         setLabelImage();
+        initLabelFont();
         mouseListeners();
     }
 
@@ -56,15 +58,15 @@ public class GameIcon extends Button {
         setBackground(new Background(image));
     }
 
-    private void setLabelImage(){
-        label.setPrefSize(70,30);
-        label.setTranslateY(getTranslateY() - 90);
-        BackgroundImage image = new BackgroundImage(new Image(LABEL_BG, 70, 30, false, true), BackgroundRepeat.NO_REPEAT,
+    private void setLabelImage() {
+        label.setPrefSize(100,20);
+        label.setTranslateY(getTranslateY() - 60);
+        BackgroundImage image = new BackgroundImage(new Image(LABEL_BG, 100, 30, false, true), BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null);
         label.setBackground(new Background(image));
         label.setEffect(labelEffect());
         setGraphic(label);
-        label.setTextAlignment(TextAlignment.CENTER);
+        label.setTextAlignment(TextAlignment.RIGHT);
     }
 
     public void mouseListeners(){
@@ -87,15 +89,10 @@ public class GameIcon extends Button {
         setOnMouseReleased(e -> setBackgroundFree());
     }
 
-    private void initButtonFont(){
-        try {
-            String FONT = "style/CinzelDecorative-Bold.ttf";
-            setTextFill(Paint.valueOf("#140101"));
-            Font f = Font.loadFont(new FileInputStream(FONT), 15);
-            label.setFont(f);
-        } catch (FileNotFoundException e){
-            System.out.println(e);
-        }
+    private void initLabelFont(){
+            label.setStyle(LABEL_STYLE);
+            label.setTextFill(Paint.valueOf("white"));
+            label.setAlignment(Pos.CENTER);
     }
 
     private DropShadow labelEffect(){
