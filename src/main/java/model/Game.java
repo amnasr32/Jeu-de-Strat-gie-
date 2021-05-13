@@ -199,7 +199,6 @@ public class Game implements Serializable {
         }
 
     }
-   
     // renvoie le chemin menant de la position de l'entité en cours et les coords x y
     // renvoie null si le chemin n'exsite pas
     protected byte[] makePath(int x, int y) {
