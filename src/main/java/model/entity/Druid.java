@@ -5,6 +5,8 @@ import model.action.*;
 
 public class Druid extends Entity {
 
+    private String ICON = "icons/portraits/Druid.png";
+
     public Druid(int x, int y, Player player) {
         super(player, 8, 5, 1, 3);
         super.x=x;
@@ -27,5 +29,9 @@ public class Druid extends Entity {
     @Override
     public Entity copy() {
         return new Druid(x,y,player);
+    }
+
+    public String getICON() {
+        return ICON;
     }
 }

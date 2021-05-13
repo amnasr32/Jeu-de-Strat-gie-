@@ -1,6 +1,7 @@
 package view;
 
 import custom.GameButton;
+import custom.GameIcon;
 import custom.GameMenu;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -29,7 +30,7 @@ public class UserInterface extends Group {
     private GameButton start;
     private Group actions;
     private List<ActionButton> actionButtons;
-    private List<BuyButton> buyButtons;
+    private List<Button> buyButtons;
     private GameLabel entityDetails;
     private GameButton option;
     private GameMenu optionMenu;
@@ -37,7 +38,6 @@ public class UserInterface extends Group {
     private GameLabel money;
     private int height = 720;
     private int width = 1080;
-    //private final String[] listOfPossibleEntities = {"Soldat", "Chevalier"};
 
     private final static String BUTTON_FREE = "-fx-background-color: transparent; " +
             "-fx-background-image: url('buttons/button_ready_on.png'); -fx-background-size: 170 65;" +
@@ -49,12 +49,12 @@ public class UserInterface extends Group {
             "-fx-background-position: center; -fx-font-family: 'Cinzel Decorative';" +
             "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 13; -fx-padding: 0 0 6 0;";
 
-    private final int START_BUTTON_X = 100;
+    private final int START_BUTTON_X = 50;
     private final int START_BUTTON_Y = 100;
 
     private int nbOfButtons=0;
 
-    private final String[] listOfPossibleEntities = {"soldat", "chevalier", "sorcier", "druide", "clerc"};
+    private final String[] listOfPossibleEntities = {"Soldier", "Knight", "Wizard", "Druid", "Cleric"};
 
     private class ActionButton extends GameButton {
         int actionNb;
@@ -64,13 +64,13 @@ public class UserInterface extends Group {
         ActionButton(String name, String desc, String cd, int actionNb) {
             super(name);
             setFont(new Font(14));
-            setTranslateX(START_BUTTON_X + endTurn.getTranslateX() * 2 + actionButtons.size()*200);
+            setTranslateX(START_BUTTON_X + endTurn.getTranslateX() + endTurn.getPrefWidth() + actionButtons.size()*200);
             setTranslateY(height-100);
 
             description=new GameLabel(desc);
             description.setFont(new Font(20));
             description.setVisible(false);
-            description.setTranslateX(START_BUTTON_X + endTurn.getTranslateX()*2 + actionButtons.size()*200);
+            description.setTranslateX(START_BUTTON_X + endTurn.getTranslateX() + endTurn.getPrefWidth() + actionButtons.size()*200);
             description.setTranslateY(height-220);
             description.initstyle();
             this.actionNb=actionNb;
@@ -120,16 +120,16 @@ public class UserInterface extends Group {
 
     }
 
-    private class BuyButton extends GameButton{
+    private class BuyButton extends GameIcon {
         private final int entityNb;
 
         BuyButton(String s, int i){
             super(s);
             entityNb = i;
-            initStyle();
-            setTranslateX(START_BUTTON_X + nbOfButtons * 200);
+            //initStyle();
+            setTranslateX(75+ start.getTranslateX() + nbOfButtons * 120);
             nbOfButtons ++;
-            setTranslateY(height - 100);
+            setTranslateY(height - 120);
             setOnMouseClicked(e -> view.setPreGameAction(entityNb));
         }
     }
@@ -161,7 +161,10 @@ public class UserInterface extends Group {
         initOptionMenu();
 
         buyButtons = new LinkedList<>();
-        buyButtons.add(0,new BuyButton("Supprimer", -1));
+        buyButtons.add(0, makeButton("Supprimer",0));
+        buyButtons.get(0).setTranslateX(width - 170 - START_BUTTON_X);
+        buyButtons.get(0).setOnMouseClicked(e ->view.setPreGameAction(-1));
+
         getChildren().add(buyButtons.get(0));
         for (int i = 1; i < listOfPossibleEntities.length + 1; i++){
             buyButtons.add(i, new BuyButton(listOfPossibleEntities[i - 1], i - 1));

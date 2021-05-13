@@ -17,12 +17,12 @@ public class GameLabel extends Label {
     private Label label;
 
     private final String BACKGROUND = "-fx-background-image: url('boxes/bar_ready.png'); " +
-            "-fx-background-position: center; -fx-background-size: 170 100; -fx-font-family: 'Cinzel Decorative';" +
-            "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 18;" +
+            "-fx-background-position: center; -fx-background-size: 250 100; -fx-font-family: 'Cinzel Decorative';" +
+            "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 10;" +
             "-fx-line-spacing: 0.7; -fx-padding: 0 0 5 0;";
     private final String BACKGROUND2 = "-fx-background-image: url('boxes/name_bar2.png'); " +
-            "-fx-background-position: center; -fx-background-size: 170 90; -fx-font-family: 'Cinzel Decorative';" +
-            "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 18;" +
+            "-fx-background-position: center; -fx-background-size: 180 90; -fx-font-family: 'Cinzel Decorative';" +
+            "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 15;" +
             "-fx-line-spacing: 0.7; -fx-padding: 0 0 5 0;";
     private final String FONT = "src/main/resources/style/CinzelDecorative-Bold.ttf";
 
@@ -40,24 +40,24 @@ public class GameLabel extends Label {
     }
 
     public void initstyle2(){
-        setPrefSize(170,90);
+        setPrefSize(180,90);
         setAlignment(Pos.CENTER);
         setStyle(BACKGROUND2);
     }
 
     public void initstyle(){
-        setPrefSize(170,105);
+        setPrefSize(250,105);
         setAlignment(Pos.CENTER);
         setStyle(BACKGROUND);
     }
 
     private void initLabelFont(){
         try {
-            setFont(Font.loadFont(new FileInputStream(FONT), 20));
+            setFont(Font.loadFont(new FileInputStream(FONT), 10));
             setTextFill(Paint.valueOf("white"));
             setLineSpacing(0.7);
         } catch (FileNotFoundException e){
-            setFont(Font.font("Verdana", 20));
+            setFont(Font.font("Verdana", 10));
         }
     }
 
