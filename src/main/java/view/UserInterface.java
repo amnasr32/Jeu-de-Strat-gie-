@@ -64,13 +64,13 @@ public class UserInterface extends Group {
         ActionButton(String name, String desc, String cd, int actionNb) {
             super(name);
             setFont(new Font(14));
-            setTranslateX(START_BUTTON_X + endTurn.getTranslateX() * 2 + actionButtons.size()*200);
+            setTranslateX(START_BUTTON_X + endTurn.getTranslateX() + endTurn.getPrefWidth() + actionButtons.size()*200);
             setTranslateY(height-100);
 
             description=new GameLabel(desc);
             description.setFont(new Font(20));
             description.setVisible(false);
-            description.setTranslateX(START_BUTTON_X + endTurn.getTranslateX()*2 + actionButtons.size()*200);
+            description.setTranslateX(START_BUTTON_X + endTurn.getTranslateX() + endTurn.getPrefWidth() + actionButtons.size()*200);
             description.setTranslateY(height-220);
             description.initstyle();
             this.actionNb=actionNb;
