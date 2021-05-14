@@ -43,7 +43,7 @@ public class EndGameScreen extends SubScene {
         fadeIn.playFromStart();
     }
 
-    public void initDefaite(){
+    public void initDefaite() {
         root2.setBackground(new Background(DEFAITE));
 
         FadeTransition fadeIn = new FadeTransition(Duration.seconds(3));
