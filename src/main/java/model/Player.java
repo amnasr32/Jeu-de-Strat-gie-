@@ -221,7 +221,7 @@ public class Player {
     }
 
     protected void endGame(boolean hasWon) {
-        view.endGame(hasWon);
+        view.endGame(hasWon, game.isLocalMultiplayer());
     }
 
     protected void canPressReadyButton(boolean b) {

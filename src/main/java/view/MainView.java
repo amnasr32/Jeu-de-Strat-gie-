@@ -244,13 +244,13 @@ public class MainView extends Application {
         entityViews.remove(i);
     }
 
-    public void endGame(boolean hasWon) {
+    public void endGame(boolean hasWon, boolean localMP) {
         resetAction();
         allowGridViewControls(false);
         allowActionOnEntities(false);
         currentEntityView.highlight(false);
         ui.hideAllGameButtons();
-        ui.showEndScreen(hasWon);
+        ui.showEndScreen(hasWon, localMP);
     }
 
     public void addOrDeleteEntity(int x, int y) {

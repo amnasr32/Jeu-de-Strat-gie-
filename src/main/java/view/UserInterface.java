@@ -184,7 +184,7 @@ public class UserInterface extends Group {
     }
 
     // affiche l'écran de fin de partie
-    public void showEndScreen(boolean hasWon) {
+    public void showEndScreen(boolean hasWon, boolean localMP) {
 
         GameButton quit ;
     	victoryMenu = new GameMenu(300,400);
@@ -194,10 +194,18 @@ public class UserInterface extends Group {
         quit.initStyle();
         quit.setLayoutX(65);
         quit.setLayoutY(300);
-        if (hasWon) {
-            msj = new GameLabel("Victoire !", 20);
+        if (localMP) {
+            if (hasWon) {
+                msj = new GameLabel("Victoire du\n joueur 1 !", 20);
+            } else {
+                msj = new GameLabel("Victoire du\n joueur 2 !", 20);
+            }
         } else {
-            msj = new GameLabel("Défaite..", 20);
+            if (hasWon) {
+                msj = new GameLabel("Victoire !", 20);
+            } else {
+                msj = new GameLabel("Défaite..", 20);
+            }
         }
         msj.setPrefSize(250,105);
         msj.setAlignment(Pos.CENTER);
@@ -238,9 +246,10 @@ public class UserInterface extends Group {
         start.setDisable(!b);
     }
 
-    public void disableBuyButtons() {
+    // pas utilisé
+    public void disableBuyButtons(boolean bool) {
         for (Button b:buyButtons) {
-            b.setDisable(true);
+            b.setDisable(bool);
         }
     }
 
