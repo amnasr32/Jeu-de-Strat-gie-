@@ -3,6 +3,7 @@ package view;
 import custom.GameButton;
 import custom.GameIcon;
 import custom.GameMenu;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -35,9 +36,14 @@ public class UserInterface extends Group {
     private GameButton option;
     private GameMenu optionMenu;
     private GameButton quitter;
+    private GameButton quit ;
+    private GameLabel msj;
+
     private GameLabel money;
     private int height = 720;
     private int width = 1080;
+    private GameMenu victoryMenu;
+
 
     private final static String BUTTON_FREE = "-fx-background-color: transparent; " +
             "-fx-background-image: url('buttons/button_ready_on.png'); -fx-background-size: 170 65;" +
@@ -172,6 +178,36 @@ public class UserInterface extends Group {
         }
 
         moneyLabelInit();
+        
+      
+       
+    }
+
+    // affiche l'écran de fin de partie
+    public void showEndScreen(boolean hasWon) {
+
+        GameButton quit ;
+    	victoryMenu = new GameMenu(300,400);
+        getChildren().add(victoryMenu);
+        victoryMenu.fadeOutScene();
+        quit = new GameButton("Fermer");
+        quit.initStyle();
+        quit.setLayoutX(65);
+        quit.setLayoutY(300);
+        if (hasWon) {
+            msj = new GameLabel("Victoire !", 20);
+        } else {
+            msj = new GameLabel("Défaite..", 20);
+        }
+        msj.setPrefSize(250,105);
+        msj.setAlignment(Pos.CENTER);
+        victoryMenu.getPane().getChildren().add(msj);
+        victoryMenu.getPane().getChildren().add(quit);
+        victoryMenu.animation();
+        
+        quit.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+        	victoryMenu.fadeOutScene();
+        });
 
     }
 

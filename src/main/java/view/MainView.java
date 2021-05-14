@@ -3,7 +3,6 @@ package view;
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.stage.Stage;
-import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 
@@ -250,7 +249,7 @@ public class MainView extends Application {
         allowActionOnEntities(false);
         currentEntityView.highlight(false);
         ui.hideAllGameButtons();
-        //TODO : afficher un écran de fin de partie en fonction de la variable hasWon
+        ui.showEndScreen(hasWon);
     }
 
     public void addOrDeleteEntity(int x, int y) {
