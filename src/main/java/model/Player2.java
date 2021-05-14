@@ -3,21 +3,20 @@ package model;
 import model.entity.Entity;
 import view.MainView;
 
-// pour le moment cette classe ne sert que à override les fonctions
-// qui causeraient un NullPointerException
-public class PlayerBot extends Player {
-    public PlayerBot() {
+// joueur 2 des parties locales : sera de fait contrôlée par le joueur principal
+public class Player2 extends Player {
+    Player player1;
+    public Player2(Player p) {
         super(null);
+        player1=p;
     }
 
     @Override
     public void addEntityToView(Entity e) {}
     @Override
-    protected void focusFirstEntity(int i, boolean isCurrentPlayer) { if (isCurrentPlayer) endTurn(); }
+    protected void focusFirstEntity(int i, boolean isCurrentPlayer) {}
     @Override
-    protected void focusNextEntity(int i, boolean isCurrentPlayer) {
-        if (isCurrentPlayer) endTurn();
-    }
+    protected void focusNextEntity(int i, boolean isCurrentPlayer) {}
     @Override
     protected void moveEntityInView(byte direction) {}
     @Override
@@ -25,11 +24,11 @@ public class PlayerBot extends Player {
     @Override
     protected void removeEntity(int i) {}
     @Override
-    protected void endGame(boolean hasWon) {
-        if (hasWon) System.out.println("git gud casul");
-    }
+    protected void endGame(boolean hasWon) {}
     @Override
-    protected void canPressReadyButton(boolean b) {}
+    protected void canPressReadyButton(boolean b) {
+        player1.canPressReadyButton(b);
+    }
 
     protected void initEntities() {
         game.tryToAddEntityToGame(this, 1, 1, 0);
@@ -38,8 +37,10 @@ public class PlayerBot extends Player {
     }
 
     @Override
-    protected void changeAmountOfMoney(int amount) {}
-
-    @Override
     protected void resetAction() {}
+
+    protected void changeAmountOfMoney(int amount) {
+        money += amount;
+        player1.changeAmoutOfMoneyInViewOnly(money);
+    }
 }

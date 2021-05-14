@@ -86,9 +86,8 @@ public class WelcomeInterface extends Pane {
             ctrl.getStage().setScene(buyScene);
 
             ctrl.initializePlayer();
-            ctrl.loadLevel();
+            ctrl.loadLevel("localMultiplayer");
             ctrl.mkGameGrid();
-            ctrl.initBotPlayer();
             ctrl.getMainView().allowGridViewControls(true);
 
         });

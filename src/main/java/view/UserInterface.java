@@ -224,8 +224,9 @@ public class UserInterface extends Group {
         });
 
         start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            start.setVisible(false);
+            //start.setDisable(true);
             ctrl.toggleReady();
+            view.setPreGameAction(-2);
         });
 
         option.setOnMouseClicked(e -> {
@@ -235,6 +236,12 @@ public class UserInterface extends Group {
 
     public void canPressReadyButton(boolean b) {
         start.setDisable(!b);
+    }
+
+    public void disableBuyButtons() {
+        for (Button b:buyButtons) {
+            b.setDisable(true);
+        }
     }
 
     private void initEntityDetails() {

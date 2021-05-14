@@ -24,6 +24,10 @@ public class Controller {
         player.loadLevel();
     }
 
+    public void loadLevel(String option) {
+        player.loadLevel(option);
+    }
+
     public void mkGameGrid() {
         byte[][] heightGrid = player.getHeightGrid();
         view.makeGameScene(heightGrid);
@@ -78,9 +82,9 @@ public class Controller {
         return this.view;
     }
 
-    public void initBotPlayer() {
-        player.initBotPlayer();
-    }
+    //public void initBotPlayer() {
+    //    player.initBotPlayer();
+    //}
 
     public void deleteEntity(int x, int y) {
         player.deleteEntity(x,y);

@@ -12,14 +12,16 @@ public class Game implements Serializable {
 	private final Grid grid;
     private final LinkedList<Player> players;
     private LinkedList<Entity> playableEntities; // liste de toutes les entités en jeu
-    private int[] entTeam; // nombre d'entités pour chaque équipe actuellement en jeu
-	int nb=0;
+    //private int[] entTeam; // nombre d'entités pour chaque équipe actuellement en jeu
+	//int nb=0;
 
     private Player currentPlayer=null; // le joueur dont c'est le tour
     private Entity currentEntity=null;
 
     private int gameState; // état de jeu : 0 : phase de selection des entités, 1 : phase de jeu
     private int entInd; // index de l'entité courante
+
+    private boolean lm =false; // lm = local multiplayer : si lm==true, le joueur 1 contrôle les 2 joueurs
 
 
     public Game(Grid grid, Player ... playerList) {
@@ -32,6 +34,20 @@ public class Game implements Serializable {
         }
     }
 
+    public Game(String option, Grid grid, Player ... playerList) {
+        this(grid, playerList);
+        if (option.equals("localMultiplayer")) {
+            lm=true;
+            Player2 p2 = new Player2(players.getFirst());
+            addPlayer(p2);
+            players.getFirst().setPlayer2(p2); //botch, pas modulable
+        } else if (option.equals("vsBot")) {
+            PlayerBot pb = new PlayerBot();
+            addPlayer(new PlayerBot());
+            pb.initEntities();
+        }
+    }
+
     public void addPlayer(Player p) {
         if (!players.contains(p)) players.add(p);
         p.setGame(this);
@@ -41,13 +57,16 @@ public class Game implements Serializable {
         return grid;
     }
 
+    protected boolean isLocalMultiplayer() {
+        return lm;
+    }
+
     // un bouton dit si le joueur a fini de poser ses entités une fois que les joueurs ont cliqué
     void start() {
         if (allPlayersAreReady()) {
             gameState = 1;
             firstRound();
         }
-
     }
 
     // premier tour de jeu
@@ -57,14 +76,14 @@ public class Game implements Serializable {
         currentEntity=playableEntities.get(entInd);
         currentPlayer=currentEntity.getPlayer();
         for (Player p:players) {
-            p.focusFirstEntity(entInd, p==currentPlayer);
+            p.focusFirstEntity(entInd, p==currentPlayer || lm);
         }
     }
 
     // vérifie qu'un joueur ait le droit de jouer, càd que c'est son tour
     // et que gamestate == 1
     private boolean canPlay(Player p) {
-        return (currentPlayer==p && gameState==1);
+        return ((currentPlayer==p || lm) && gameState==1);
     }
 
     // permet de passer au tour de l'entité suivante
@@ -91,7 +110,7 @@ public class Game implements Serializable {
         }
         currentEntity.decreaseAllCooldowns();
         for (Player p:players) {
-            p.focusNextEntity(entInd, p==currentPlayer);
+            p.focusNextEntity(entInd, p==currentPlayer || lm);
         }
     }
 
@@ -166,7 +185,7 @@ public class Game implements Serializable {
     }
 
 
-    // vérifie que le joueur a au plus 4 entités en jeu
+    // vérifie que le joueur a au plus 64 entités en jeu
     private boolean canAddEntity(Player player) {
         int i=0;
         for (Entity e:playableEntities) {
@@ -208,6 +227,7 @@ public class Game implements Serializable {
 
     public void doAction(Player player, int action, int x, int y) {
         if (!canPlay(player)) return;
+        if (lm) player=currentPlayer; // necessaire si multi local
         Cell c = grid.getCell(x,y);
         if (grid.isInCoordList(x,y) && currentEntity.doAction(player, action, c)) {
             // pour l'instant on update les points de vie de toutes les entités, ce n'est pas idéal
