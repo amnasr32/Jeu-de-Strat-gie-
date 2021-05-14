@@ -26,17 +26,22 @@ public class GameLabel extends Label {
             "-fx-line-spacing: 0.7; -fx-padding: 0 0 5 0;";
     private final String FONT = "src/main/resources/style/CinzelDecorative-Bold.ttf";
 
-    public GameLabel(String s){
+    public GameLabel(String s, int fontsize){
         super(s);
         label = new Label(s);
         label.setEffect(labelEffect());
-        initLabelFont();
+        initLabelFont(fontsize);
         setEffect(labelEffect());
     }
 
     public GameLabel(){
         super();
-        initLabelFont();
+        initLabelFont(10);
+    }
+
+    public GameLabel(String s){
+        this(s, 10);
+
     }
 
     public void initstyle2(){
@@ -51,13 +56,13 @@ public class GameLabel extends Label {
         setStyle(BACKGROUND);
     }
 
-    private void initLabelFont(){
+    private void initLabelFont(int fontSize){
         try {
-            setFont(Font.loadFont(new FileInputStream(FONT), 10));
+            setFont(Font.loadFont(new FileInputStream(FONT), fontSize));
             setTextFill(Paint.valueOf("white"));
             setLineSpacing(0.7);
         } catch (FileNotFoundException e){
-            setFont(Font.font("Verdana", 10));
+            setFont(Font.font("Verdana", fontSize));
         }
     }
 

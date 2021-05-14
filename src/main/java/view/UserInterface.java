@@ -182,7 +182,9 @@ public class UserInterface extends Group {
       
        
     }
-    public void affiche_ecran () {
+
+    // affiche l'écran de fin de partie
+    public void showEndScreen(boolean hasWon) {
 
         GameButton quit ;
     	victoryMenu = new GameMenu(300,400);
@@ -192,7 +194,11 @@ public class UserInterface extends Group {
         quit.initStyle();
         quit.setLayoutX(65);
         quit.setLayoutY(300);
-        msj = new GameLabel("Félicitaion ! Vous avez gagné");
+        if (hasWon) {
+            msj = new GameLabel("Victoire !", 20);
+        } else {
+            msj = new GameLabel("Défaite..", 20);
+        }
         msj.setPrefSize(250,105);
         msj.setAlignment(Pos.CENTER);
         victoryMenu.getPane().getChildren().add(msj);
@@ -203,8 +209,8 @@ public class UserInterface extends Group {
         	victoryMenu.fadeOutScene();
         });
 
-    
     }
+
     public void moneyLabelInit(){
         money = new GameLabel("");
         money.initstyle2();
