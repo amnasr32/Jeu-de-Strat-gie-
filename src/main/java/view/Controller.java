@@ -32,6 +32,7 @@ public class Controller {
         byte[][] heightGrid = player.getHeightGrid();
         view.makeGameScene(heightGrid);
         view.updateMoneyView(player.getMoney());
+        player.updateAllEntityViews();
     }
 
     public void toggleReady() {

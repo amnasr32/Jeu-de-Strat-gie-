@@ -228,4 +228,7 @@ public class Player {
         view.canPressReadyButton(b);
     }
 
+    public void updateAllEntityViews() {
+        game.updateAllEntityViews(this);
+    }
 }

@@ -43,7 +43,8 @@ public class Game implements Serializable {
             players.getFirst().setPlayer2(p2); //botch, pas modulable
         } else if (option.equals("vsBot")) {
             PlayerBot pb = new PlayerBot();
-            addPlayer(new PlayerBot());
+            pb.setGame(this);
+            addPlayer(pb);
             pb.initEntities();
         }
     }
@@ -284,4 +285,11 @@ public class Game implements Serializable {
         }
     }
 
+    // permet de charger des entités déjà en jeu si le joueur viens de rejoindre la partie.
+    // à n'utiliser que lors de la première connexion
+    protected void updateAllEntityViews(Player player) {
+        for (Entity e:playableEntities) {
+            player.addEntityToView(e);
+        }
+    }
 }

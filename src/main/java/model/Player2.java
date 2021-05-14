@@ -30,12 +30,6 @@ public class Player2 extends Player {
         player1.canPressReadyButton(b);
     }
 
-    protected void initEntities() {
-        game.tryToAddEntityToGame(this, 1, 1, 0);
-        game.tryToAddEntityToGame(this, 4, 3, 1);
-        setReady(true);
-    }
-
     @Override
     protected void resetAction() {}
 
