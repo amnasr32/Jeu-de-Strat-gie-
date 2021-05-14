@@ -1,36 +1,34 @@
 package custom;
 
 import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
-import javafx.scene.*;
+import javafx.scene.SubScene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
-import java.util.LinkedList;
-import java.util.List;
-
-public class GameMenu extends SubScene {
-
-    private final String BG_IMAGE_1 = "boxes/bar_ready.png";
+public class MainMenu extends SubScene {
+    private final String BG_IMAGE_1 = "icons/menu_bg.png";
 
     private boolean isHidden;
+
+    private GameMenu layout;
+
+    private int width, height;
 
     private FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.1));
 
     private FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.1));
 
-    private List<GameButton> buttons;
-
-    private int STARTING_Y_POINT = 20;
+    private GameButton multi, bot, edit, quit;
 
 
-    public GameMenu(int width, int height){
+    public MainMenu(int width, int height){
         super(new AnchorPane(), width, height);
         prefWidth(width);
         prefHeight(height);
 
-        buttons = new LinkedList<>();
+        this.width = width;
+        this.height = height;
 
         BackgroundImage image = new BackgroundImage(new Image(BG_IMAGE_1, width, height, false, true), BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null);
@@ -39,11 +37,28 @@ public class GameMenu extends SubScene {
 
         root2.setBackground(new Background(image));
 
-        setLayoutX(540 - (width/2));
-        setLayoutY(100);
+        //setLayoutX(540 - (width/2));
+        //setLayoutY(100);
         isHidden = true;
 
         setVisible(false);
+
+        initLayoutMenu();
+    }
+
+    private void initLayoutMenu(){
+        layout = new GameMenu(300, 600);
+        layout.setLayoutX((width/2)- 150);
+        layout.setLayoutY((height/2) - 300);
+
+        multi = layout.addButton("Multijoueur");
+        bot = layout.addButton("jouer contre\nun robot");
+        edit = layout.addButton("Editer un\nniveau");
+        quit = layout.addButton("Quitter");
+
+        getPane().getChildren().add(layout);
+        layout.setVisible(true);
+        layout.setHidden(false);
     }
 
     public void fadeOutScene(){
@@ -77,22 +92,23 @@ public class GameMenu extends SubScene {
         }
     }
 
-    public void setHidden(boolean hidden) {
-        isHidden = hidden;
-    }
-
     public AnchorPane getPane(){
         return (AnchorPane) this.getRoot();
     }
 
-    public GameButton addButton(String s){
-        GameButton res = new GameButton(s);
-        res.initStyle();
-        buttons.add(res);
-        res.setTranslateX(getWidth()/2 - 85);
-        res.setLayoutY(STARTING_Y_POINT + buttons.toArray().length*100);
-        getPane().getChildren().add(res);
-        return res;
+    public GameButton getBot() {
+        return bot;
     }
 
+    public GameButton getEdit() {
+        return edit;
+    }
+
+    public GameButton getMulti() {
+        return multi;
+    }
+
+    public GameButton getQuit() {
+        return quit;
+    }
 }

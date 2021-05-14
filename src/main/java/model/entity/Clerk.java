@@ -12,7 +12,7 @@ public class Clerk extends Entity {
         super.x=x;
         super.y=y;
         super.actions = new Action[3];
-        actions[0]=new Attack("orion sacrée", "magique",1,2,2,0,1);
+        actions[0]=new Attack("Orion sacré", "magique",1,2,2,0,1);
         actions[1]=new Heal("Premiers soins", "heal",1,2,2,0,3);
         actions[2]=new Cleans("Purge", "cleans",1,2,0,0,5);
     }
