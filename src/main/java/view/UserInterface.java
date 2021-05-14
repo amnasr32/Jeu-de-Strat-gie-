@@ -165,7 +165,7 @@ public class UserInterface extends Group {
         egs = new EndGameScreen(width, height);
 
         getChildren().add(egs);
-        quit = new GameButton("Menu principal");
+        quit = new GameButton("Menu\nprincipal");
         quit.initStyle();
         quit.setLayoutX((width + quit.getWidth())/2 - 85);
         quit.setLayoutY(500);
@@ -177,7 +177,9 @@ public class UserInterface extends Group {
         }
         
         quit.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-
+            getChildren().add(view.getWelcomeinterface().getMenu());
+            view.getWelcomeinterface().getMenu().animation();
+            egs.fadeOut();
         });
 
     }
@@ -257,6 +259,10 @@ public class UserInterface extends Group {
         quitter.setLayoutX(65);
         quitter.setLayoutY(300);
         optionMenu.getPane().getChildren().add(quitter);
+
+        quitter.setOnAction(e -> {
+            ctrl.getMainView().getPrimaryStage().close();
+        });
     }
 
     public void updateActionButtons(EntityView e) {

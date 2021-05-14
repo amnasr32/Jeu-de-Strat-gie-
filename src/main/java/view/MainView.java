@@ -1,5 +1,6 @@
 package view;
 
+import custom.MainMenu;
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.stage.Stage;
@@ -11,6 +12,7 @@ public class MainView extends Application {
     private Controller ctrl;
     private Scene mainScene; // tout ce qui est en 2D : les boutons, les menus, etc
     private SubScene scene3D; // tout ce qui est en 3D est ici
+    private MainMenu menu;
     private Group mainGroup;
     private Stage primaryStage;
     private WelcomeInterface welcomeinterface;
@@ -43,6 +45,7 @@ public class MainView extends Application {
 
         welcomeinterface = new WelcomeInterface(width, height, ctrl);
         mainScene=new Scene(welcomeinterface,width,height);
+        //menu = new MainMenu(width,height);
 
         
         primaryStage.setTitle("Jeu de stratégie");
@@ -266,7 +269,9 @@ public class MainView extends Application {
         ui.setMoneyValue(money);
     }
 
-
+    public WelcomeInterface getWelcomeinterface() {
+        return welcomeinterface;
+    }
 }
 
 	

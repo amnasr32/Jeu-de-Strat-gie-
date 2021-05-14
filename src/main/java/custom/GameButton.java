@@ -20,12 +20,12 @@ public class GameButton extends Button {
 
     private final String BUTTON_FREE= "-fx-background-color: transparent;" +
             "-fx-background-image: url('buttons/button_ready_on.png'); -fx-background-size: 170 65;" +
-            "-fx-background-position: center; -fx-font-family: 'Cinzel Decorative';" +
-            "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 19; -fx-padding: 0 0 6 0;";
+            "-fx-background-position: center; -fx-font-family: 'Cinzel Decorative'; -fx-line-spacing: -7;" +
+            "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 16; -fx-padding: 0 0 6 0;";
     private final String BUTTON_PRESSED = "-fx-background-color: transparent;" +
             "-fx-background-image: url('buttons/button_ready_off.png'); -fx-background-size: 170 65;" +
-            "-fx-background-position: center; -fx-font-family: 'Cinzel Decorative'; " +
-            "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 18; ; -fx-padding: 0 0 6 0;";
+            "-fx-background-position: center; -fx-font-family: 'Cinzel Decorative'; -fx-line-spacing: -7;" +
+            "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 15; ; -fx-padding: 0 0 6 0;";
 
     public GameButton(String s){
         super(s);
@@ -94,5 +94,9 @@ public class GameButton extends Button {
         ds.setOffsetY(2);
         ds.setOffsetX(2);
         return ds;
+    }
+
+    public Label getLabel() {
+        return label;
     }
 }
