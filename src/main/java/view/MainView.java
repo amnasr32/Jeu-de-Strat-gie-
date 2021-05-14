@@ -1,26 +1,16 @@
 package view;
 
-import custom.EndGameScreen;
-import custom.GameButton;
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
-import javafx.scene.paint.Paint;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.scene.paint.Color;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 
 import java.util.LinkedList;
-
 
 public class MainView extends Application {
 
     private Controller ctrl;
     private Scene mainScene; // tout ce qui est en 2D : les boutons, les menus, etc
-    private SubScene scene3D; // tout ce qui est en 3D est ici //le menuu  classe qui extend goupe 
+    private SubScene scene3D; // tout ce qui est en 3D est ici
     private Group mainGroup;
     private Stage primaryStage;
     private WelcomeInterface welcomeinterface;
@@ -44,14 +34,13 @@ public class MainView extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-    	mainGroup= new Group();
+    	mainGroup = new Group();
     	this.primaryStage=primaryStage;
         //Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
-        mainGroup = new Group();
+        //mainGroup = new Group();
         mainScene=new Scene(mainGroup,width,height);
         ctrl = new Controller(this);
-     
-        
+
         welcomeinterface = new WelcomeInterface(width, height, ctrl);
         mainScene=new Scene(welcomeinterface,width,height);
 
@@ -62,13 +51,7 @@ public class MainView extends Application {
        
     }
 
-    public void setPreGameAction(int preGameAction) {
-        this.preGameAction = preGameAction;
-    }
-
-    public int getPreGameAction() {
-        return preGameAction;
-    }
+    
 
     public Controller getCtrl() {
     	return this.ctrl;
@@ -98,6 +81,14 @@ public class MainView extends Application {
         pointedY = y;
     }
 
+    public void setPreGameAction(int preGameAction) {
+        this.preGameAction = preGameAction;
+    }
+
+    public int getPreGameAction() {
+        return preGameAction;
+    }
+
     public void makePath(int x, int y) {
         ctrl.makePath(x,y);
     }
@@ -125,7 +116,7 @@ public class MainView extends Application {
         }
     }
 
-    public void moveModelEntity() {
+    private void moveModelEntity() {
         cleanPath();
         ctrl.move(path);
         path=null;
@@ -150,8 +141,8 @@ public class MainView extends Application {
 
     }
 
-    public void addEntity(int x, int y, boolean isAlly,String name, int hp, int mp, String[][]actions) {
-        EntityView u = new EntityView(this, x,y,isAlly,name, hp, mp, actions);
+    public void addEntity(int x, int y, boolean isAlly, String name, int hp, int mp, int armor, String[][] actions) {
+        EntityView u = new EntityView(this, x,y,isAlly,name, hp, mp, armor, actions);
         entityViews.add(u);
         gridView.addEntity(u,x,y);
         u.allowActionOnClick(true);
@@ -227,8 +218,11 @@ public class MainView extends Application {
         }
     }
 
-    public void updateHp(int i, int newHp) {
+    public void updateStat(int i, int newHp, int newArmor, int newPoisonStatut, int newRootStatut) {
         entityViews.get(i).setHp(newHp);
+        entityViews.get(i).setArmor(newArmor);
+        entityViews.get(i).setPoisonStatut(newPoisonStatut);
+        entityViews.get(i).setRootStatut(newRootStatut);
         ui.updateEntityDetails(entityViews.get(i));
     }
 
@@ -255,15 +249,8 @@ public class MainView extends Application {
         allowActionOnEntities(false);
         currentEntityView.highlight(false);
         ui.hideAllGameButtons();
-        //TODO : afficher un écran de fin de partie en fonction de la variable hasWon
-        if (hasWon) {
-            ui.getEndScreen().initVictory();
-        } else {
-            ui.getEndScreen().initDefaite();
-        }
+        ui.showEndScreen(hasWon);
     }
-
-
 
     public void addOrDeleteEntity(int x, int y) {
         if (preGameAction==-1) ctrl.deleteEntity(x,y);

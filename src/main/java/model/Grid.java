@@ -231,7 +231,7 @@ public class Grid implements Serializable {
     }
 
 
-    //Vérifie si un mouvement depuis le cellule x, y dans la direction i est possible
+    //Vérifie si un mouvement depuis la cellule x, y dans la direction i est possible
     private boolean isMovePossible(int x, int y, int orientation) {
         // Vérifie si les coordonnées sont correctes
         if(x < 0 || y < 0 || x > height || y > width){
@@ -268,7 +268,22 @@ public class Grid implements Serializable {
 
         // Vérifie que la différence de hauteur n'est pas trop grande
         int delta = cells[x1][y1].getHeight() - cells[x2][y2].getHeight();
+
+        //On vérifie si il y a une entité à x2, y2 et si la différence de hauteur n'est pas trop grande entre x1, y1 et x2, y2
         return (cells[x2][y2].getEntity() == null && delta <= 1 && delta >=-1 );
+    }
+
+    //Vérifie si une attaque depuis la cellule x1, y1 vers la cellule x2, y2 est possible
+    //Même chose que isMovePossible mais ne vérifie pas si il y a une entité à la cellule de destination
+    private boolean isAttackPossible(int x1, int y1, int x2, int y2) {
+        // Vérifie si les coordonnées sont correctes
+        if(x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0 || x1 > height || y1 > width || x2 > height || y2 > width){
+            return false;
+        }
+
+        // Vérifie que la différence de hauteur n'est pas trop grande
+        int delta = cells[x1][y1].getHeight() - cells[x2][y2].getHeight();
+        return (delta <= 1 && delta >=-1 );
     }
 
     // Calcule la distance estimée au point final
@@ -608,12 +623,11 @@ public class Grid implements Serializable {
     // ajoute le cercle de distance dist à coordList
     private void addCellsAtDistance(int x, int y, int dist) {
         int[] coord={x,y+dist};
-        if (isInBounds(coord)) coordList.add(coord);
+        if (isInBounds(coord) && isVisible(x, y, coord[0], coord[1])) coordList.add(coord);
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < dist; j++) {
                 coord= getAdjCellCoordinates_2(coord[0],coord[1],(i+3)%6);
-                // TODO : vérifier que la cible est directement visible (pas d'obstacle)
-                if (isInBounds(coord)) {
+                if (isInBounds(coord) && isVisible(x, y, coord[0], coord[1])) {
                     coordList.add(coord);
                 }
             }
@@ -629,7 +643,7 @@ public class Grid implements Serializable {
         else coordList.clear();
     }
 
-    // renvoie les coordonnées carthésienne de la position de cells[x][y];
+    // renvoie les coordonnées cartésiennes de la position de cells[x][y];
     // utile pour calculer des distances
     private double[] getEffectiveXY(int x, int y) {
         double[] result = new double[2];
@@ -638,7 +652,7 @@ public class Grid implements Serializable {
         return result;
     }
 
-    // calcule la distance entre deux cellules
+    // calcule la distance entière entre deux cellules
     // je sais pas comment ça marche mais je prie petit jésus
     // allègrement copié depuis https://www.redblobgames.com/grids/hexagons/#distances
     private int distance(int x1, int y1, int x2, int y2) {
@@ -654,6 +668,7 @@ public class Grid implements Serializable {
     }
 
     // distance réelle entre deux cellules
+    // prend en argument des coordonnées matricielles
     private double distanceR(int x1, int y1, int x2, int y2) {
         double[] c1=getEffectiveXY(x1,y1);
         double[] c2=getEffectiveXY(x2,y2);
@@ -666,6 +681,56 @@ public class Grid implements Serializable {
             if (x==coord[0] && y==coord[1]) return true;
         }
         return false;
+    }
+
+    // retourne un tableau avec les cellules (en format matriciel) présentes sur la ligne entre a et b
+    public static int[][] ligne_matrice(int x1, int y1, int x2, int y2){
+        int[] _a = {x1, y1};
+        Cube a = Cube.matrice_cube(_a);
+        int[] _b = {x2, y2};
+        Cube b = Cube.matrice_cube(_b);
+        int N = Cube.distance(a, b);
+        LinkedList<Cube> list = new LinkedList<Cube>();
+        //System.out.println(list.size());
+        for(int i = 0; i <= N; i++){
+            list.add(Cube.interpolation(a, b, 1.0 / N * i).arrondir());
+            // System.out.println(list.get(list.size() - 1));
+        }
+        int[][] result = new int [list.size()][2];
+        for(int i = 0; i < list.size(); i++){
+            result[i][0] = list.get(i).cube_matrice()[0];
+            result[i][1] = list.get(i).cube_matrice()[1];
+        }
+        return result;
+    }
+
+    public boolean isVisible(int x1, int y1, int x2, int y2){
+        int[][] ligne = ligne_matrice(x1, y1, x2, y2);
+        /*for(int i = 0; i < ligne.length; i++){
+            System.out.println(ligne[i][0] + " " + ligne[i][1]);
+        }
+        System.out.println();*/
+        for(int i = 1; i < ligne.length-1; i++){
+            if(!isDirectlyVisible(ligne[i-1][0], ligne[i-1][1], ligne[i][0], ligne[i][1]))
+                return false;
+            /*if(cells[ligne[i][0]][ligne[i][1]].entity != null)
+                return false;*/
+        }
+        return true;
+    }
+
+    //Vérifie si la cellule x2 y2 adjacente à x1 y1 est directement visible
+    private boolean isDirectlyVisible(int x1, int y1, int x2, int y2) {
+        // Vérifie si les coordonnées sont correctes
+        if(x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0 || x1 > height || y1 > width || x2 > height || y2 > width){
+            return false;
+        }
+
+        // Vérifie que la différence de hauteur n'est pas trop grande
+        int delta = cells[x1][y1].getHeight() - cells[x2][y2].getHeight();
+
+        //On vérifie si la cible n'est pas plus haute que le départ
+        return (cells[x2][y2].getEntity() == null && delta >= -1);
     }
 
 }

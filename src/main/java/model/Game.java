@@ -1,7 +1,5 @@
 package model;
-import model.entity.Entity;
-import model.entity.Knight;
-import model.entity.Soldier;
+import model.entity.*;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -42,7 +40,8 @@ public class Game implements Serializable {
     protected Grid getGrid() {
         return grid;
     }
- // un bouton dit si le joueur a fini de posé ses entité    une fois que les joueurs ont cliqué
+
+    // un bouton dit si le joueur a fini de poser ses entités une fois que les joueurs ont cliqué
     void start() {
         if (allPlayersAreReady()) {
             gameState = 1;
@@ -75,7 +74,22 @@ public class Game implements Serializable {
         entInd=(entInd+1)%playableEntities.size();
         currentEntity=playableEntities.get(entInd);
         currentPlayer=currentEntity.getPlayer();
-        currentEntity.resetMp();
+        if(currentEntity.getRoot()>0){
+            currentEntity.setMp(0);
+        }
+        else{
+            currentEntity.resetMp();
+        }
+        if(currentEntity.getPoison()>0){
+            currentEntity.magicDamage(1);
+            for (int i = 0; i < playableEntities.size(); i++) {
+                for (Player p : players) {
+                    p.updateStatView(i, playableEntities.get(i).getHp(), playableEntities.get(i).getArmor(), playableEntities.get(i).getPoison(), playableEntities.get(i).getRoot());
+                }
+                removeIfDead(i);
+            }
+        }
+        currentEntity.decreaseAllCooldowns();
         for (Player p:players) {
             p.focusNextEntity(entInd, p==currentPlayer);
         }
@@ -106,6 +120,15 @@ public class Game implements Serializable {
                 break;
             case 1:
                 e = new Knight(player);
+                break;
+            case 2:
+                e = new Wizard(player);
+                break;
+            case 3:
+                e = new Druid(player);
+                break;
+            case 4:
+                e = new Clerk(player);
                 break;
             default:
                 break;
@@ -176,7 +199,6 @@ public class Game implements Serializable {
         }
 
     }
-   
     // renvoie le chemin menant de la position de l'entité en cours et les coords x y
     // renvoie null si le chemin n'exsite pas
     protected byte[] makePath(int x, int y) {
@@ -187,15 +209,14 @@ public class Game implements Serializable {
     public void doAction(Player player, int action, int x, int y) {
         if (!canPlay(player)) return;
         Cell c = grid.getCell(x,y);
-        if (grid.isInCoordList(x,y) && currentEntity.doAction(action,c)) {
+        if (grid.isInCoordList(x,y) && currentEntity.doAction(player, action, c)) {
             // pour l'instant on update les points de vie de toutes les entités, ce n'est pas idéal
             for (int i = 0; i < playableEntities.size(); i++) {
                 for (Player p : players) {
-                    p.updateHpView(i, playableEntities.get(i).getHp());
+                    p.updateStatView(i, playableEntities.get(i).getHp(), playableEntities.get(i).getArmor(), playableEntities.get(i).getPoison(), playableEntities.get(i).getRoot());
                 }
                 removeIfDead(i);
             }
-
         }
         grid.clearCoordList();
         player.resetAction();

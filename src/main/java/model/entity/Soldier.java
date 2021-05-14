@@ -5,13 +5,16 @@ import model.Player;
 
 public class Soldier extends Entity {
 
+    private String ICON = "icons/portraits/Soldier.png";
+
     public Soldier(int x, int y, Player player) {
-        super(player, 10, 4, 2);
+        super(player, 10, 4, 2, 2);
         super.x=x;
         super.y=y;
         super.actions = new Action[2];
-        actions[0]=new Attack("Attaque de\nmêlée", 1,1,4,0);
-        actions[1]=new Attack("Attaque à\ndistance", 2,6,6,0);
+        actions[0]=new Attack("attaque de mélée", "physique",1,1,4,0,1);
+        actions[1]=new Attack("attaque à distance", "physique",2,6,6,0,2);
+
     }
 
     public Soldier(Player player) {
@@ -26,6 +29,10 @@ public class Soldier extends Entity {
     @Override
     public Entity copy() {
         return new Soldier(x,y,player);
+    }
+
+    public String getICON() {
+        return ICON;
     }
 
 }
