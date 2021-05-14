@@ -1,6 +1,7 @@
 package view;
 
 import custom.GameMenu;
+import custom.MainMenu;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,6 +21,7 @@ public class WelcomeInterface extends Pane {
     private GameButton quitter;
 	private Controller ctrl;
     private GameButton play;
+    private MainMenu menu;
 
     int width;
     int height;
@@ -36,11 +38,15 @@ public class WelcomeInterface extends Pane {
         addButton(play);
         play.setTranslateX(width/2 - 85);
 
+        menu = new MainMenu(width, height);
+
+        getChildren().add(menu);
+
         optionMenu = new GameMenu(300,400);
         createBackground();
         initOptionButton();
-        initButtonListeners();
         initOptionMenu();
+        initButtonListeners();
 
         ctrl.getStage().show();
     }
@@ -79,27 +85,56 @@ public class WelcomeInterface extends Pane {
 
     private void initButtonListeners(){
         play.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
+            /*ctrl.getMainView().setChosenAction(-2);
+            ctrl.view.setMainGroup( ( Group)new BuyEntityInterface(width, height, ctrl));
+            Scene buyScene= new Scene(ctrl.getMainGroup(),width,height);
+            ctrl.getStage().setScene(buyScene);
+
+            ctrl.initializePlayer();
+            ctrl.loadLevel();
+            ctrl.mkGameGrid();
+            ctrl.initBotPlayer();
+            ctrl.getMainView().allowGridViewControls(true);*/
+
+            menu.animation();
+
+            option.setVisible(false);
+
+        });
+
+        menu.getMulti().setOnMouseClicked(e -> {
             ctrl.getMainView().setChosenAction(-2);
             ctrl.view.setMainGroup( ( Group)new BuyEntityInterface(width, height, ctrl));
             Scene buyScene= new Scene(ctrl.getMainGroup(),width,height);
-            buyScene.setFill((Paint)(Color.SANDYBROWN));
             ctrl.getStage().setScene(buyScene);
 
             ctrl.initializePlayer();
             ctrl.loadLevel("localMultiplayer");
             ctrl.mkGameGrid();
             ctrl.getMainView().allowGridViewControls(true);
-
+            menu.animation();
         });
 
         option.setOnMouseClicked(e -> {
             optionMenu.animation();
         });
+
+        quitter.setOnAction(e -> {
+            ctrl.getMainView().getPrimaryStage().close();
+        });
+
+        menu.getQuit().setOnAction(e -> {
+            ctrl.getMainView().getPrimaryStage().close();
+        });
     }
 
     private void createBackground(){
-        Image backgroundImage = new Image("icons/Welcome-Page-BG.png", 1080, 720, false, true);
+        Image backgroundImage = new Image("icons/Welcome-Page-BG.png", width, height, false, true);
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, null);
         setBackground(new Background(background));
+    }
+
+    public MainMenu getMenu() {
+        return menu;
     }
 }

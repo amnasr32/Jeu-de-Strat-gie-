@@ -17,7 +17,7 @@ public class GameLabel extends Label {
     private Label label;
 
     private final String BACKGROUND = "-fx-background-image: url('boxes/bar_ready.png'); " +
-            "-fx-background-position: center; -fx-background-size: 250 100; -fx-font-family: 'Cinzel Decorative';" +
+            "-fx-background-position: center; -fx-background-size: 300 135; -fx-font-family: 'Cinzel Decorative';" +
             "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 10;" +
             "-fx-line-spacing: 0.7; -fx-padding: 0 0 5 0;";
     private final String BACKGROUND2 = "-fx-background-image: url('boxes/name_bar2.png'); " +
@@ -51,7 +51,7 @@ public class GameLabel extends Label {
     }
 
     public void initstyle(){
-        setPrefSize(250,105);
+        setPrefSize(300,140);
         setAlignment(Pos.CENTER);
         setStyle(BACKGROUND);
     }

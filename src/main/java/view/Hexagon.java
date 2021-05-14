@@ -12,7 +12,7 @@ public class Hexagon extends Group {
 
     GameTile cylinder;
     Cylinder outerCylinder;
-    private final Image tileFill = new Image("tiles/dirt.png");
+    private final Image tileFill = new Image("tiles/stone.png");
     int x, y, height;
 
     MainView view;

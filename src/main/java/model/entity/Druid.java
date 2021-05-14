@@ -12,7 +12,7 @@ public class Druid extends Entity {
         super.x=x;
         super.y=y;
         super.actions = new Action[3];
-        actions[0]=new Attack("attaque de baton", "physique",1,2,2,0,1);
+        actions[0]=new Attack("Attaque de baton", "physique",1,2,2,0,1);
         actions[1]=new Poisoning("Empoisonnement", "statut",1,4,3,0,5);
         actions[2]=new Rooting("Enracinement", "statut",1,4,2,0,4);
     }

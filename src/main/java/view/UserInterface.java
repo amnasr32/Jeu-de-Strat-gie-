@@ -1,8 +1,6 @@
 package view;
 
-import custom.GameButton;
-import custom.GameIcon;
-import custom.GameMenu;
+import custom.*;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -15,8 +13,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-
-import custom.GameLabel;
 
 
 /**
@@ -36,13 +32,11 @@ public class UserInterface extends Group {
     private GameButton option;
     private GameMenu optionMenu;
     private GameButton quitter;
-    private GameButton quit ;
-    private GameLabel msj;
 
     private GameLabel money;
     private int height = 720;
     private int width = 1080;
-    private GameMenu victoryMenu;
+    private EndGameScreen egs;
 
 
     private final static String BUTTON_FREE = "-fx-background-color: transparent; " +
@@ -62,22 +56,21 @@ public class UserInterface extends Group {
 
     private final String[] listOfPossibleEntities = {"Soldier", "Knight", "Wizard", "Druid", "Cleric"};
 
-    private class ActionButton extends GameButton {
+    private class ActionButton extends GameSpell {
         int actionNb;
         String cd;
         GameLabel description;
         boolean isSelected=false;
         ActionButton(String name, String desc, String cd, int actionNb) {
-            super(name);
+            super(name, desc);
+            description = super.getDescription();
             setFont(new Font(14));
-            setTranslateX(START_BUTTON_X + endTurn.getTranslateX() + endTurn.getPrefWidth() + actionButtons.size()*200);
+            setTranslateX(START_BUTTON_X + endTurn.getTranslateX() + endTurn.getPrefWidth() + actionButtons.size()*100);
             setTranslateY(height-100);
-
-            description=new GameLabel(desc);
             description.setFont(new Font(20));
             description.setVisible(false);
-            description.setTranslateX(START_BUTTON_X + endTurn.getTranslateX() + endTurn.getPrefWidth() + actionButtons.size()*200);
-            description.setTranslateY(height-220);
+            description.setTranslateX(getTranslateX());
+            description.setTranslateY(height-250);
             description.initstyle();
             this.actionNb=actionNb;
             this.cd=cd;
@@ -89,26 +82,9 @@ public class UserInterface extends Group {
         }
 
         public void allowMouseListeners() {
-
-            setPrefSize(170,65);
-            setStyle(BUTTON_FREE);
-            setOnMouseEntered(event -> {
-                description.setVisible(true);
-                setCursor(Cursor.HAND);
-                setStyle(BUTTON_PRESSED);
-            });
-            setOnMouseExited(event -> {
-                description.setVisible(false);
-                setCursor(Cursor.DEFAULT);
-                setStyle(BUTTON_FREE);
-            });
             setOnMouseClicked(event -> {
                 toggleSelected();
             });
-
-            setOnMousePressed(e-> setStyle(BUTTON_PRESSED));
-
-            setOnMouseReleased(e-> setStyle(BUTTON_FREE));
         }
 
         private void toggleSelected() {
@@ -132,7 +108,6 @@ public class UserInterface extends Group {
         BuyButton(String s, int i){
             super(s);
             entityNb = i;
-            //initStyle();
             setTranslateX(75+ start.getTranslateX() + nbOfButtons * 120);
             nbOfButtons ++;
             setTranslateY(height - 120);
@@ -187,34 +162,24 @@ public class UserInterface extends Group {
     public void showEndScreen(boolean hasWon, boolean localMP) {
 
         GameButton quit ;
-    	victoryMenu = new GameMenu(300,400);
-        getChildren().add(victoryMenu);
-        victoryMenu.fadeOutScene();
-        quit = new GameButton("Fermer");
+        egs = new EndGameScreen(width, height);
+
+        getChildren().add(egs);
+        quit = new GameButton("Menu\nprincipal");
         quit.initStyle();
-        quit.setLayoutX(65);
-        quit.setLayoutY(300);
-        if (localMP) {
-            if (hasWon) {
-                msj = new GameLabel("Victoire du\n joueur 1 !", 20);
-            } else {
-                msj = new GameLabel("Victoire du\n joueur 2 !", 20);
-            }
+        quit.setLayoutX((width + quit.getWidth())/2 - 85);
+        quit.setLayoutY(500);
+        egs.getPane().getChildren().add(quit);
+        if (hasWon) {
+            egs.initVictory();
         } else {
-            if (hasWon) {
-                msj = new GameLabel("Victoire !", 20);
-            } else {
-                msj = new GameLabel("Défaite..", 20);
-            }
+            egs.initDefaite();
         }
-        msj.setPrefSize(250,105);
-        msj.setAlignment(Pos.CENTER);
-        victoryMenu.getPane().getChildren().add(msj);
-        victoryMenu.getPane().getChildren().add(quit);
-        victoryMenu.animation();
         
         quit.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-        	victoryMenu.fadeOutScene();
+            getChildren().add(view.getWelcomeinterface().getMenu());
+            view.getWelcomeinterface().getMenu().animation();
+            egs.fadeOut();
         });
 
     }
@@ -297,12 +262,15 @@ public class UserInterface extends Group {
         getChildren().add(optionMenu);
         optionMenu.fadeOutScene();
 
-
         quitter = new GameButton("Quitter");
         quitter.initStyle();
         quitter.setLayoutX(65);
         quitter.setLayoutY(300);
         optionMenu.getPane().getChildren().add(quitter);
+
+        quitter.setOnAction(e -> {
+            ctrl.getMainView().getPrimaryStage().close();
+        });
     }
 
     public void updateActionButtons(EntityView e) {
