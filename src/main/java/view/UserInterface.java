@@ -32,6 +32,7 @@ public class UserInterface extends Group {
     private GameButton option;
     private GameMenu optionMenu;
     private GameButton quitter;
+    private GameButton retour;
 
     private GameLabel money;
     private int height = 720;
@@ -261,11 +262,10 @@ public class UserInterface extends Group {
         getChildren().add(optionMenu);
         optionMenu.fadeOutScene();
 
-        quitter = new GameButton("Quitter");
-        quitter.initStyle();
-        quitter.setLayoutX(65);
-        quitter.setLayoutY(300);
-        optionMenu.getPane().getChildren().add(quitter);
+        retour = optionMenu.addButton("Retour au\nmenu");
+        quitter = optionMenu.addButton("Quitter");
+
+        retour.setOnAction(e-> ctrl.getMainView().returnToMainMenu());
 
         quitter.setOnAction(e -> {
             ctrl.getMainView().getPrimaryStage().close();
