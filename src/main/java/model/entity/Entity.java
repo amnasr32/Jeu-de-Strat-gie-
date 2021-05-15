@@ -178,11 +178,18 @@ public abstract class Entity {
         for (Action a:actions) {
             a.reduceCooldown();
         }
-        if (root>0){
-            root-=1;
-        }
+    }
+
+    public void decreasePoison() {
         if (poison>0){
             poison-=1;
         }
     }
+
+    public void decreaseRoot() {
+        if (root>0){
+            root-=1;
+        }
+    }
+
 }

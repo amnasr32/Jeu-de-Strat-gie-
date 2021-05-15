@@ -11,7 +11,7 @@ public class Game implements Serializable {
 	private static final long serialVersionUID = 7373047453891668295L;
 	private final Grid grid;
     private final LinkedList<Player> players;
-    private LinkedList<Entity> playableEntities; // liste de toutes les entités en jeu
+    private final LinkedList<Entity> playableEntities; // liste de toutes les entités en jeu
     //private int[] entTeam; // nombre d'entités pour chaque équipe actuellement en jeu
 	//int nb=0;
 
@@ -82,7 +82,7 @@ public class Game implements Serializable {
         for (Player p:players) {
             p.focusFirstEntity(entInd, p==currentPlayer || lm);
         }
-        endGameIsOver(); // ne devrait jamais se faire
+        endGameIfOver(); // ne devrait jamais se faire
     }
 
     // vérifie qu'un joueur ait le droit de jouer, càd que c'est son tour
@@ -93,33 +93,49 @@ public class Game implements Serializable {
 
     // permet de passer au tour de l'entité suivante
     protected void nextRound(Player player) {
+        if (playableEntities.size()<=0) {
+            endGameIfOver();
+            return;
+        }
         if (!canPlay(player)) return; // seul le joueur courant peut effectuer l'action
         grid.clearCoordList();
         entInd=(entInd+1)%playableEntities.size();
-        currentEntity=playableEntities.get(entInd);
-        currentPlayer=currentEntity.getPlayer();
-        if(currentEntity.getRoot()>0){
-            currentEntity.setMp(0);
-        }
-        else{
-            currentEntity.resetMp();
-        }
-        if(currentEntity.getPoison()>0){
-            currentEntity.magicDamage(1);
-            for (int i = 0; i < playableEntities.size(); i++) {
-                for (Player p : players) {
-                    p.updateStatView(i, playableEntities.get(i).getHp(), playableEntities.get(i).getArmor(), playableEntities.get(i).getPoison(), playableEntities.get(i).getRoot());
-                }
-                removeIfDead(i);
+        if (preTurnEffects(playableEntities.get(entInd))) {
+
+            currentEntity = playableEntities.get(entInd);
+            currentPlayer = currentEntity.getPlayer();
+
+            for (Player p : players) {
+                p.focusNextEntity(entInd, p == currentPlayer || lm);
             }
         }
-        currentEntity.decreaseAllCooldowns();
-        for (Player p:players) {
-            p.focusNextEntity(entInd, p==currentPlayer || lm);
-        }
-        endGameIsOver();
+        endGameIfOver();
     }
 
+    // ce que subit l'entité dont c'est le tour avant de pouvoir jouer
+    // renvoie false si l'unité meurt avant de pouvoir jouer
+    private boolean preTurnEffects(Entity e) {
+        if(e.getRoot()>0){
+            e.setMp(0);
+            e.decreaseRoot();
+        }
+        else{
+            e.resetMp();
+        }
+        e.decreaseAllCooldowns();
+        if(e.getPoison()>0){
+            e.magicDamage(1);
+            e.decreasePoison();
+            for (Player p : players) {
+                p.updateStatView(entInd, e.getHp(), e.getArmor(), e.getPoison(), e.getRoot());
+            }
+        }
+        if (removeIfDead(entInd)) {
+            nextRound(currentPlayer);
+            return false;
+        }
+        return true;
+    }
 
     // permet d'ajouter un entité au model et à la view de tous les joueurs
     private boolean addEntityToGame(Entity e, int x, int y) {
@@ -252,14 +268,14 @@ public class Game implements Serializable {
         }
         grid.clearCoordList();
         player.resetAction();
-        endGameIsOver();
+        endGameIfOver();
     }
 
-    private void endGameIsOver() {
+    private void endGameIfOver() {
         if (gameIsOver()) {
             gameState=2;
             for (Player p : players) {
-                boolean hasWon = playableEntities.get(0).getPlayer()==p;
+                boolean hasWon = playableEntities.size()>0 && playableEntities.get(0).getPlayer()==p;
                 p.endGame(hasWon);
             }
         }
@@ -281,10 +297,12 @@ public class Game implements Serializable {
     }
 
     // s'occupe de "tuer" l'entité playableEntities[i] si ses pv == 0
-    private void removeIfDead(int i) {
+    private boolean removeIfDead(int i) {
         if (playableEntities.get(i).getHp()<=0) {
             removeEntity(i);
+            return true;
         }
+        return false;
     }
 
     // enlève l'entité "e" de la grille
