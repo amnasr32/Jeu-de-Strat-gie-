@@ -177,9 +177,8 @@ public class UserInterface extends Group {
         }
         
         quit.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            getChildren().add(view.getWelcomeinterface().getMenu());
-            view.getWelcomeinterface().getMenu().animation();
             egs.fadeOut();
+            view.returnToMainMenu();
         });
 
     }
