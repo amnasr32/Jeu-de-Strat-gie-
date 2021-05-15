@@ -18,7 +18,7 @@ public class Poisoning extends Action {
     @Override
     public boolean doAction(Player p, Cell c) {
         Entity e = c.getEntity();
-        if (e==null || e.getPlayer()!=p || roundCooldown != 0) return false;
+        if (e==null || e.getPlayer()==p || roundCooldown != 0) return false;
         e.poisoning(amount);
         startCooldown(cooldown);
         return true;
