@@ -2,12 +2,14 @@ package view;
 
 import javafx.scene.Group;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.CullFace;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.Sphere;
+import javafx.scene.transform.Rotate;
+
+import java.util.HashMap;
 
 // Affichage des unités
 public class EntityView extends Group {
@@ -15,7 +17,7 @@ public class EntityView extends Group {
     private MainView view;
 
     private Sphere sphere;
-    private Sphere outerSphere;
+    private Sphere aboveMarker;
     private Cylinder cylinder;
     private int x, y;
 
@@ -35,6 +37,16 @@ public class EntityView extends Group {
     private String[] actionCd;
     private final String name;
 
+    private final static HashMap<String, String> frToEnNames= new HashMap<>();
+
+    static {
+        frToEnNames.put("Soldat", "Soldier");
+        frToEnNames.put("Chevalier", "Knight");
+        frToEnNames.put("Magicien", "Wizard");
+        frToEnNames.put("Druide", "Druid");
+        frToEnNames.put("Clerc", "Cleric");
+    }
+
     EntityView(MainView view, int x, int y, boolean isAlly, String name, int hp, int mp, int armor, String[][] actions) {
         super();
         this.view=view;
@@ -47,14 +59,18 @@ public class EntityView extends Group {
         poisonStatut=0;
         rootStatut=0;
 
-        initSphere();
+        //initSphere();
+        //getChildren().add(sphere);
+
+        initMarker(isAlly);
+        getChildren().add(aboveMarker);
         initCylinder(isAlly);
-        initOuterSphere(isAlly);
-        getChildren().add(sphere);
         getChildren().add(cylinder);
-        getChildren().add(outerSphere);
+
         this.x=x;
         this.y=y;
+
+        initImage(name);
 
         int length=actions.length;
         actionNames=new String[length];
@@ -186,8 +202,8 @@ public class EntityView extends Group {
 
     }
 
-    private void initOuterSphere(boolean isAlly) {
-        outerSphere= new Sphere(6);
+    private void initMarker(boolean isAlly) {
+        aboveMarker = new Sphere(1.5);
         PhongMaterial m = new PhongMaterial();
         if (isAlly) {
             m.setDiffuseColor(Color.LIGHTGREEN);
@@ -205,13 +221,14 @@ public class EntityView extends Group {
             }
 
         }
-        outerSphere.setMaterial(m);
-        outerSphere.setCullFace(CullFace.FRONT);
-        outerSphere.setVisible(false);
+        aboveMarker.setMaterial(m);
+        //outerSphere.setCullFace(CullFace.FRONT);
+        aboveMarker.setTranslateY(-13);
+        aboveMarker.setVisible(false);
     }
 
     public void highlight(boolean bool) {
-        outerSphere.setVisible(bool);
+        aboveMarker.setVisible(bool);
     }
 
     public void showInfoOnHover(boolean bool) {
@@ -243,6 +260,20 @@ public class EntityView extends Group {
         } else {
             setOnMouseClicked(event -> {});
         }
+    }
+
+    private void initImage(String name) {
+        Image img = new Image("icons/portraits/"+frToEnNames.get(name)+".png");
+        ImageView imgv = new ImageView(img);
+        imgv.setPreserveRatio(true);
+        imgv.setFitWidth(14);
+        imgv.setTranslateY(-10);
+        imgv.setTranslateX(-7);
+        double x = this.getTranslateX()+7;
+        double y = this.getTranslateY();
+        double z = this.getTranslateZ();
+        imgv.getTransforms().add(new Rotate(-35, x, y, z, Rotate.Y_AXIS));
+        getChildren().add(imgv);
     }
 
 }
