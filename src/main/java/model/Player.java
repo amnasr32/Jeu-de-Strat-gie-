@@ -14,9 +14,11 @@ public class Player {
     private final MainView view;
     protected Game game;
 
+    private Player2 player2=null;
+
     // vérifie que le joueur est prêt à commencer une partie
     private boolean isReady;
-    private int money=10; //TODO hard codé, à changer
+    protected int money=10; //TODO hard codé, à changer
 
     public Player() {
         view=null;
@@ -32,8 +34,16 @@ public class Player {
         this.game = game;
     }
 
+    protected void setPlayer2(Player2 p2) {
+        player2=p2;
+    }
+
     protected void setReady(boolean b) {
         isReady=b;
+    }
+
+    protected Player2 getPlayer2() {
+        return player2;
     }
 
     protected boolean isReady() {
@@ -46,8 +56,12 @@ public class Player {
 
     protected void changeAmountOfMoney(int amount) {
         money += amount;
-        assert view != null;
-        view.updateMoneyView(money);
+        if (view != null) view.updateMoneyView(money);
+    }
+
+    // utile uniquement pour le multi local
+    protected void changeAmoutOfMoneyInViewOnly(int amount) {
+        if (view != null) view.updateMoneyView(amount);
     }
 
     // ---------------------------------
@@ -55,28 +69,42 @@ public class Player {
     // ---------------------------------
 
     public void loadLevel() { //todo : permettre de charger une grille sérialisée
-        // grille initialisée ici pour le test
+        /* grille initialisée ici pour le test
         Grid grid = new Grid(10, 15);
         grid.getCell(3,4).setHeight((byte)1);
         grid.getCell(5,5).setHeight((byte)1);
         grid.getCell(5,6).setHeight((byte)2);
-        Level level = new Level();
-        /**ici on set la grille du niveau =>on la sérialise  **/
+
+        /*ici on set la grille du niveau =>on la sérialise  */
         //level.SetGrid(grid);
         //level.createLevel();
-        /**ici on affiche la grille qu'on a sérialisé => on deserialise**/
-
+        /*ici on affiche la grille qu'on a sérialisé => on deserialise*/
+        Level level = new Level();
         new Game(level.showLevel(), this);
 
     }
 
-    public void initBotPlayer() {
+    public void loadLevel(String option) {
+        Level level = new Level();
+        new Game(option, level.showLevel(), this);
+    }
+
+    /*public void initBotPlayer() {
         PlayerBot pb = new PlayerBot();
         game.addPlayer(pb);
         pb.initEntities();
-    }
+    }*/
 
     public void toggleReady() {
+        if (game.isLocalMultiplayer() && view!=null) {
+            if (!isReady) {
+                changeAmoutOfMoneyInViewOnly(player2.money);
+                canPressReadyButton(false);
+            } else{
+                player2.toggleReady();
+                return;
+            }
+        }
         isReady=!isReady;
         if (isReady) game.start();
     }
@@ -110,11 +138,17 @@ public class Player {
     }
 
     public void addEntityToGame(int x, int y, int entity_type) {
-        game.tryToAddEntityToGame(this, x,y,entity_type);
+        if (game.isLocalMultiplayer() && isReady) {
+            game.tryToAddEntityToGame(player2, x,y,entity_type);
+        }
+        else game.tryToAddEntityToGame(this, x,y,entity_type);
     }
 
     public void deleteEntity(int x, int y) {
-        game.tryToDeleteEntity(this, x, y);
+        if (game.isLocalMultiplayer() && isReady) {
+            game.tryToDeleteEntity(player2, x, y);
+        }
+        else game.tryToDeleteEntity(this, x, y);
     }
 
     // ---------------------------------
@@ -187,11 +221,14 @@ public class Player {
     }
 
     protected void endGame(boolean hasWon) {
-        view.endGame(hasWon);
+        view.endGame(hasWon, game.isLocalMultiplayer());
     }
 
     protected void canPressReadyButton(boolean b) {
         view.canPressReadyButton(b);
     }
 
+    public void updateAllEntityViews() {
+        game.updateAllEntityViews(this);
+    }
 }

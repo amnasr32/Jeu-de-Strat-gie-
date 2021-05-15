@@ -103,17 +103,11 @@ public class WelcomeInterface extends Pane {
         });
 
         menu.getMulti().setOnMouseClicked(e -> {
-            ctrl.getMainView().setChosenAction(-2);
-            ctrl.view.setMainGroup( ( Group)new BuyEntityInterface(width, height, ctrl));
-            Scene buyScene= new Scene(ctrl.getMainGroup(),width,height);
-            ctrl.getStage().setScene(buyScene);
+            launchGame("localMultiplayer");
+        });
 
-            ctrl.initializePlayer();
-            ctrl.loadLevel();
-            ctrl.mkGameGrid();
-            ctrl.initBotPlayer();
-            ctrl.getMainView().allowGridViewControls(true);
-            menu.animation();
+        menu.getBot().setOnMouseClicked(e -> {
+            launchGame("vsBot");
         });
 
         option.setOnMouseClicked(e -> {
@@ -127,6 +121,19 @@ public class WelcomeInterface extends Pane {
         menu.getQuit().setOnAction(e -> {
             ctrl.getMainView().getPrimaryStage().close();
         });
+    }
+
+    private void launchGame(String option) {
+        ctrl.getMainView().setChosenAction(-2);
+        ctrl.view.setMainGroup( ( Group)new BuyEntityInterface(width, height, ctrl));
+        Scene buyScene= new Scene(ctrl.getMainGroup(),width,height);
+        ctrl.getStage().setScene(buyScene);
+
+        ctrl.initializePlayer();
+        ctrl.loadLevel(option);
+        ctrl.mkGameGrid();
+        ctrl.getMainView().allowGridViewControls(true);
+        menu.animation();
     }
 
     private void createBackground(){

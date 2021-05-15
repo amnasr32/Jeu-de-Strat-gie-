@@ -159,7 +159,7 @@ public class UserInterface extends Group {
     }
 
     // affiche l'écran de fin de partie
-    public void showEndScreen(boolean hasWon) {
+    public void showEndScreen(boolean hasWon, boolean localMP) {
 
         GameButton quit ;
         egs = new EndGameScreen(width, height);
@@ -197,8 +197,9 @@ public class UserInterface extends Group {
         });
 
         start.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            start.setVisible(false);
+            //start.setDisable(true);
             ctrl.toggleReady();
+            view.setPreGameAction(-2);
         });
 
         option.setOnMouseClicked(e -> {
@@ -208,6 +209,13 @@ public class UserInterface extends Group {
 
     public void canPressReadyButton(boolean b) {
         start.setDisable(!b);
+    }
+
+    // pas utilisé
+    public void disableBuyButtons(boolean bool) {
+        for (Button b:buyButtons) {
+            b.setDisable(bool);
+        }
     }
 
     private void initEntityDetails() {

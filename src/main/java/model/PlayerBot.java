@@ -39,4 +39,7 @@ public class PlayerBot extends Player {
 
     @Override
     protected void changeAmountOfMoney(int amount) {}
+
+    @Override
+    protected void resetAction() {}
 }
