@@ -79,6 +79,7 @@ public class Game implements Serializable {
         for (Player p:players) {
             p.focusFirstEntity(entInd, p==currentPlayer || lm);
         }
+        endGameIsOver(); // ne devrait jamais se faire
     }
 
     // vérifie qu'un joueur ait le droit de jouer, càd que c'est son tour
@@ -113,6 +114,7 @@ public class Game implements Serializable {
         for (Player p:players) {
             p.focusNextEntity(entInd, p==currentPlayer || lm);
         }
+        endGameIsOver();
     }
 
 
@@ -241,6 +243,10 @@ public class Game implements Serializable {
         }
         grid.clearCoordList();
         player.resetAction();
+        endGameIsOver();
+    }
+
+    private void endGameIsOver() {
         if (gameIsOver()) {
             gameState=2;
             for (Player p : players) {
