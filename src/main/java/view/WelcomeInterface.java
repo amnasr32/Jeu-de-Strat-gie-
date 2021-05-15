@@ -103,6 +103,11 @@ public class WelcomeInterface extends Pane {
             menu.animation();
             option.setVisible(false);
 
+            // ces lignes ont été ajoutés pour éviter que le fond d'écran apparaisse pendant les chargements
+            Image backgroundImage = new Image(menu.BG_IMAGE_1, width, height, false, true);
+            BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, null);
+            setBackground(new Background(background));
+
         });
 
         menu.getMulti().setOnMouseClicked(e -> {

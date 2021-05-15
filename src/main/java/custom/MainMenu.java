@@ -7,7 +7,7 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 public class MainMenu extends SubScene {
-    private final String BG_IMAGE_1 = "icons/menu_bg.png";
+    public final String BG_IMAGE_1 = "icons/menu_bg.png";
 
     private boolean isHidden;
 
