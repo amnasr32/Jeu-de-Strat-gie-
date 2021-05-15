@@ -68,25 +68,111 @@ public class Player {
     //  fonctions qui modifient le jeu :
     // ---------------------------------
 
-    public void loadLevel() { //todo : permettre de charger une grille sérialisée
-        /* grille initialisée ici pour le test
-        Grid grid = new Grid(10, 15);
-        grid.getCell(3,4).setHeight((byte)1);
-        grid.getCell(5,5).setHeight((byte)1);
-        grid.getCell(5,6).setHeight((byte)2);
-
-        /*ici on set la grille du niveau =>on la sérialise  */
-        //level.SetGrid(grid);
-        //level.createLevel();
-        /*ici on affiche la grille qu'on a sérialisé => on deserialise*/
+    //fonction qui charge le toujours le niveau 1 du jeu
+    public void loadLevel() {
         Level level = new Level();
-        new Game(level.showLevel(), this);
+        new Game(level.showLevel("src/main/Levels/level1"), this);
 
     }
 
-    public void loadLevel(String option) {
+    //fonction qui chqrge le jeu en fonction des arguments passés en paramètre
+    //"option" indique le mode du jeu (multijoueur, joueur contre l'ordinateur, éditeur de niveau)
+    //"level_filename" contient le chemin du fichier contenant le niveau 
+    public void loadLevel(String option, String level_filename) {
         Level level = new Level();
-        new Game(option, level.showLevel(), this);
+
+        /*niveau 1*/
+        /*Grid grid = new Grid(10, 15);
+        grid.getCell(3,4).setHeight((byte)1);
+        grid.getCell(5,5).setHeight((byte)1);
+        grid.getCell(5,6).setHeight((byte)2);
+        
+        //sérialisation de la grille du niveau
+        level.SetGrid(grid);
+        level.createLevel("src/main/Levels/level1");*/
+
+        /*niveau 2*/
+        /*Grid grid = new Grid(11, 15);
+        grid.getCell(1,3).setHeight((byte)3);
+        grid.getCell(2,3).setHeight((byte)3);
+        grid.getCell(3,2).setHeight((byte)3);
+        grid.getCell(4,2).setHeight((byte)3);
+
+        grid.getCell(6,2).setHeight((byte)3);
+        grid.getCell(7,2).setHeight((byte)3);
+        grid.getCell(8,3).setHeight((byte)3);
+        grid.getCell(9,3).setHeight((byte)3);
+
+        grid.getCell(1,10).setHeight((byte)3);
+        grid.getCell(2,11).setHeight((byte)3);
+        grid.getCell(3,11).setHeight((byte)3);
+        grid.getCell(4,12).setHeight((byte)3);
+
+        grid.getCell(9,10).setHeight((byte)3);
+        grid.getCell(7,11).setHeight((byte)3);
+        grid.getCell(8,11).setHeight((byte)3);
+        grid.getCell(6,12).setHeight((byte)3);
+
+        //sérialisation de la grille du niveau
+        level.SetGrid(grid);
+        level.createLevel("src/main/Levels/level2");*/
+
+        /*niveau 3*/
+        /*Grid grid = new Grid(7, 16);
+        
+        grid.getCell(3,2).setHeight((byte)1);
+        grid.getCell(3,3).setHeight((byte)2);
+        grid.getCell(3,4).setHeight((byte)3);
+        grid.getCell(3,5).setHeight((byte)3);
+        grid.getCell(3,6).setHeight((byte)3);
+        grid.getCell(3,7).setHeight((byte)3);
+        grid.getCell(3,8).setHeight((byte)3);
+        grid.getCell(3,9).setHeight((byte)3);
+        grid.getCell(3,10).setHeight((byte)3);
+        grid.getCell(3,11).setHeight((byte)3);
+        grid.getCell(3,12).setHeight((byte)2);
+        grid.getCell(3,13).setHeight((byte)1);
+
+        //sérialisation de la grille du niveau
+        level.SetGrid(grid);
+        level.createLevel("src/main/Levels/level3");*/
+
+        /*niveau 4*/
+        /*Grid grid = new Grid(9, 15);
+                
+        grid.getCell(1,3).setHeight((byte)1);
+        grid.getCell(2,4).setHeight((byte)2);
+        grid.getCell(3,4).setHeight((byte)2);
+        grid.getCell(4,5).setHeight((byte)2);
+        grid.getCell(5,5).setHeight((byte)1);
+
+        grid.getCell(1,5).setHeight((byte)1);
+        grid.getCell(2,5).setHeight((byte)2);
+        grid.getCell(4,4).setHeight((byte)2);
+        grid.getCell(5,3).setHeight((byte)1);
+
+        grid.getCell(1,8).setHeight((byte)1);
+        grid.getCell(2,9).setHeight((byte)1);
+        grid.getCell(3,8).setHeight((byte)2);
+        grid.getCell(4,9).setHeight((byte)1);
+        grid.getCell(5,8).setHeight((byte)1);
+
+        grid.getCell(1,9).setHeight((byte)1);
+        grid.getCell(1,10).setHeight((byte)1);
+        grid.getCell(2,11).setHeight((byte)1);
+        grid.getCell(3,11).setHeight((byte)2);
+        grid.getCell(4,11).setHeight((byte)1);
+        grid.getCell(5,10).setHeight((byte)1);
+        grid.getCell(5,9).setHeight((byte)1);
+
+
+        //sérialisation de la grille du niveau
+        level.SetGrid(grid);
+        level.createLevel("src/main/Levels/level4");*/
+
+        /**ici on affiche la grille qu'on a sérialisé => on deserialise**/
+
+        new Game(option, level.showLevel(level_filename), this);
     }
 
     /*public void initBotPlayer() {
@@ -121,18 +207,24 @@ public class Player {
         view.drawPath(path);
     }
 
+    // transmet au modèle un mouvement associé au joueur courant 
     public void move(byte[] path) {
         game.move(this, path);
     }
 
+    // transmet au modèle une action associée au joueur courant
+    // l'action va être effectée sur la case x, y si elle est valide
+    // l'entité avec laquelle l'action va être effectuée est l'entité "currentEntity" associée au joueur courant
     public void doAction(int actionNb, int x, int y) {
         game.doAction(this, actionNb, x, y);
     }
 
+    // sélection d'une action dans la "barre de tâches"
     public void selectAction(int actionNb) {
         game.selectAction(this, actionNb);
     }
 
+    // annule l'action
     public void cancelAction() {
         game.cancelAction(this);
     }
@@ -181,6 +273,7 @@ public class Player {
         view.addEntity(e.getX(), e.getY(), e.getPlayer()==this,e.toString(), e.getHp(), e.getMp(), e.getArmor() ,array);
     }
 
+    //place un sphère verte au dessus de la première entité
     protected void focusFirstEntity(int i, boolean isCurrentPlayer) {
         view.focusFirstEntity(i);
         view.allowGridViewControls(isCurrentPlayer);
@@ -188,6 +281,7 @@ public class Player {
         view.resetAction();
     }
 
+    //place un sphère verte au dessus de la prochaine entité
     protected void focusNextEntity(int i, boolean isCurrentPlayer) {
         view.focusNextEntity(i);
         view.allowGridViewControls(isCurrentPlayer);
