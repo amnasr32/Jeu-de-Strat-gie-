@@ -51,6 +51,7 @@ public class MainView extends Application {
         
         primaryStage.setTitle("Jeu de stratégie");
         primaryStage.setScene(mainScene);
+        primaryStage.centerOnScreen();
         primaryStage.show();
        
     }
