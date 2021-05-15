@@ -20,12 +20,12 @@ public class MainView extends Application {
     private int height = 720;
     private int width = 1080;
 
-    LinkedList<EntityView> entityViews= new LinkedList<>();
+    private final LinkedList<EntityView> entityViews= new LinkedList<>();
     private EntityView currentEntityView;
     private int unitInd;
 
-    GridView gridView =null;
-    UserInterface ui=null;
+    private GridView gridView =null;
+    private UserInterface ui=null;
 
     int pointedX=-1;
     int pointedY=-1;
@@ -44,7 +44,8 @@ public class MainView extends Application {
         ctrl = new Controller(this);
 
         welcomeinterface = new WelcomeInterface(width, height, ctrl);
-        mainScene=new Scene(welcomeinterface,width,height);
+        //mainScene=new Scene(welcomeinterface,width,height); //what ??
+        mainGroup.getChildren().add(welcomeinterface);
         //menu = new MainMenu(width,height);
 
         
@@ -272,6 +273,26 @@ public class MainView extends Application {
 
     public WelcomeInterface getWelcomeinterface() {
         return welcomeinterface;
+    }
+
+    public void returnToMainMenu() {
+        resetAll();
+        mainGroup.getChildren().add(welcomeinterface);
+        welcomeinterface.getMenu().animation();
+    }
+
+    private void resetAll() {
+        scene3D=null;
+        mainGroup.getChildren().clear();
+        gridView=null;
+        entityViews.clear();
+        currentEntityView=null;
+        ui=null;
+        pointedX=-1;
+        pointedY=-1;
+        chosenAction=-1;
+        preGameAction = -1;
+        path=null;
     }
 }
 
