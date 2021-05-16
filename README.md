@@ -21,6 +21,7 @@ Choisissez d'abord le mode du jeu ("multijoueur"/"jouer contre un robot"), puis 
 * sorcier: boule de feu, protection (4€)
 * chevalier : coupe décisif, auto soin (3€)
 * soldat: frappe courte, frappe longue (2€)
+
 Sélectionnez les entités puis placez-les n'importe-où sur la grille en cliquant sur la cellule correspondante. Une fois que vous avez placé les entités de votre choix, cliquez sur le bouton "commencer". À chaque tour, chaque entité peut effectuer une attaque et avancer d'un certain nombre de cases, différent pour chaque entité. Vous passez à votre prochaine entité en cliquant sur le bouton "fin de tour". Une fois que vous avez joué avec toutes vos entités, votre tour est fini est c'est à l'adversaire de jouer. La partie se termine lorsque l'un des joueurs n'a plus d'entités. 
 ### Prêt pour un combat acharné ?
 
