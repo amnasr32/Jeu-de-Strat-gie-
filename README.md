@@ -53,7 +53,7 @@ Choisissez d'abord le mode du jeu ("multijoueur"/"jouer contre un robot"), puis 
 
 Sélectionnez l'entité de votre choix puis placez-la n'importe-où sur la grille en cliquant sur la cellule correspondante. Une fois que vous avez placé vos entités, cliquez sur le bouton "commencer". À chaque tour, chaque entité peut effectuer une attaque et avancer d'un certain nombre de cases, en fonction de son type. Vous passez à la prochaine entité avec le bouton "fin de tour". Une fois que vous avez joué avec toutes vos entités, votre tour est fini est c'est à l'adversaire de jouer. La partie se termine lorsque l'un des joueurs n'a plus d'entités. 
 
-## contrôles de la caméra
+## Contrôles de la caméra
 pour se déplacer la caméra dans l'espace 3D :
 * clique droit permet d'effectuer des translations
 * clique molette permet d'effectuer des rotations
