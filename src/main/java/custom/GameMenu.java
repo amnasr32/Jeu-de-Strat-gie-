@@ -95,4 +95,14 @@ public class GameMenu extends SubScene {
         return res;
     }
 
+    public GameButton addButton(String s, int offset){
+        GameButton res = new GameButton(s);
+        res.initStyle();
+        buttons.add(res);
+        res.setTranslateX(getWidth()/2 - 85);
+        res.setLayoutY(STARTING_Y_POINT -offset + buttons.toArray().length*100);
+        getPane().getChildren().add(res);
+        return res;
+    }
+
 }

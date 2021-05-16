@@ -53,11 +53,11 @@ public class LevelMenu extends SubScene {
         layout.setLayoutX((width/2)- 150);
         layout.setLayoutY((height/2) - 300);
 
-        map1 = layout.addButton("Map 1");
-        map2 = layout.addButton("Map 2");
-        map3 = layout.addButton("Map 3");
-        map4 = layout.addButton("Map 4");
-        back = layout.addButton("Retour");
+        map1 = layout.addButton("Map 1", 40);
+        map2 = layout.addButton("Map 2", 40);
+        map3 = layout.addButton("Map 3", 40);
+        map4 = layout.addButton("Map 4", 40);
+        back = layout.addButton("Retour", 40);
 
         getPane().getChildren().add(layout);
         layout.setVisible(true);
