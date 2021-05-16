@@ -11,7 +11,7 @@
   
  * NASR Amira 
 
- * ALLANO Yoan
+ * ALLANO Yoann
  
 
 # Pour lancer le jeu : 
