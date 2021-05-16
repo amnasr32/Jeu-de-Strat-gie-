@@ -29,21 +29,21 @@ cd jeu-de-strategie
 
 ## Comment jouer ?
 Choisissez d'abord le mode du jeu ("multijoueur"/"jouer contre un robot"), puis un des terrains disponibles. Au début du jeu, vous avez le choix entre l'achat de 5 types d'entités, chacune avec des compétences différentes:
-* clerc (2€): 
+* CLERC (2€): 
 * orion sacré : inflige 2 points de dégats magiques
 * premiers soins : soigne 2 points de vie d'un allié
 * purge : enlève tout les problèmes de statut d'un allié (poison, paralysie)
-* druide (3€): 
+* DRUIDE (3€): 
 * attaque de bâton : inflige 2 points de dégats physique
 * empoisonnement : empoisonne l'ennemie ciblé pendant 3 tours infligeant 1 point de dégat à chaque fois
 * enracinement : paralyse l'ennemie pour son prochain tour l'empêchant de bouger
-* sorcier (4€): 
+* SORCIER (4€): 
 * boule de feu : inflige 8 points de dégats magiques
 * protection : rajoute 2 points d'armures à un allié
-* chevalier (3€): 
+* CHEVALIER (3€): 
 * coupe décisif : inflige 8 points de dégats physiques
 * auto soin : permet de s'auto-soigner de 2 points de vie
-* soldat (2€): 
+* SOLDAT (2€): 
 * frappe courte : inflige 4 points de dégats physiques au corps à corps
 * frappe longue : inflige 6 points de dégats physiques à distance
 
