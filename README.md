@@ -29,11 +29,23 @@ cd jeu-de-strategie
 
 ## Comment jouer ?
 Choisissez d'abord le mode du jeu ("multijoueur"/"jouer contre un robot"), puis un des terrains disponibles. Au début du jeu, vous avez le choix entre l'achat de 5 types d'entités, chacune avec des compétences différentes:
-* clerc (2€): onion sacré, premiers soins, purge
-* druide (3€): attaque de bâton, empoisonnement, enracinement
-* sorcier (4€): boule de feu, protection
-* chevalier (3€): coupe décisif, auto soin
-* soldat (2€): frappe courte, frappe longue
+* clerc (2€): 
+* orion sacré : inflige 2 points de dégats magiques
+* premiers soins : soigne 2 points de vie d'un allié
+* purge : enlève tout les problèmes de statut d'un allié (poison, paralysie)
+* druide (3€): 
+* attaque de bâton : inflige 2 points de dégats physique
+* empoisonnement : empoisonne l'ennemie ciblé pendant 3 tours infligeant 1 point de dégat à chaque fois
+* enracinement : paralyse l'ennemie pour son prochain tour l'empêchant de bouger
+* sorcier (4€): 
+* boule de feu : inflige 8 points de dégats magiques
+* protection : rajoute 2 points d'armures à un allié
+* chevalier (3€): 
+* coupe décisif : inflige 8 points de dégats physiques
+* auto soin : permet de s'auto-soigner de 2 points de vie
+* soldat (2€): 
+* frappe courte : inflige 4 points de dégats physiques au corps à corps
+* frappe longue : inflige 6 points de dégats physiques à distance
 
 Sélectionnez l'entité de votre choix pui placez-la n'importe-où sur la grille en cliquant sur la cellule correspondante. Une fois que vous avez placé vos entités, cliquez sur le bouton "commencer". À chaque tour, chaque entité peut effectuer une attaque et avancer d'un certain nombre de cases, en fonction de son type. Vous passez à la prochaine entité avec le bouton "fin de tour". Une fois que vous avez joué avec toutes vos entités, votre tour est fini est c'est à l'adversaire de jouer. La partie se termine lorsque l'un des joueurs n'a plus d'entités. 
 ### Prêt pour un combat acharné ?
