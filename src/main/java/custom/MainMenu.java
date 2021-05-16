@@ -101,6 +101,7 @@ public class MainMenu extends SubScene {
         }
     }
 
+    //fonctions retournant les boutons (pour les action listeners)
     public AnchorPane getPane(){
         return (AnchorPane) this.getRoot();
     }

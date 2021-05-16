@@ -331,7 +331,7 @@ public class UserInterface extends Group {
     }
 
     public void setMoneyValue(int money) {
-        this.money.setText(money+" £");
+        this.money.setText(money+" €");
     }
 
 }

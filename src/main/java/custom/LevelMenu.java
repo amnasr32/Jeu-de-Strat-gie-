@@ -19,7 +19,7 @@ public class LevelMenu extends SubScene {
 
     private FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.1));
 
-    private GameButton map1, map2, map3, map4;
+    private GameButton map1, map2, map3, map4, back;
 
     private String gameMode;
 
@@ -57,6 +57,7 @@ public class LevelMenu extends SubScene {
         map2 = layout.addButton("Map 2");
         map3 = layout.addButton("Map 3");
         map4 = layout.addButton("Map 4");
+        back = layout.addButton("Retour");
 
         getPane().getChildren().add(layout);
         layout.setVisible(true);
@@ -115,6 +116,7 @@ public class LevelMenu extends SubScene {
         return (AnchorPane) this.getRoot();
     }
 
+    //fonctions retournant les boutons (pour les action listeners)
     public GameButton getMap1() {
         return map1;
     }
@@ -129,5 +131,9 @@ public class LevelMenu extends SubScene {
 
     public GameButton getMap4() {
         return map4;
+    }
+
+    public GameButton getBackButton(){
+        return back;
     }
 }
