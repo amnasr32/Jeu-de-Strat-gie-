@@ -101,7 +101,10 @@ public class WelcomeInterface extends Pane {
             ctrl.getMainView().allowGridViewControls(true);*/
 
             menu.animation();
+            //on enlève le bouton "options" qui se trouve en haut à gauche de l'écran
             option.setVisible(false);
+            //on fait disparaître le menu "options" si il est ouvert
+            optionMenu.fadeOutScene();
 
             // ces lignes ont été ajoutés pour éviter que le fond d'écran apparaisse pendant les chargements
             Image backgroundImage = new Image(menu.BG_IMAGE_1, width, height, false, true);
@@ -133,7 +136,6 @@ public class WelcomeInterface extends Pane {
         quitter.setOnAction(e -> {
             ctrl.getMainView().getPrimaryStage().close();
         });
-
         menu.getQuit().setOnAction(e -> {
             ctrl.getMainView().getPrimaryStage().close();
         });
@@ -152,6 +154,21 @@ public class WelcomeInterface extends Pane {
 
         levelMenu.getMap4().setOnMouseClicked(e -> {
             launchGame(levelMenu.getGameMode(), "src/main/Levels/level4");
+        });
+
+        levelMenu.getBackButton().setOnMouseClicked(e -> {
+            /*menu.animation();
+            //on enlève le bouton "options" qui se trouve en haut à gauche de l'écran
+            option.setVisible(false);
+            //on fait disparaître le menu "options" si il est ouvert
+            optionMenu.fadeOutScene();
+
+            // ces lignes ont été ajoutés pour éviter que le fond d'écran apparaisse pendant les chargements
+            Image backgroundImage = new Image(menu.BG_IMAGE_1, width, height, false, true);
+            BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, null);
+            setBackground(new Background(background));*/
+            getChildren().clear();
+            getChildren().add(menu);
         });
     }
 
