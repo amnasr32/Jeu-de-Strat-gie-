@@ -51,8 +51,22 @@ Choisissez d'abord le mode du jeu ("multijoueur"/"jouer contre un robot"), puis 
 * frappe courte : inflige 4 points de dégats physiques au corps à corps
 * frappe longue : inflige 6 points de dégats physiques à distance
 
-Sélectionnez l'entité de votre choix pui placez-la n'importe-où sur la grille en cliquant sur la cellule correspondante. Une fois que vous avez placé vos entités, cliquez sur le bouton "commencer". À chaque tour, chaque entité peut effectuer une attaque et avancer d'un certain nombre de cases, en fonction de son type. Vous passez à la prochaine entité avec le bouton "fin de tour". Une fois que vous avez joué avec toutes vos entités, votre tour est fini est c'est à l'adversaire de jouer. La partie se termine lorsque l'un des joueurs n'a plus d'entités. 
+Sélectionnez l'entité de votre choix puis placez-la n'importe-où sur la grille en cliquant sur la cellule correspondante. Une fois que vous avez placé vos entités, cliquez sur le bouton "commencer". À chaque tour, chaque entité peut effectuer une attaque et avancer d'un certain nombre de cases, en fonction de son type. Vous passez à la prochaine entité avec le bouton "fin de tour". Une fois que vous avez joué avec toutes vos entités, votre tour est fini est c'est à l'adversaire de jouer. La partie se termine lorsque l'un des joueurs n'a plus d'entités. 
+
+## contrôles de la caméra
+pour se déplacer la caméra dans l'espace 3D :
+* clique droit permet d'effectuer des translations
+* clique molette permet d'effectuer des rotations
+* molette permet de zoomer / dézoomer
+
 ### Prêt pour un combat acharné ?
+
+## Autres fonctionalités
+La partie fonctionnelle du projet constitue le multijoueur local. les deux joueurs étant contrôlés depuis la même fenêtre de jeu. En effet, le bot ne peut pas faire d'action autre que passer son tour. on l'a laissé dans le projet car il est pratique pour faire des tests et comprendre les mécaniques de jeu. 
+
+on peut aussi choisir entre 4 cartes differentes, chargés depuis des fichiers sérialisés.
+
+la heuteur du terrain est prise en compte dans le calcul des chemins à parcourir par les unités, et forment des obstacles à leur champs de vision
 
 ## Conclusion
 Durant la réalisation de ce projet, nous avons utilisé javafx pour créer des interfaces graphiques semblables à celles vues au troisième semestre mais aussi pour réaliser le plateau du jeu en 3D, ce qui n'aurait pas été possible avec swing.
