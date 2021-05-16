@@ -94,6 +94,15 @@ public class LevelMenu extends SubScene {
         }
     }
 
+    // force l'apparaition en fonction de bool
+    public void animation(boolean bool){
+        if (bool){
+            fadeInScene();
+        } else {
+            fadeOutScene();
+        }
+    }
+
     public void setGameMode(String gameMode){
         this.gameMode = gameMode;
     }

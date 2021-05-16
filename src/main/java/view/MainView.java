@@ -279,7 +279,7 @@ public class MainView extends Application {
     public void returnToMainMenu() {
         resetAll();
         mainGroup.getChildren().add(welcomeinterface);
-        welcomeinterface.getMenu().animation();
+        welcomeinterface.showMainMenu();
     }
 
     private void resetAll() {
@@ -294,6 +294,7 @@ public class MainView extends Application {
         chosenAction=-1;
         preGameAction = -1;
         path=null;
+        welcomeinterface.resetAll();
     }
 }
 

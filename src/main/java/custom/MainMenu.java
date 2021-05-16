@@ -92,6 +92,15 @@ public class MainMenu extends SubScene {
         }
     }
 
+    // force l'apparaition en fonction de bool
+    public void animation(boolean bool){
+        if (bool){
+            fadeInScene();
+        } else {
+            fadeOutScene();
+        }
+    }
+
     public AnchorPane getPane(){
         return (AnchorPane) this.getRoot();
     }
