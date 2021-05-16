@@ -73,7 +73,7 @@ La hauteur du terrain est prise en compte dans le calcul des chemins à parcouri
 
 - Les differents type de terrains au sol (càd : eau, terre, herbe, pierre) qui auraient été choisi par le joueur en début de partie et auraient influencé les attaques des entités. Les terrains peuvent être modifiés en changeant directement le code mais pas autrement.
 
-- Jouer le jeu en reseau, nous n'avons pas encore efftectué de reseau en cours donc nous serions entré en territoire completement inconnu en plus de l'apprentissage de Javafx.
+- Jouer le jeu en reseau, nous n'avons pas encore effectué de reseau en cours donc nous serions entré en territoire completement inconnu en plus de l'apprentissage de Javafx.
 
 ## Conclusion
 Durant la réalisation de ce projet, nous avons utilisé javafx pour créer des interfaces graphiques semblables à celles vues au troisième semestre mais aussi pour réaliser le plateau du jeu en 3D, ce qui n'aurait pas été possible avec swing.
