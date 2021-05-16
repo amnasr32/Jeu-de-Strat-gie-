@@ -18,7 +18,7 @@ public class GameLabel extends Label {
 
     private final String BACKGROUND = "-fx-background-image: url('boxes/bar_ready.png'); " +
             "-fx-background-position: center; -fx-background-size: 300 135; -fx-font-family: 'Cinzel Decorative';" +
-            "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 10;" +
+            "src: url('src/main/resources/style/CinzelDecorative-Bold.ttf'); -fx-font-size: 12;" +
             "-fx-line-spacing: 0.7; -fx-padding: 0 0 5 0;";
     private final String BACKGROUND2 = "-fx-background-image: url('boxes/name_bar2.png'); " +
             "-fx-background-position: center; -fx-background-size: 180 90; -fx-font-family: 'Cinzel Decorative';" +

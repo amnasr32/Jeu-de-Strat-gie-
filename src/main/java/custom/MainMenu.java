@@ -53,7 +53,7 @@ public class MainMenu extends SubScene {
 
         multi = layout.addButton("Multijoueur");
         bot = layout.addButton("Jouer contre\nun robot");
-        edit = layout.addButton("Editer un\nniveau");
+        //edit = layout.addButton("Editer un\nniveau"); pas fonctionnel
         quit = layout.addButton("Quitter");
 
         getPane().getChildren().add(layout);
