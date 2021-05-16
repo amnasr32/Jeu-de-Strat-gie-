@@ -114,7 +114,7 @@ public class WelcomeInterface extends Pane {
             levelMenu.setGameMode("localMultiplayer");
             getChildren().clear();
             getChildren().add(levelMenu);
-            levelMenu.animation();
+            levelMenu.animation(true);
             //launchGame("localMultiplayer");
         });
 
@@ -122,7 +122,7 @@ public class WelcomeInterface extends Pane {
             levelMenu.setGameMode("vsBot");
             getChildren().clear();
             getChildren().add(levelMenu);
-            levelMenu.animation();
+            levelMenu.animation(true);
             //launchGame("vsBot");
         });
 
@@ -176,5 +176,16 @@ public class WelcomeInterface extends Pane {
 
     public MainMenu getMenu() {
         return menu;
+    }
+
+    public void resetAll() {
+        getChildren().clear();
+        menu.animation(false);
+        levelMenu.animation(false);
+    }
+
+    public void showMainMenu() {
+        getChildren().add(menu);
+        menu.animation(true);
     }
 }
