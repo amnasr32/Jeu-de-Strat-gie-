@@ -32,7 +32,7 @@ public class Rooting extends Action {
         if (minRange==maxRange) bld.append(minRange).append("\n");
         else bld.append(minRange).append("-").append(maxRange).append("\n");
         bld.append("temps de récupération : ").append(cooldown).append(" tours \n");
-        bld.append("temps restant avant utilisation :");
+        //bld.append("temps restant avant utilisation :");
         return bld.toString();
     }
 
