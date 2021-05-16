@@ -69,7 +69,7 @@ On peut aussi choisir entre 4 cartes differentes, chargées depuis des fichiers 
 La hauteur du terrain est prise en compte dans le calcul des chemins à parcourir par les unités, et forment des obstacles à leur champs de vision.
 
 ## Non inclus mais considéré
-- La possibilité d'editer des niveaux, le bouton est la mais nous n'avons pas eu le temps de l'implémenter.
+- La possibilité d'editer des niveaux, nous n'avons pas eu le temps de l'implémenter.
 
 - Les differents type de terrains au sol (càd : eau, terre, herbe, pierre) qui auraient été choisi par le joueur en début de partie et auraient influencé les attaques des entités. Les terrains peuvent être modifiés en changeant directement le code mais pas autrement.
 
